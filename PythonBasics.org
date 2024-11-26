@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+title: Python Basics
+#+author: Dr. E.P. Blair
+
+* Notebook Setup
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp
+(setq-local org-babel-python-command (expand-file-name "./.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+* Variables
+
+** Creating Variables
+
+Values are stored in memory and accessed using variable names. This
+is done using the assignment operator, ===, using the syntax
+=<variable_name> = <value>=. Here are some basic examples:
+#+begin_src python :exports both :session py-vars :results output
+a = 3 # assign the value 3 to variable a
+b = 5 # assign 5 to variable b
+print('a+b = {0}'.format(a+b))
+
+c = a - b # evaluate a-b, store in c
+d = a/b # evaluate a/b, store in d
+#+end_src
+
+#+RESULTS:
+: a+b = 8
+
+Generally, in Python, you won't see variable values unless:
+1. You are working in a Jupyter Lab notebook.
+   1. In Jupyter, code is entered and evaluated in groups called
+      /cells/. A cell may contain multiple lines of code.
+   2. In this case, Jupyter will not display any values or graphics,
+      except for the result of the last command in the cell.
+2. You instruct Python to do so using the =print()= command.
+
+Note from the author/instructor: the above code block behaves /like/
+a Jupyter cell in the sense that its variables persist and are
+accessible in other code blocks, so long as those code blocks participate
+in the same Python session. Code blocks need not be attached to a Python
+session, in which case they are stand-alone code blocks.
+
+** Displaying Variables
+
+In the follwoing code block, we print variables from the previous
+code block. To do this, we use the =print()= command, which prints
+strings. To do this, we either convert variables to strings, or we
+form strings with variable values embedded in them.
+#+begin_src python :session py-vars :results output :exports both
+print('hello world') # print a basic string
+
+print(a) # print the value of a variable
+
+# Make an f-string (fstr) named myFirstfstr
+#    This has variable values embedded within it
+myFirstfstr = f'c = {c}; d = {d:5.3f}' 
+print(myFirstfstr) # print the f-string
+
+myStr = 'cat' # store a string
+# embed myStr in another string
+mySecondFStr = f'some word: {myStr}'
+print(mySecondFStr)
+#+end_src
+
+#+RESULTS:
+: hello world
+: 3
+: c = -2; d = 0.600
+: some word: cat
+
+** Complex Numbers
+Here is an example of how Python handles complex numbers. In
+Python, we can use =1j= for the imaginary unit, \(i\), and, say,
+=5j= for \(5i\).
+#+begin_src python :results output :exports both
+# Example: complex numbers
+X = 3 + 2j # complex number
+absX = abs(X)
+
+# print the complex X using an f-string
+#   form the f-string inside of print()
+print(f'X = {X}; |X| = {absX:06.3f}')
+#+end_src
+
+#+RESULTS:
+: X = (3+2j); |X| = 03.606
+
+We also used =abs(X)= to obtain the modulus of \(X\).
+
+** Assign Multiple Variables in a Single Line
+One neat trick in Python is that we can define several
+variables using only one assignment statement.
+#+begin_src python :results output :exports both
+x, y, z = 1+2, 2*3, 4/5
+print(f'x = {x}; y = {y}; z = {z:5.3f}')
+#+end_src
+
+** Variable Types
+- Variables come in different types.
+  - Each variable type–or more generally, class
+    (more on this later)–has a different syntax and behaviors
+    governing what we can do with variables of that type
+- We've encountered some different variable types by now:
+  - strings - store lists of characters, as in text
+  - integers - (self explanatory)
+  - floating point numbers (self explanatory)
+  - complex numbers - (self explanatory)
+- We can interrogate the type of a variable, say, =x=, using the
+  command =type(x)=
+#+begin_src python :results output :exports both
+a, b, c, d = 1, 3.14, 2+3j, False
+
+print('type of a: {0}'.format(type(a)))
+print('type of b: {0}'.format(type(b)))
+print('type of c: {0}'.format(type(c)))
+print('type of d: {0}'.format(type(d)))
+#+end_src
+
+#+RESULTS:
+: type of a: <class 'int'>
+: type of b: <class 'float'>
+: type of c: <class 'complex'>
+: type of d: <class 'bool'>
