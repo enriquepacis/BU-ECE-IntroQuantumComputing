@@ -105,6 +105,9 @@ x, y, z = 1+2, 2*3, 4/5
 print(f'x = {x}; y = {y}; z = {z:5.3f}')
 #+end_src
 
+#+RESULTS:
+: x = 3; y = 6; z = 0.800
+
 ** Variable Types
 - Variables come in different types.
   - Each variable type–or more generally, class
@@ -117,6 +120,7 @@ print(f'x = {x}; y = {y}; z = {z:5.3f}')
   - complex numbers - (self explanatory)
 - We can interrogate the type of a variable, say, =x=, using the
   command =type(x)=
+#+caption: We use the =type()= command to return the type of a variable.
 #+begin_src python :results output :exports both
 a, b, c, d = 1, 3.14, 2+3j, False
 
@@ -131,3 +135,28 @@ print('type of d: {0}'.format(type(d)))
 : type of b: <class 'float'>
 : type of c: <class 'complex'>
 : type of d: <class 'bool'>
+
+*** Boolean Variables
+- We introdcued another data type: =bool=, short for /Boolean/
+  - Boolean variables have one of two values: =True=, or =False=
+  - These may be used to control whether sections of code get
+    executed or skipped, using logical control statements
+    (a.k.a. logical controls)
+- Boolean variables are typically the result of a comparison
+  - Comparisons may be performed between pairs of variables or values
+    - Here, we must use comparison operators such as =<= (less than),
+      =>= (greater than), ==== (equal to), =>== (grater than or equal to),
+      =<== (grater than or equal to), =!== (not equal to), etc.
+  - Comparison operators are used to form logical expressions, which
+    are evaluated as either True or False. Some examples:
+    - The logical expression =3<5= will evaluate to =True=, but
+      =3>5= will evaluate to =False=
+      - =a==b= may evaluate either to =True= or =False=, depending
+        on the values stored in =a= and =b=.
+        - If the two values are equal, then this statement
+           evaluates to =True=
+        - otherwise, it evaluates to =False=
+  - The value resulting from a logical expression may be:
+    - stored in a variable, which will be of the type =bool=
+    - used in a logical control structure, which determines whether
+      or not a block of code gets executed
