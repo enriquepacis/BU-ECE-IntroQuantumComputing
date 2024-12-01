@@ -225,5 +225,5 @@ print('This is independent of the IF statement.')
   - Unlike other languages, the Python =if= statement is not terminated
     using an end statement or a closing deliminter, but rather by returning
     to the level of indentation of the =if= statement itself.
-** =if=-=else= Statements
+** =if=/=else= Statements
 
