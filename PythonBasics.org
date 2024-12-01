@@ -30,7 +30,7 @@ print(sys.executable)
 ** Creating Variables
 
 Values are stored in memory and accessed using variable names. This
-is done using the assignment operator, ===, using the syntax
+is done using the assignment operator, $=$, using the syntax
 =<variable_name> = <value>=. Here are some basic examples:
 #+begin_src python :exports both :session py-vars :results output
 a = 3 # assign the value 3 to variable a
@@ -150,7 +150,7 @@ print('type of d: {0}'.format(type(d)))
 - Boolean variables are typically the result of a comparison
   - Comparisons may be performed between pairs of variables or values
     - Here, we must use comparison operators such as =<= (less than),
-      =>= (greater than), {\verb==} (equal to), =>== (grater than or equal to),
+      =>= (greater than), $==$ (equal to), =>== (grater than or equal to),
       =<== (grater than or equal to), =!== (not equal to), etc.
   - Comparison operators are used to form logical expressions, which
     are evaluated as either True or False. Some examples:
