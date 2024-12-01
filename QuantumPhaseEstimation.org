@@ -421,7 +421,7 @@ Other solutions could be:
    installation.
 3. Tangle =ox-extra.el= to the file space
 
-#+begin_src lisp :tangle ox-extra.el :eval never :padlines none
+#+begin_src lisp :tangle ox-extra.el :eval never :padlines none :exports none
 ;;; ox-extra.el --- Convenience functions for org export
 
 ;; Copyright (C) 2014  Aaron Ecay
