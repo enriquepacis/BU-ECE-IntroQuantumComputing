@@ -16,6 +16,14 @@ multiple code blocks /and/ we are using =direnv=.
 #+RESULTS:
 : /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
 
+#+begin_src python :results output
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
 
 * Variables
 
@@ -74,9 +82,6 @@ print(mySecondFStr)
 
 #+RESULTS:
 : hello world
-: 3
-: c = -2; d = 0.600
-: some word: cat
 
 ** Complex Numbers
 Here is an example of how Python handles complex numbers. In
@@ -95,7 +100,7 @@ print(f'X = {X}; |X| = {absX:06.3f}')
 #+RESULTS:
 : X = (3+2j); |X| = 03.606
 
-We also used =abs(X)= to obtain the modulus of \(X\).
+We also used =abs(X)= to obtain the modulus of $X$.
 
 ** Assign Multiple Variables in a Single Line
 One neat trick in Python is that we can define several
@@ -136,7 +141,7 @@ print('type of d: {0}'.format(type(d)))
 : type of c: <class 'complex'>
 : type of d: <class 'bool'>
 
-*** Boolean Variables
+** Boolean Variables
 - We introdcued another data type: =bool=, short for /Boolean/
   - Boolean variables have one of two values: =True=, or =False=
   - These may be used to control whether sections of code get
@@ -160,3 +165,65 @@ print('type of d: {0}'.format(type(d)))
     - stored in a variable, which will be of the type =bool=
     - used in a logical control structure, which determines whether
       or not a block of code gets executed
+#+begin_src python :results output
+a = 3 < 5
+b = 5 < 3
+c, d, f = 3 > 5, 3 < 5, 3==5
+
+print('type of a: {0}; a = {1}'.format(type(a), a))
+print('type of b: {0}; b = {1}'.format(type(b), b))
+print(f'c = {c}; d = {d}; f = {f}')
+#+end_src
+
+* =if= Statements
+- if statements allow you to execute blocks
+   of code depending on the value of a logical expression
+- The basic if statement:
+  - begins with the keyword =if=
+  - identifies a condition for evaluation, and
+  - ends with a colon (=:=)
+- An example of an =if= statement is given below
+#+begin_src python :results output :exports both
+x = True # define a boolean (bool) variable
+
+if x:
+   # This doesn't print if x is set to False
+   print('The condition x evaluates as True.')
+   # We could include other commands in the IF block
+   # We only use one command here
+   # Additional commands must have the same indentation
+   #   as the print() command
+
+print('This is independent of the IF statement.')
+#+end_src
+
+#+RESULTS:
+: The condition x evaluates as True.
+: This is independent of the IF statement.
+
+- We now repeat the =if= statement, but this time with a
+  =False= condition:
+#+begin_src python :results output :exports both
+x = False # define a boolean (bool) variable
+
+if x:
+   # This doesn't print if x is set to False
+   print('The condition x evaluates as True.')
+
+print('This is independent of the IF statement.')
+#+end_src
+
+#+RESULTS:
+: This is independent of the IF statement.
+- Here, since =if= condition, =x=, is evaluated as =False=
+  (we set it to False in line 1), the =print()= command conditioned
+  upon the value of =x= is never executed
+- Commands subordinate to an =if= statement follow it and have a deeper
+  indentation than the =if= statement itself
+  - The first line of code with the same indentation as the =if= statement
+    is conisdered by Python to be outside of the =if= statement.
+  - Unlike other languages, the Python =if= statement is not terminated
+    using an end statement or a closing deliminter, but rather by returning
+    to the level of indentation of the =if= statement itself.
+** =if=-=else= Statements
+

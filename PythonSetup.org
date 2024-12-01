@@ -33,3 +33,10 @@ fi
 export ZSH_ENV_VAR="SomeValue"
 
 #+end_src
+
+
+
+#+begin_src emacs-lisp :eval never
+(setq-local org-babel-python-command "/path/to/envname/bin/python3")
+#+end_src
+
