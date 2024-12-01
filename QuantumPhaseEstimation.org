@@ -8,7 +8,7 @@
 This example follows the [[https://pennylane.ai/qml/demos/tutorial_qpe][Pennylane QPE tutorial]].
 
 The example operator for which we try to estimate the phase is
-$$\mathbf{U} = \mathbf{R}_{\phi}(2\pi/5)$$
+\[\mathbf{U} = \mathbf{R}_{\phi}(2\pi/5)\]
 We apply it to an eigenstate $\left|1\right\rangle$, which has phase $\theta=1/5$.
 
 
@@ -370,7 +370,7 @@ counts for parameterized circuit : {'11': 426, '00': 133, '01': 349, '10': 116}
 :results:
 :end:
 
-#+begin_src python :results output :eval never-export
+#+begin_src python :results output :eval never-export :exports none
 import sys
 
 print(sys.executable)
@@ -382,7 +382,7 @@ print(sys.executable)
 :end:
 
 
-#+begin_src python :results output :session gen-sesh :eval never-export
+#+begin_src python :results output :session gen-sesh :eval never-export :exports none
 import sys
 
 print(sys.executable)
@@ -402,7 +402,7 @@ effectively. I've followed the advice given on StackExchange
 My solution is to copy the =ox-extra.el= file to the same directory as
 this file, and then run the following code block:
 #+name: load_local_vars
-#+begin_src emacs-lisp :results output :exports both
+#+begin_src emacs-lisp :results output :exports none
 (add-to-list 'load-path ".")
 (require 'ox-extra)
 (ox-extras-activate '(ignore-headlines))
