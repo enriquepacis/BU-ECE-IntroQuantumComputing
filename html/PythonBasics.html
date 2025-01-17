@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-01-16 Thu 20:26 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python Basics</title>
+<meta name="author" content="Dr. E.P. Blair" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Python Basics</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgff75cdd">1. Variables</a>
+<ul>
+<li><a href="#orgf18a90c">1.1. Creating Variables</a></li>
+<li><a href="#orgd6a91ba">1.2. Displaying Variables</a></li>
+<li><a href="#org369eca6">1.3. Complex Numbers</a></li>
+<li><a href="#org5a89107">1.4. Assign Multiple Variables in a Single Line</a></li>
+<li><a href="#org9ff35c8">1.5. Variable Types</a></li>
+<li><a href="#orge9e0842">1.6. Boolean Variables</a></li>
+</ul>
+</li>
+<li><a href="#if-statements">2. <code>if</code> statements</a>
+<ul>
+<li><a href="#if-else-statements">2.1. <code>if-else</code> Statements</a></li>
+<li><a href="#if-elif-else-statements">2.2. <code>if-elif-else</code> Statements</a></li>
+<li><a href="#none-in-logical-expressions">2.3. <code>None</code> in Logical Expressions</a></li>
+</ul>
+</li>
+<li><a href="#iterables">3. Iterables</a>
+<ul>
+<li><a href="#strings">3.1. Strings</a></li>
+<li><a href="#lists">3.2. Lists</a></li>
+<li><a href="#tuples">3.3. Tuples</a></li>
+<li><a href="#dicts">3.4. Dicts</a></li>
+</ul>
+</li>
+<li><a href="#level-4-loops-and-iteration">4. Loops and Iteration</a>
+<ul>
+<li><a href="#defining-a-for-loop">4.1. Defining a <code>for</code> loop</a></li>
+<li><a href="#a-for-loop-with-an-index">4.2. A FOR loop with an index</a></li>
+<li><a href="#a-for-loop-with-an-index-1">4.3. A FOR loop with Multiple Data Sets</a>
+<ul>
+<li><a href="#using-a-common-index">4.3.1. Using a Common Index</a></li>
+</ul>
+</li>
+<li><a href="#a-for-loop-without-an-index">4.4. A FOR loop without an index</a>
+<ul>
+<li><a href="#org295865c">4.4.1. Coding Exercise</a></li>
+</ul>
+</li>
+<li><a href="#calculating-data-from-members-of-a-list">4.5. Calculating Data from Members of a List</a>
+<ul>
+<li><a href="#a-traditional-method">4.5.1. A Traditional Method</a></li>
+<li><a href="#a-more-pythonic-way">4.5.2. A More Pythonic Way</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgff75cdd" class="outline-2">
+<h2 id="orgff75cdd"><span class="section-number-2">1.</span> Variables</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgf18a90c" class="outline-3">
+<h3 id="orgf18a90c"><span class="section-number-3">1.1.</span> Creating Variables</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Values are stored in memory and accessed using variable names. This
+is done using the assignment operator, <code>=</code>, using the syntax
+<code>&lt;variable_name&gt; = &lt;expression&gt;</code>. <code>&lt;expression&gt;</code> may be a value, such as <code>5</code>, or
+an expression, such as <code>2 + 3</code>. Some basic examples are shown in Listing
+<a href="#org07c3441">1</a>: 
+</p>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>We assign avariable in Python by specifying a variable name, using the assignment operator (<code>=</code>), and then specifying a value or expression. Defined variables may be used in expressions.</label><pre class="src src-python" id="org93750a6"><span style="color: #DFAF8F;">a</span> = 3 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign the value 3 to variable a</span>
+<span style="color: #DFAF8F;">b</span> = 5 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign 5 to variable b</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'a+b = {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(a+b))
+
+<span style="color: #DFAF8F;">c</span> = a - b <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">evaluate a-b, store in c</span>
+<span style="color: #DFAF8F;">d</span> = a/b <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">evaluate a/b, store in d</span>
+</pre>
+</div>
+
+<pre class="example">
+a+b = 8
+</pre>
+
+
+<p>
+Generally, in Python, you won't see variable values unless:
+</p>
+<ol class="org-ol">
+<li>You are working in a Jupyter Lab notebook.
+<ol class="org-ol">
+<li>In Jupyter, code is entered and evaluated in groups called
+<i>cells</i>. A cell may contain multiple lines of code.</li>
+<li>In this case, Jupyter will not display any values or graphics,
+except for the result of the last command in the cell.</li>
+</ol></li>
+<li>You instruct Python to do so using the <code>print()</code> command.</li>
+</ol>
+
+<p>
+Note from the author/instructor: the above code block behaves <i>like</i>
+a Jupyter cell in the sense that its variables persist and are
+accessible in other code blocks, so long as those code blocks participate
+in the same Python session. Code blocks need not be attached to a Python
+session, in which case they are stand-alone code blocks.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd6a91ba" class="outline-3">
+<h3 id="orgd6a91ba"><span class="section-number-3">1.2.</span> Displaying Variables</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+In Listing <a href="#orga57c4bf">1</a>, we print variables from the previous
+code block. To do this, we use the <code>print()</code> command, which prints
+strings. We either supply to the <code>print()</code> command only a variable (as in
+<code>print(a)</code>), or we form strings with variable values embedded in them.
+</p>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>We can use the <code>print()</code> command to display strings or variables.</label><pre class="src src-python" id="org9d31d59"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'hello world'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print a basic string</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">"hello friend"</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print a basic string with alternate delimiters</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(a) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the value of a variable</span>
+</pre>
+</div>
+
+<pre class="example">
+hello world
+hello friend
+3
+</pre>
+
+
+
+<p>
+Basic usages of <code>print()</code> are shown above in Listing <a href="#orga57c4bf">1</a>. A
+more advanced usage is to use f-strings (<a href="https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals">formatted string literals</a>).
+</p>
+<ul class="org-ul">
+<li>To make an f-string, prepend <code>f</code> onto a string definition, as in <code>f'hello
+  world'</code> or <code>f"x = something"</code>.</li>
+<li>To embed the value of a variable, say, <code>x</code>, insert <code>{x}</code> in the f-string, as 
+in <code>f"x = {x}"</code></li>
+<li>To format the value of the variable embedded in the f-string, use a
+formatting string, <code>:&lt;formatSpec&gt;</code>. Examples:
+<ul class="org-ul">
+<li>Use <code>:s</code> if <code>x</code> is a string</li>
+<li>Use <code>:m.nf</code> to specify a decimal value with a maximum of <code>m</code> total
+characters (including a decimal), and <code>n</code> digits of precision to the right
+of the decimal</li>
+<li>Use <code>:0m.nf</code> as in the previous case, but have leading zeros</li>
+<li>Use <code>:md</code> to specify an integer representation with a total of <code>m</code> digits</li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>We can use <code>fstrings</code> (formatted strings) to embed variable values in strings. Use <code>{</code> and <code>}</code> to define placeholders for a variable value.</label><pre class="src src-python" id="org78cb858"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Make an f-string (fstr) named myFirstfstr</span>
+<span style="color: #5F7F5F;">#    </span><span style="color: #7F9F7F;">This has variable values embedded within it</span>
+<span style="color: #DFAF8F;">myFirstfstr</span> = f<span style="color: #CC9393;">'c = </span>{c}<span style="color: #CC9393;">; d = </span>{d:5.3f}<span style="color: #CC9393;">'</span> 
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(myFirstfstr) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the f-string</span>
+
+<span style="color: #DFAF8F;">myStr</span> = <span style="color: #CC9393;">'cat'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">store a string</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">embed myStr in another string</span>
+<span style="color: #DFAF8F;">mySecondFStr</span> = f<span style="color: #CC9393;">'some word: </span>{myStr}<span style="color: #CC9393;">'</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(mySecondFStr)
+</pre>
+</div>
+
+<pre class="example">
+hello world
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org369eca6" class="outline-3">
+<h3 id="org369eca6"><span class="section-number-3">1.3.</span> Complex Numbers</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Here is an example of how Python handles complex numbers. In
+Python, we can use <code>1j</code> for the imaginary unit, \(i\), and, say,
+<code>5j</code> for \(5i\).
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Example: complex numbers</span>
+<span style="color: #DFAF8F;">X</span> = 3 + 2j <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">complex number</span>
+<span style="color: #DFAF8F;">absX</span> = <span style="color: #DCDCCC; font-weight: bold;">abs</span>(X)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the complex X using an f-string</span>
+<span style="color: #5F7F5F;">#   </span><span style="color: #7F9F7F;">form the f-string inside of print()</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'X = </span>{X}<span style="color: #CC9393;">; |X| = </span>{absX:06.3f}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+X = (3+2j); |X| = 03.606
+</pre>
+
+
+<p>
+We also used <code>abs(X)</code> to obtain the modulus of \(X\).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org5a89107" class="outline-3">
+<h3 id="org5a89107"><span class="section-number-3">1.4.</span> Assign Multiple Variables in a Single Line</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+One neat trick in Python is that we can define several
+variables using only one assignment statement.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">x</span>, <span style="color: #DFAF8F;">y</span>, <span style="color: #DFAF8F;">z</span> = 1+2, 2*3, 4/5
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'x = </span>{x}<span style="color: #CC9393;">; y = </span>{y}<span style="color: #CC9393;">; z = </span>{z:5.3f}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+x = 3; y = 6; z = 0.800
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9ff35c8" class="outline-3">
+<h3 id="org9ff35c8"><span class="section-number-3">1.5.</span> Variable Types</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Variables come in different types.
+<ul class="org-ul">
+<li>Each variable type–or more generally, class
+(more on this later)–has a different syntax and behaviors
+governing what we can do with variables of that type</li>
+</ul></li>
+<li>We've encountered some different variable types by now:
+<ul class="org-ul">
+<li>strings - store lists of characters, as in text</li>
+<li>integers - (self explanatory)</li>
+<li>floating point numbers (self explanatory)</li>
+<li>complex numbers - (self explanatory)</li>
+</ul></li>
+<li>We can interrogate the type of a variable, say, <code>x</code>, using the
+command <code>type(x)</code></li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 4: </span>We use the <code>type()</code> command to return the type of a variable.</label><pre class="src src-python"><span style="color: #DFAF8F;">a</span>, <span style="color: #DFAF8F;">b</span>, <span style="color: #DFAF8F;">c</span>, <span style="color: #DFAF8F;">d</span> = 1, 3.14, 2+3j, <span style="color: #BFEBBF;">False</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of a: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(a)))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of b: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(b)))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of c: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(c)))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of d: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(d)))
+</pre>
+</div>
+
+<pre class="example">
+type of a: &lt;class 'int'&gt;
+type of b: &lt;class 'float'&gt;
+type of c: &lt;class 'complex'&gt;
+type of d: &lt;class 'bool'&gt;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge9e0842" class="outline-3">
+<h3 id="orge9e0842"><span class="section-number-3">1.6.</span> Boolean Variables</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>We introdcued another data type: <code>bool</code>, short for <i>Boolean</i>
+<ul class="org-ul">
+<li>Boolean variables have one of two values: <code>True</code>, or <code>False</code></li>
+<li>These may be used to control whether sections of code get
+executed or skipped, using logical control statements
+(a.k.a. logical controls)</li>
+</ul></li>
+<li>Boolean variables are typically the result of a comparison
+<ul class="org-ul">
+<li>Comparisons may be performed between pairs of variables or values
+<ul class="org-ul">
+<li>Here, we must use comparison operators such as <code>&lt;</code> (less than),
+<code>&gt;</code> (greater than), <code>==</code> (equal to), <code>&gt;=</code> (grater than or equal to),
+<code>&lt;=</code> (grater than or equal to), <code>!=</code> (not equal to), etc.</li>
+</ul></li>
+<li>Comparison operators are used to form logical expressions, which
+are evaluated as either True or False. Some examples:
+<ul class="org-ul">
+<li>The logical expression <code>3&lt;5</code> will evaluate to <code>True</code>, but
+<code>3&gt;5</code> will evaluate to <code>False</code>
+<ul class="org-ul">
+<li><code>a==b</code> may evaluate either to <code>True</code> or <code>False</code>, depending
+on the values stored in <code>a</code> and <code>b</code>.
+<ul class="org-ul">
+<li>If the two values are equal, then this statement
+evaluates to <code>True</code></li>
+<li>otherwise, it evaluates to <code>False</code></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>The value resulting from a logical expression may be:
+<ul class="org-ul">
+<li>stored in a variable, which will be of the type <code>bool</code></li>
+<li>used in a logical control structure, which determines whether
+or not a block of code gets executed</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>Comparisons may be used to generate variables of type <code>bool</code>.</label><pre class="src src-python" id="orgab0f862"><span style="color: #DFAF8F;">a</span> = 3 &lt; 5
+<span style="color: #DFAF8F;">b</span> = 5 &lt; 3
+<span style="color: #DFAF8F;">c</span>, <span style="color: #DFAF8F;">d</span>, <span style="color: #DFAF8F;">f</span> = 3 &gt; 5, 3 &lt; 5, 3==5
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of a: {0}; a = {1}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(a), a))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'type of b: {0}; b = {1}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(b), b))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'c = </span>{c}<span style="color: #CC9393;">; d = </span>{d}<span style="color: #CC9393;">; f = </span>{f}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+type of a: &lt;class 'bool'&gt;; a = True
+type of b: &lt;class 'bool'&gt;; b = False
+c = False; d = True; f = False
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-if-statements" class="outline-2">
+<h2 id="if-statements"><span class="section-number-2">2.</span> <code>if</code> statements</h2>
+<div class="outline-text-2" id="text-if-statements">
+<ul class="org-ul">
+<li><code>if</code> statements allow you to execute blocks of code depending on the
+value of a logical expression</li>
+
+<li>An example of this is shown in Listing <a href="#org68cbb7e">6</a>.</li>
+
+<li>The basic if statement:
+
+<ul class="org-ul">
+<li>begins with if</li>
+
+<li>identifies a variable or condition for evaluation, and</li>
+
+<li>ends with a colon (<code>:</code>)</li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>A basic IF statement example.</label><pre class="src src-python" id="org68cbb7e"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">True</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> x:
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This doesn't print if x is set to False</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The condition x evaluates as True.'</span>) 
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We could include other commands in the IF block</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We only use one command here</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Additional commands must have the same indentation</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">as the print() command</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'This is independent of the IF statement.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+The condition x evaluates as True.
+This is independent of the IF statement.
+</pre>
+
+
+<ul class="org-ul">
+<li>We now repeat the code of Listing <a href="#org68cbb7e">6</a>
+in Listing <a href="#org926f143">7</a>.
+
+<ul class="org-ul">
+<li>Here, the <code>if</code> statement is evaluated as <code>False</code> (we set it to <code>False</code>
+in line 1), so the <code>print()</code> command conditioned upon the <code>if</code> is
+never executed, so we don't see its output.</li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>A basic IF statement example with the condition set to FALSE.</label><pre class="src src-python" id="org926f143"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">False</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> x:
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This doesn't print if x is set to False</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The condition x evaluates as True.'</span>)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'This is independent of the IF statement.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+This is independent of the IF statement.
+</pre>
+
+
+<ul class="org-ul">
+<li>Commands subordinate to the if statement follow it and are defined by
+their indentation. The first line of code with the same indentation as
+the if statement is outside of the if statement. Unlike other
+languages, the Python if statement is not defined using an end
+statement or a closing deliminter, but rather by returning to the
+level of indentation of the if statement itself.</li>
+</ul>
+</div>
+
+<div id="outline-container-if-else-statements" class="outline-3">
+<h3 id="if-else-statements"><span class="section-number-3">2.1.</span> <code>if-else</code> Statements</h3>
+<div class="outline-text-3" id="text-if-else-statements">
+<ul class="org-ul">
+<li>We can add to an <code>if SomeExpression:</code> block an <code>else:</code> block that
+provides code to be executed if the controlling logical expression
+<code>SomeExpression</code> is <code>False</code>
+
+<ul class="org-ul">
+<li>An example of this is given in Listing <a href="#org4040aca">8</a></li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 8: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org4040aca"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">False</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> y:
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The condition y evaluates as True.'</span>)
+<span style="color: #F0DFAF; font-weight: bold;">else</span>:
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The condition y evaluates as False.'</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The if statement is now over</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'This is independent of the IF-ELSE statement.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+The condition y evaluates as False.
+This is independent of the IF-ELSE statement.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-if-elif-else-statements" class="outline-3">
+<h3 id="if-elif-else-statements"><span class="section-number-3">2.2.</span> <code>if-elif-else</code> Statements</h3>
+<div class="outline-text-3" id="text-if-elif-else-statements">
+<ul class="org-ul">
+<li>We will use an <code>if-elif-else</code> statement to illustrate the use of the
+<code>None</code> value</li>
+
+<li>Python's <code>elif</code> is equivalent to else if or similar constructs in
+other languages.</li>
+
+<li>See Listing <a href="#org2ba1a79">9</a></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 9: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org2ba1a79"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">None</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> x <span style="color: #F0DFAF; font-weight: bold;">is</span> <span style="color: #BFEBBF;">None</span>:
+    <span style="color: #DFAF8F;">y</span> = 100
+<span style="color: #F0DFAF; font-weight: bold;">elif</span> x &lt; 50:
+    <span style="color: #DFAF8F;">y</span> = 200
+<span style="color: #F0DFAF; font-weight: bold;">else</span>:
+    <span style="color: #DFAF8F;">y</span> = 300
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We're outside of the if-elif-else statement now</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'y = </span>{y}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+y = 100
+</pre>
+</div>
+</div>
+
+<div id="outline-container-none-in-logical-expressions" class="outline-3">
+<h3 id="none-in-logical-expressions"><span class="section-number-3">2.3.</span> <code>None</code> in Logical Expressions</h3>
+<div class="outline-text-3" id="text-none-in-logical-expressions">
+<ul class="org-ul">
+<li>Here is another example using <code>is not None</code> as the controlling logical
+expression:</li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 10: </span>A basic IF statement with an IS-NOT-NONE check.</label><pre class="src src-python" id="org23a3d16"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">True</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> y <span style="color: #F0DFAF; font-weight: bold;">is</span> <span style="color: #F0DFAF; font-weight: bold;">not</span> <span style="color: #BFEBBF;">None</span>:
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'y has a value.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+y has a value.
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-iterables" class="outline-2">
+<h2 id="iterables"><span class="section-number-2">3.</span> Iterables</h2>
+<div class="outline-text-2" id="text-iterables">
+<ul class="org-ul">
+<li>Iterables are variables that contain other variables.
+
+<ul class="org-ul">
+<li>These are useful for storing multiple related values</li>
+
+<li>Iterables are so called because they are collections of items over
+which we may iterate (as, in a for loop, for example)</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-strings" class="outline-3">
+<h3 id="strings"><span class="section-number-3">3.1.</span> Strings</h3>
+<div class="outline-text-3" id="text-strings">
+<ul class="org-ul">
+<li>Strings are iterables.
+
+<ul class="org-ul">
+<li>A string, <code>‘cat’</code>, for example, is a collection of characters.</li>
+
+<li>For a string of \(n\) characters, each character can be addressed
+using an integer index, \(\left\{ 0,1,2,\ldots,n-1\right\}\).</li>
+
+<li>For a string stored in the variable <code>X</code>, we reference each element
+using brackets (<code>[</code> and <code>]</code>) and an integer index, <code>k</code>.</li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 11: </span>We extract the individual characters of a string using an index inside brackets.</label><pre class="src src-python" id="orgc21a191"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'dog'</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The first letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[0]))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[1]))
+</pre>
+</div>
+
+<pre class="example">
+The first letter of X is "d".
+The second letter of X is "o".
+</pre>
+
+
+<ul class="org-ul">
+<li>Now, consider a longer string
+
+<ul class="org-ul">
+<li>We may not necessarily know <i>a priori</i> how long it is</li>
+
+<li>We can easily address its end element using the index <code>-1</code>, or the
+second-to-last character using the index <code>-2</code></li>
+
+<li>Additionally, we can reference multiple contiguous elements using a
+range, <code>a:b</code>, with integers <code>a</code> and b.
+
+<ul class="org-ul">
+<li>This returns elements <code>X[a]</code> through <code>X[b-1]</code> for a
+string <code>X</code>.</li>
+</ul></li>
+
+<li>Examples of additional string indexing are shown in Listing
+<a href="#org0bcecbf">12</a></li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 12: </span>We perform additional analyses on a string.</label><pre class="src src-python" id="org0bcecbf"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'hello world'</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can find the length of the string using len()</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'X contains {0} characters.'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">len</span>(X) ))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">reference from the begining of the string</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'first letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[0]))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[1]))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">reference from the end of the string</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The last letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[-1]))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second-to-last letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[-2]))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">slice part of the string</span>
+<span style="color: #DFAF8F;">a</span>, <span style="color: #DFAF8F;">b</span> = 2, 9
+<span style="color: #DFAF8F;">S</span> = X[a:b]
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'We reference elements </span>{a}<span style="color: #CC9393;">:</span>{b}<span style="color: #CC9393;">: "</span>{S}<span style="color: #CC9393;">"'</span>)
+
+<span style="color: #DFAF8F;">c</span>, <span style="color: #DFAF8F;">d</span> = -7, -2
+<span style="color: #DFAF8F;">R</span> = X[c:d]
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'We reference elements </span>{c}<span style="color: #CC9393;">:</span>{d}<span style="color: #CC9393;">: "</span>{R}<span style="color: #CC9393;">"'</span>)
+</pre>
+</div>
+
+<pre class="example">
+X contains 11 characters.
+first letter of X is "h".
+The second letter of X is "e".
+The last letter of X is "d".
+The second-to-last letter of X is "l".
+We reference elements 2:9: "llo wor"
+We reference elements -7:-2: "o wor"
+</pre>
+</div>
+</div>
+
+<div id="outline-container-lists" class="outline-3">
+<h3 id="lists"><span class="section-number-3">3.2.</span> Lists</h3>
+<div class="outline-text-3" id="text-lists">
+<ul class="org-ul">
+<li>Lists are container variables used to contain other variables.</li>
+
+<li>Lists are flexible in that:
+
+<ul class="org-ul">
+<li>A single list may contain variables of different types</li>
+
+<li>A list may contain other lists</li>
+</ul></li>
+
+<li>A list of several elements may be defined using brackets ([ and ])
+comma-separated elements.
+
+<ul class="org-ul">
+<li>The elements are indexed with an integer 0, 1, 2, &#x2026;</li>
+
+<li>Individual elements may be accessed using brackets and an indexing
+integer or expression.</li>
+
+<li>Elements may also be referenced using negative indices:
+
+<ul class="org-ul">
+<li><code>-1</code> specifies the last element;</li>
+
+<li><code>-2</code> specifies the second-to-last element, etc.</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 13: </span>We build a simple list and reference/print its values.</label><pre class="src src-python" id="orgeeb839a"><span style="color: #DFAF8F;">x</span> = 9
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">form a list</span>
+<span style="color: #DFAF8F;">myList</span> = [x, <span style="color: #CC9393;">'s'</span>, -3, <span style="color: #CC9393;">'cat'</span>, [1,2,3]]
+
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the first element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The first element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(myList[0] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the second element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(myList[1] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the last element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The last element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( myList[-1] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the second-to-last element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second-to-the-last element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( myList[-2] ) )
+</pre>
+</div>
+
+<pre class="example">
+The first element is: 9
+The second element is: s
+The last element is: [1, 2, 3]
+The second-to-the-last element is: cat
+</pre>
+</div>
+</div>
+
+<div id="outline-container-tuples" class="outline-3">
+<h3 id="tuples"><span class="section-number-3">3.3.</span> Tuples</h3>
+<div class="outline-text-3" id="text-tuples">
+<ul class="org-ul">
+<li>Tuples are like lists.
+
+<ul class="org-ul">
+<li>They are indexed in the same manner, but tuples are immutable.</li>
+</ul></li>
+
+<li>Tuples are defined using parentheses <code>(</code> and <code>)</code> instead of brackets
+<code>[</code> and <code>]</code>.</li>
+
+<li>Tuples are useful when you have a collection of variables and you do
+not want them altered in any way.</li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 14: </span>We build a simple tuple and reference/print its values.</label><pre class="src src-python" id="org9ff6a1a"><span style="color: #DFAF8F;">x</span> = 9
+<span style="color: #DFAF8F;">myTup</span> = (x, <span style="color: #CC9393;">'s'</span>, -3, <span style="color: #CC9393;">'cat'</span>, [1,2,3]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">form a tuple</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the first element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The first element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(myTup[0] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the second element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(myTup[1] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the last element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The last element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(myTup[-1] ) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the second-to-last element</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second-to-the-last element is: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( myTup[-2] ) )
+</pre>
+</div>
+
+<pre class="example">
+The first element is: 9
+The second element is: s
+The last element is: [1, 2, 3]
+The second-to-the-last element is: cat
+</pre>
+</div>
+</div>
+
+<div id="outline-container-dicts" class="outline-3">
+<h3 id="dicts"><span class="section-number-3">3.4.</span> Dicts</h3>
+<div class="outline-text-3" id="text-dicts">
+<ul class="org-ul">
+<li>Dict is short for “dictionary”.
+
+<ul class="org-ul">
+<li>This is like a list, but elements are not indexed by number, but
+rather using a string.</li>
+
+<li>The referncing/indexing string is called a key, and the associated
+element is called a value.</li>
+
+<li>Thus, a dict contains key-value pairs (KPVs).</li>
+</ul></li>
+
+<li>We define a dict using braces { and }
+
+<ul class="org-ul">
+<li>KVPs are associated using a colon (:), and</li>
+
+<li>KVPs are separated by a comma</li>
+
+<li>dicts may be broken up over several lines of code, as can lists and
+tuples</li>
+
+<li>Use spaces for readability</li>
+</ul></li>
+
+<li>An example of a simple dict definition is given in Listing</li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 15: </span>We build a simple dict.</label><pre class="src src-python" id="org36d9300"><span style="color: #DFAF8F;">someDict</span> = {<span style="color: #CC9393;">"a"</span>: 3,
+            <span style="color: #CC9393;">"b"</span>: <span style="color: #CC9393;">'dog'</span>,
+            <span style="color: #CC9393;">"f"</span>: 5.4}
+
+<span style="color: #9FC59F;">""" I used single quotes and double quotes in various places to</span>
+<span style="color: #9FC59F;">demonstrate their interchangeability. """</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">"someDict['a'] = {0}"</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(someDict[<span style="color: #CC9393;">'a'</span>]) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">"someDict['f'] = {0}"</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(someDict[<span style="color: #CC9393;">"f"</span>]) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'someDict["b"] = {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(someDict[<span style="color: #CC9393;">'b'</span>]) )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Now I add a value to the dict</span>
+<span style="color: #DFAF8F;">someDict</span>[<span style="color: #CC9393;">'d'</span>] = (<span style="color: #CC9393;">'New value'</span>, 19)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Finally, I show what it looks like to print a dict</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">and we show the modified dict.</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(someDict)
+</pre>
+</div>
+
+<pre class="example">
+someDict['a'] = 3
+someDict['f'] = 5.4
+someDict["b"] = dog
+{'a': 3, 'b': 'dog', 'f': 5.4, 'd': ('New value', 19)}
+</pre>
+
+
+<ul class="org-ul">
+<li>Dicts are mutable: KVPs may be added, removed, or modified.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-level-4-loops-and-iteration" class="outline-2">
+<h2 id="level-4-loops-and-iteration"><span class="section-number-2">4.</span> Loops and Iteration</h2>
+<div class="outline-text-2" id="text-level-4-loops-and-iteration">
+<ul class="org-ul">
+<li>Loops help us peform repeated operations over an iterable.
+
+<ul class="org-ul">
+<li>Iterables include lists, tuples, dicts, and ranges.</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-defining-a-for-loop" class="outline-3">
+<h3 id="defining-a-for-loop"><span class="section-number-3">4.1.</span> Defining a <code>for</code> loop</h3>
+<div class="outline-text-3" id="text-defining-a-for-loop">
+<ul class="org-ul">
+<li>Some key features of a <code>for</code> loop:
+
+<ul class="org-ul">
+<li>The first line of a <code>for</code> loop
+
+<ul class="org-ul">
+<li>begins with the keyword <code>for</code>,</li>
+
+<li>defines an iterator variable, say, <code>x</code></li>
+
+<li>provides an iterable, say, the list <code>X</code></li>
+
+<li>and ends with a colon (<code>:</code>)</li>
+</ul></li>
+
+<li>Statements to be included in the for loop follow the first line and
+are indented by a few spaces more than is the first line
+(<code>for x in X:</code>)
+
+<ul class="org-ul">
+<li>I typically use an indentation of four spaces.</li>
+</ul></li>
+
+<li>The first statement with equal or lesser indentation than the <code>for</code>
+statement is recognized by Python to be outside of the <code>for</code> loop.</li>
+</ul></li>
+
+<li>As a first example, I define in Listing <a href="#org7de2803">16</a> a list and then use
+two statements to print the elements of the list.</li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 16: </span>We define a simple <code>FOR</code> loop.</label><pre class="src src-python" id="org7de2803"><span style="color: #DFAF8F;">X</span> = [1, <span style="color: #CC9393;">'a'</span>, (3,2,1), <span style="color: #CC9393;">'fish'</span>]
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a list</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use a FOR loop to print the elements of the list</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> ix <span style="color: #F0DFAF; font-weight: bold;">in</span> X:
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Element:'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">in the loop</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">' </span>{ix}<span style="color: #CC9393;">'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">in the loop</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The loop has terminated.'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">first statement after loop</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Program complete.'</span>)
+
+
+</pre>
+</div>
+
+<pre class="example" id="org77a72c3">
+Element:
+ 1
+Element:
+ a
+Element:
+ (3, 2, 1)
+Element:
+ fish
+The loop has terminated.
+Program complete.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-a-for-loop-with-an-index" class="outline-3">
+<h3 id="a-for-loop-with-an-index"><span class="section-number-3">4.2.</span> A FOR loop with an index</h3>
+<div class="outline-text-3" id="text-a-for-loop-with-an-index">
+<ul class="org-ul">
+<li>Sometimes we don't just want to loop over the elements, but we also
+want an integer index for each element.</li>
+
+<li>To do this, we can use <code>enumerate</code>, as shown in Listing <a href="#org2a69163">1</a></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 17: </span>We define a simple FOR loop.</label><pre class="src src-python" id="orgae4486d"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+
+<span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, x <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(X):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'X[</span>{idx}<span style="color: #CC9393;">] = </span>{x}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+X[0] = 5
+X[1] = 3
+X[2] = 7
+X[3] = 9
+X[4] = 8
+</pre>
+
+
+<ul class="org-ul">
+<li>Notice that Python is a zero-indexed language, where the index starts
+at zero.
+
+<ul class="org-ul">
+<li>This is like C and C++, and many other languages.</li>
+</ul></li>
+
+<li>Some languages, such as Matlab or Maple, are one-indexed.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-a-for-loop-with-an-index-1" class="outline-3">
+<h3 id="a-for-loop-with-an-index-1"><span class="section-number-3">4.3.</span> A FOR loop with Multiple Data Sets</h3>
+<div class="outline-text-3" id="text-a-for-loop-with-an-index-1">
+</div>
+<div id="outline-container-using-a-common-index" class="outline-4">
+<h4 id="using-a-common-index"><span class="section-number-4">4.3.1.</span> Using a Common Index</h4>
+<div class="outline-text-4" id="text-using-a-common-index">
+<ul class="org-ul">
+<li>Sometimes we want to use multiple data sets.</li>
+
+<li>For example, we may want to add the elements of a list <code>X</code> to the
+corresponding elements of another list, <code>Y</code>.
+
+<ul class="org-ul">
+<li>We could use an enumerate object, as before; or,</li>
+
+<li>we may use a range object to obtain an <b>index</b> to address
+corresponding elements of the various lists.</li>
+</ul></li>
+
+<li>I'll demonstrate the use of a range in Listing <a href="#org14f14e2">19</a>
+
+<ul class="org-ul">
+<li>We make a range that starts at 0 and ends at a number just high
+enough to capture all the elements of <code>X</code>.</li>
+
+<li>We also assume that <code>X</code> and <code>Y</code> have the same number of elements.</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 18: </span>We define a simple <code>FOR</code> loop that iterates over a range to process two lists.</label><pre class="src src-python" id="orgf4967ea"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
+
+<span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(0, <span style="color: #DCDCCC; font-weight: bold;">len</span>(X)):
+    <span style="color: #DFAF8F;">newZelement</span> = X[idx] + Y[idx]
+    Z.append( newZelement ) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">add newZelement to Z</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'X[{0}] + Y[{0}] = {1} + {2} = {3}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(idx, X[idx], Y[idx], Z[idx]) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Z)
+</pre>
+</div>
+
+<pre class="example">
+X[0] + Y[0] = 5 + 1 = 6
+X[1] + Y[1] = 3 + 4 = 7
+X[2] + Y[2] = 7 + 2 = 9
+X[3] + Y[3] = 9 + 11 = 20
+X[4] + Y[4] = 8 + 6 = 14
+[6, 7, 9, 20, 14]
+</pre>
+
+
+
+<ul class="org-ul">
+<li>The loop contains three instructions:
+
+<ul class="org-ul">
+<li>Add the indexed elements of <code>X</code> and <code>Y</code>, storing this result in
+<code>newZelement</code></li>
+
+<li>Append <code>newZelement</code> to <code>Z</code>.</li>
+
+<li>Print data so we know it worked properly.</li>
+</ul></li>
+
+<li>We could combine the first two instructions into one, as in Listing
+<a href="#org14f14e2">19</a>:</li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 19: </span>We define a simple FOR loop that iterates an index over a range to process two lists.</label><pre class="src src-python" id="org14f14e2"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
+
+<span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> x,y <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">zip</span>(X, Y):
+    Z.append( x + y ) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">add to Z</span>
+
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'x + y = 0 + 1 = 2'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( x, y, Z[-1]) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Z)
+</pre>
+</div>
+
+<pre class="example">
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+[6, 7, 9, 20, 14]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-a-for-loop-without-an-index" class="outline-3">
+<h3 id="a-for-loop-without-an-index"><span class="section-number-3">4.4.</span> A FOR loop without an index</h3>
+<div class="outline-text-3" id="text-a-for-loop-without-an-index">
+<ul class="org-ul">
+<li>We may work with two data lists without making a common index.</li>
+
+<li>In this technique, we iterate over two lists simultaneously using zip
+(see Listing <a href="#org653c4a0">20</a>):</li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 20: </span>We define a simple FOR loop that process two lists without an index.</label><pre class="src src-python" id="org653c4a0"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
+
+<span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> x,y <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">zip</span>(X, Y):
+    Z.append( x + y ) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">add to Z</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'x + y = 0 + 1 = 2'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( x, y, Z[-1]) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Z)
+</pre>
+</div>
+
+<pre class="example">
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+x + y = 0 + 1 = 2
+[6, 7, 9, 20, 14]
+</pre>
+</div>
+
+<div id="outline-container-org295865c" class="outline-4">
+<h4 id="org295865c"><span class="section-number-4">4.4.1.</span> Coding Exercise</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<p>
+Use <code>zip</code> and a <code>for</code> loop to make Python print each first name and last
+name together in pairs on a single line. For example, the first result
+should contain <code>Sargon Akkad</code>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 21: </span>Coding Exercise. Copy this code block into a Jupyter cell and complet the task described for this exercise.</label><pre class="src src-python" id="org64de84c"><span style="color: #DFAF8F;">FirstName</span> = [<span style="color: #CC9393;">'Sargon'</span>, <span style="color: #CC9393;">'Ambrose'</span>, <span style="color: #CC9393;">'Joan'</span>, <span style="color: #CC9393;">'Augustine'</span>]
+<span style="color: #DFAF8F;">LastName</span> = [<span style="color: #CC9393;">'Akkad'</span>, <span style="color: #CC9393;">'Milan'</span>, <span style="color: #CC9393;">'Arc'</span>, <span style="color: #CC9393;">'Hippo'</span>]
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-calculating-data-from-members-of-a-list" class="outline-3">
+<h3 id="calculating-data-from-members-of-a-list"><span class="section-number-3">4.5.</span> Calculating Data from Members of a List</h3>
+<div class="outline-text-3" id="text-calculating-data-from-members-of-a-list">
+</div>
+<div id="outline-container-a-traditional-method" class="outline-4">
+<h4 id="a-traditional-method"><span class="section-number-4">4.5.1.</span> A Traditional Method</h4>
+<div class="outline-text-4" id="text-a-traditional-method">
+<p>
+The first method we showcase here is very intuitive: it is the way we
+might do this in another language. We start with a list, <code>X</code>, and we
+calculate a new list <code>Y</code>, whose elements correspond to the square of the
+elements in <code>X</code>:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 22: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a <code>for</code> loop.</label><pre class="src src-python" id="org1b543d9"><span style="color: #DFAF8F;">X</span> = [1, 2, 3, 4]
+
+<span style="color: #DFAF8F;">Y</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define an empty storage list</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> X:
+    Y.append( x**2 )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(X)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Y)
+</pre>
+</div>
+
+<pre class="example">
+[1, 2, 3, 4]
+[1, 4, 9, 16]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-a-more-pythonic-way" class="outline-4">
+<h4 id="a-more-pythonic-way"><span class="section-number-4">4.5.2.</span> A More Pythonic Way</h4>
+<div class="outline-text-4" id="text-a-more-pythonic-way">
+<p>
+A more Pythonic method for calculating <code>Y</code> is to use a <b>list
+comprehension</b>. Here, we define a list using the brackets again, <code>[</code> and
+<code>]</code>. Inside the brackets, we include:
+</p>
+
+<ol class="org-ol">
+<li>an expression using a <code>for</code>-loop variable,</li>
+
+<li>the keyword <code>for</code></li>
+
+<li>a declaration of the loop variable <code>x</code></li>
+
+<li>the keyword <code>in</code></li>
+
+<li>the iterable, <code>X</code>, over which we iterate</li>
+</ol>
+
+<p>
+It looks like the following:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 23: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a list comprehension.</label><pre class="src src-python" id="org17beffe"><span style="color: #DFAF8F;">X</span> = <span style="color: #DCDCCC; font-weight: bold;">list</span>(<span style="color: #DCDCCC; font-weight: bold;">range</span>(1,13))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Form an array of squared values (list comprehension)</span>
+<span style="color: #DFAF8F;">Y</span> = [x**2 <span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> X]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(X)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Y)
+
+</pre>
+</div>
+
+<pre class="example">
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144]
+</pre>
+
+
+<p>
+Notice the syntax for the list comprehension is very English-like: we're
+instructing Python to define a list <code>Y</code> whose elements are <code>x**2</code> (<code>x</code>
+squared) for each <code>x</code> in the list <code>X</code>.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr. E.P. Blair</p>
+<p class="date">Created: 2025-01-16 Thu 20:26</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
