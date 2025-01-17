@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+#+startup: overview indent
+
+#+title: Development
+#+author: Dr. E.P. Blair
+
+
+
+* Notebook Setup
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+* Working with NB Grader
+
+** Installing NBGrader
+
+[[https://nbgrader.readthedocs.io/en/latest/user_guide/installation.html][Installation instructions]]
+
+To install =nbgrader=, we simply need to activate the desired Python environment
+and use
+#+begin_src shell :eval never
+  pip3 install nbgrader
+#+end_src
+
+In 2025, I had to manually install the =nbgrader= extensions in Jupyter Lab
+using the provided GUI.
+
+I got NBGrader installed. I FORGOT that 
+* Links
+
+
+** ChatGPT
+I asked ChatGPT for [[https://chatgpt.com/share/676463d4-5b54-8013-ba97-95cc83afb7c8][ideas on setting up this repository]].
+- It suggested the following structure:
+  - Main Repository
+    - notebooks/: Store JupyterLab notebooks for quantum examples and problems.
+    - html_pages/: Include HTML files generated from org-mode.
+    - docs/: Provide documentation and guides.
+    - scripts/: Store standalone Python scripts (if not a separate repo).
+    - environment/: Include environment setup files like environment.yml or requirements.txt.
+- Ideas for automation:
+  - Use org-publish-project-alist in Emacs to automate HTML generation.
+  - Consider GitHub Actions to build and deploy the site (e.g., using GitHub Pages).
+
+

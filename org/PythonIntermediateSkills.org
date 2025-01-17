@@ -1,0 +1,472 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ../html/PythonIntermediateSkills.html
+#+setupfile: custom-setup.org
+
+#+title: Intermediate Python Skills
+#+author: Dr. E.P. Blair
+
+
+* Notebook Setup                                                   :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+* Functions
+:PROPERTIES:
+:CUSTOM_ID: level-5-intermediate-python-functions
+:END:
+- Defining functions is a very powerful feature of many programming
+  languages.
+
+  - Functions allow for the automation of repeated tasks.
+
+  - Complex tasks may be programmed once, and errors may be worked out.
+
+  - Then, the finished function can be used repeatedly without having to
+    code the process again.
+
+  - This eliminates opportunities for error, and it saves the programmer
+    time!
+
+- In Python, we define a function using the =def= keyword. We do the
+  following:
+
+  - Function header (first line)
+
+    - Write =def=, followed by ...
+
+    - a function name, followed by ...
+
+    - any input arguments
+
+    - Terminate using a colon (=:=)
+
+  - Statements internal to the function
+
+    - These are delineated by writing code with (at least) one level of
+      indentation with respect to the function header
+
+- In a script block, we define the function first with no indentation
+  for the function header.
+
+  - Subsequent code following the function definition may then invoke
+    the function.
+
+** A Function as a Set of Commands
+:PROPERTIES:
+:CUSTOM_ID: a-function-as-a-set-of-commands
+:END:
+A function may be as simple as a set of commands we wish to use and
+reuse. In this case, a function may not even require an input or provide
+any outputs. An example of a basic function is shown in Listing
+[[lst:function-script]].
+
+#+name: lst:function-script
+#+caption: A very basic function with no outputs.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  def foo():
+      '''
+          This function, FOO, prints messages. It receives no inputs, nor does it return any functional outputs.
+      '''
+
+      print('Function (foo) command 1.')
+      print('Function (foo) command 2.')
+
+      # The function definition is over, since we have reset
+      # indentation back to zero.
+      # Subsequent commands may invoke foo print('This is the first command outside the function foo.')
+
+  foo() # we invoke the function defined above
+#+end_src
+
+#+RESULTS:
+: Function (foo) command 1.
+: Function (foo) command 2.
+
+** A Function with a Single Input
+:PROPERTIES:
+:CUSTOM_ID: a-function-with-a-single-input
+:END:
+Listing [[lst:function-input]] shows simple function with one input and zero
+outputs.
+
+#+name: lst:function-input
+#+Caption: A very basic function with no outputs. label:code:python/functionExSquare.py
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+      def square(x):
+          '''
+          square prints the square of its single input.
+          '''
+          print('{0} squared is {1}.'.format(x, x**2))
+
+      # The function definition is over,
+      # since we have reset indentation  back to zero.
+      # Subsequent commands may invoke square
+
+      z = 7
+      square(z)
+
+      # We can even use (and reuse) square
+      print('\nNow, let us use square in a FOR loop:')
+
+      for y in range(0,12):
+          square(y)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+7 squared is 49.
+
+Now, let us use square in a FOR loop:
+0 squared is 0.
+1 squared is 1.
+2 squared is 4.
+3 squared is 9.
+4 squared is 16.
+5 squared is 25.
+6 squared is 36.
+7 squared is 49.
+8 squared is 64.
+9 squared is 81.
+10 squared is 100.
+11 squared is 121.
+#+end_example
+
+** A Function with a Single Input and a Single Output
+:PROPERTIES:
+:CUSTOM_ID: a-function-with-siso
+:END:
+
+- Listing [[lst:function-siso]] shows an example of a simple function with one input
+  and one output. 
+- To obtain a single output, use the ~return~ keyword at the end of your
+  function followed by the variable or expression you wish to return.
+
+
+#+name: lst:function-siso
+#+caption: A very basic function with a single input and a single output.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  def cube(x):
+      #"' cube returns the cube of its single input. ”'
+
+      return x**3
+
+  # The function definition is over, since we have reset indentation back to zero.
+  # Subsequent commands may invoke square
+
+  z = 7
+  zc = cube(z)
+
+  # We can even use (and reuse) square
+  print(f'z^3 = {zc}')
+#+end_src
+
+#+RESULTS:
+: z^3 = 343
+
+*** Annotating Functions
+- A nicer vesrion of our function includes optional [[https://peps.python.org/pep-0008/#function-annotations][function annotations]], as
+  specified in [[https://peps.python.org/pep-0008][PEP8 - Style Guide for Python Code]]
+  - These help a human reader know types of input arguments, as well as the
+    return type
+- To make annotations:
+  - Follow each input arugment by a colon (~:~) and its type (or class)
+  - After the input specification (but before the ~:~, use ~->~ and the return
+    type (or class)
+  - A document string is provided specifying the arguments and what the function
+    returns
+- An example is given in Listing [[lst:function-annotated]]
+
+#+name: lst:function-annotated
+#+caption: A very basic function with a single input, a single output, and function annotations.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both :lines
+  def cube(x: float) -> float:
+      """Returns the cube of its single input.
+
+      Args:
+          x (float): The number to cube.
+
+      Returns:
+          float: The cube of the input number.
+      """
+      return x**3
+
+  # The function definition is over, since we have reset indentation back to zero.
+  # Subsequent commands may invoke square
+
+  z = 7.19
+  zc = cube(z)
+
+  # We can even use (and reuse) square
+  print(f'z^3 = {zc}')
+#+end_src
+
+#+RESULTS: lst:function-siso-annotated
+: z^3 = 371.69495900000004
+
+  
+** A Function with a Single Input and Multiple Outputs
+:PROPERTIES:
+:CUSTOM_ID: function-simo
+:END:
+
+- Listing [[lst:functionSIMO]] is a simple function with one input and multiple
+  outputs.
+- Formally, a Python function can return only a single output.
+- To extract multiple outputs, we can make the function return a list or an
+  other iterable.
+- Here, we use a tuple:
+#+name: lst:functionSIMO
+#+caption: A very basic function with one input and multiple output values combined into a tuple.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both :lines
+  def bar(x: int) -> tuple[int, bool]:
+      """
+      Returns two values for a single input x: the square of x and whether x is odd.
+
+      Args:
+          x (int): The input integer.
+
+      Returns:
+          tuple[int, bool]: A tuple containing:
+              - int: The square of the input (x**2).
+              - bool: True if x is odd, False otherwise.
+      """
+      xsq = x**2
+
+      # % is the modulo operator.
+      # Thus: x % 2 is x modulo 2
+
+      xsq_odd = x % 2 == 1
+
+      # The return value is a tuple containing
+      # two elements
+
+      return (xsq, xsq_odd)
+
+  # The function definition is over, since we have reset
+  # indentation back to zero. # Subsequent commands may invoke square
+
+  # There are two ways in which we can retrieve our output:
+  # METHOD 1: We can treat the output as a list/tuple/iterable.
+
+  out_list = bar(2) # The single output is a tuple in this case
+  print('For an input of 2, bar returns:')
+  print(out_list)
+
+  # METHOD 2: We can allow Python to "unpack" the tuple into
+  # distinct variables
+  z = 3
+  zc, zc_odd = bar(z) # function output is unpacked into two variables
+  print(f'\nz = {z}; z^2 = {zc}; z^2 = odd? {zc_odd}')
+
+  w = 4
+  wc, wc_odd = bar(w)
+  print(f'\nw = {w}; w^2 = {wc}; z^2 = odd? {wc_odd}')
+#+end_src
+
+#+RESULTS: lst:function-simo
+: For an input of 2, bar returns:
+: (4, False)
+: 
+: z = 3; z^2 = 9; z^2 = odd? True
+: 
+: w = 4; w^2 = 16; z^2 = odd? False
+
+
+
+* Classes
+:PROPERTIES:
+:CUSTOM_ID: level-6-classes
+:END:
+- Classes are a very powerful programming concept.
+- You get to define:
+  - your own data type (a *class*) and
+  - how variables of your class (*objects*) behave and interact.
+- Classes and objects generalize the concepts of *types* and *variables*
+  - This could be written in an analogy: ~variable:type::object:class~
+- Classes are useful because we can define classes that use objects to represent
+  real-world systems in a natural way.
+  - This is done in two major ways:
+    - defining *attributes* for the class and/or ojbects of that class
+      - *attributes* may also be called *properties* or *members*
+      - Examples:
+        - A class representing a person might have the following attributes:
+          ~name~, ~age~, ~sex~, etc.
+        - A class representing a pet might have properties such as ~name~,
+          ~kind~ (~'dog'~, ~'cat'~, ~'fish'~, ...), ~age~, etc.
+    - defining *behaviors* for objects in the class
+      - Behaviors are also called *methods* or *method functions*
+      - These are simply functions that are associated with the class that can
+        be used to manipulate or transform objects
+
+As an example, we might define a ~Person~ class to store information about
+various individuals. Each individual we wish to represent will have his
+or her own object. We would define in the class properties (attributes)
+that people have, such as a name and an age.
+
+We have elementary data types, such as =int=, =float=, =char=, etc. We
+also have iterables (=list=, =tuple=, =dict=, etc.). Classes allow us to
+define objects which may be composite data types: objects in the class
+may have properties of various elementary types.
+
+Let's learn how the basics of this very powerful concept here.
+
+** Defining a Person Class
+:PROPERTIES:
+:CUSTOM_ID: defining-a-person-class
+:END:
+To define a class, we need the basic parts.
+
+- Header line.
+
+  - Every class definition begins with the keyword =class=.
+
+  - The class name follows =class=, and typically begins with a capital
+    letter, signifying that this is a user-defined class.
+
+  - The class header ends in a colon (=:=)
+
+- Body
+
+  - The body includes any code following the header delineated by at
+    least one level of indentation deeper than the header.
+
+- Listing [[lst:PersonClass01]] defines a ~Person~ class with two attributes. These
+  are defined in the =__init__()= method (function).
+  - The ~__init__()~ method plays a very special role, since it initializes
+    instances of the class (objects)
+
+#+name: lst:PersonClass01
+#+caption: This defines a simple =Person= class, and it includes ~name~ and ~age~ as attributes.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  class Person:
+      """
+      Represents a person with a name and age.
+
+      Attributes:
+          name (str): The name of the person.
+          age (int): The age of the person.
+      """
+      def __init__(self, name: str, age: int) -> None:
+          """
+          Initializes a Person instance with a name and age.
+
+          Args:
+              name (str): The name of the person.
+              age (int): The age of the person.
+          """
+          self.name: str = name
+          self.age: int = age
+
+  # Indentation is reset to end the class definition
+  # Now, we use the class
+
+  me = Person('Ricky', '23')
+  # define me as an object of cass Person
+
+  print(me)
+  # print information about the object
+
+  # We can access object attributes (fields, properties) using "dot" notation
+  print(me.name)
+  print(me.age)
+
+#+end_src
+
+#+RESULTS:
+: <__main__.Person object at 0x0000015FC8155D00>
+: Ricky
+: 23
+
+- Note that the ~self~ argument is important in defining methods.
+  - ~self~ is a reference to an object that we wish to create or manipulate or
+    modify 
+  - ~self~ is is a required argument to any method
+    
+We observe that classes are useful for storing related pieces of
+information in a custom-variable known as an *object*.
+
+Now, let us add another method to indicate how useful it is to define
+both properties and methods.
+
+** Adding Another Method to the Person Class
+:PROPERTIES:
+:CUSTOM_ID: adding-another-method-to-the-person-class
+:END:
+- We write another method by defining this function (=def introduce(self):=) one
+  level of indentation subordinate to the class definition.
+- This is shown in Listing [[lst:PersonClass02]]
+#+name: lst:PersonClass02
+#+caption: We add an ~introduce()~ method to the ~Person~ class.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  class Person:
+      """
+      Represents a person with a name and age.
+
+      Attributes:
+          name (str): The name of the person.
+          age (int): The age of the person.
+      """
+      def __init__(self, name: str, age: int) -> None:
+          """
+          Initializes a Person instance with a name and age.
+
+          Args:
+              name (str): The name of the person.
+              age (int): The age of the person.
+          """
+          self.name: str = name
+          self.age: int = age
+
+      def introduce(self) -> None:
+          """
+          Prints an introduction message including the person's name and age.
+
+          Example:
+              >>> person = Person("Alice", 30)
+              >>> person.introduce()
+              I am Alice, and I'm 30 years old.
+          """
+          print("I am {0}, and I'm {1} years old.".format(self.name, self.age))
+
+  # Indentation is reset to end the class definition
+  # Now, we use the class
+  me = Person('Ricky', '23')
+
+  # Invoke the "introduce" method
+
+  me.introduce()
+
+  # Note: the syntax for calling a method is obj.method()
+
+#+end_src
+
+#+RESULTS:
+: I am Ricky, and I'm 23 years old.

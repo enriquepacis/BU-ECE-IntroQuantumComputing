@@ -1,0 +1,23 @@
+#+HTML_HEAD_EXTRA: <style>
+#+HTML_HEAD_EXTRA: pre.src {
+#+HTML_HEAD_EXTRA:   counter-reset: line;
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: pre.src code::before {
+#+HTML_HEAD_EXTRA:   counter-increment: line;
+#+HTML_HEAD_EXTRA:   content: counter(line) " ";
+#+HTML_HEAD_EXTRA:   display: inline-block;
+#+HTML_HEAD_EXTRA:   width: 3em;
+#+HTML_HEAD_EXTRA:   text-align: right;
+#+HTML_HEAD_EXTRA:   margin-right: 1em;
+#+HTML_HEAD_EXTRA:   color: gray;
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: </style>
+#+HTML_HEAD_EXTRA: <style>
+#+HTML_HEAD_EXTRA: code {
+#+HTML_HEAD_EXTRA:   font-family: monospace;
+#+HTML_HEAD_EXTRA:   background-color: #f5f5f5; /* Light gray background */
+#+HTML_HEAD_EXTRA:   padding: 0.2em 0.4em;
+#+HTML_HEAD_EXTRA:   border-radius: 3px;
+#+HTML_HEAD_EXTRA:   color: #333; /* Dark gray text */
+#+HTML_HEAD_EXTRA: }
+#+HTML_HEAD_EXTRA: </style>

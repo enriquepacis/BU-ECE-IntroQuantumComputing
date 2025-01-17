@@ -1,0 +1,916 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ../html/PythonBasics.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+
+#+title: Python Basics
+#+author: Dr. E.P. Blair
+
+* Notebook Setup                                                   :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "./.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+
+* Variables
+
+** Creating Variables
+
+Values are stored in memory and accessed using variable names. This
+is done using the assignment operator, ~=~, using the syntax
+~<variable_name> = <expression>~. ~<expression>~ may be a value, such as ~5~, or
+an expression, such as ~2 + 3~. Some basic examples are shown in Listing
+[[lst:assign-variables]]: 
+#+name: lst:assign-variables
+#+caption: We assign avariable in Python by specifying a variable name, using the assignment operator (~=~), and then specifying a value or expression. Defined variables may be used in expressions.
+#+begin_src python :exports both :session py-vars :results output :eval never-export
+a = 3 # assign the value 3 to variable a
+b = 5 # assign 5 to variable b
+print('a+b = {0}'.format(a+b))
+
+c = a - b # evaluate a-b, store in c
+d = a/b # evaluate a/b, store in d
+#+end_src
+
+#+RESULTS: lst:assign-variables
+: a+b = 8
+
+Generally, in Python, you won't see variable values unless:
+1. You are working in a Jupyter Lab notebook.
+   1. In Jupyter, code is entered and evaluated in groups called
+      /cells/. A cell may contain multiple lines of code.
+   2. In this case, Jupyter will not display any values or graphics,
+      except for the result of the last command in the cell.
+2. You instruct Python to do so using the =print()= command.
+
+Note from the author/instructor: the above code block behaves /like/
+a Jupyter cell in the sense that its variables persist and are
+accessible in other code blocks, so long as those code blocks participate
+in the same Python session. Code blocks need not be attached to a Python
+session, in which case they are stand-alone code blocks.
+
+** Displaying Variables
+
+In Listing [[lst:display-variables]], we print variables from the previous
+code block. To do this, we use the =print()= command, which prints
+strings. We either supply to the =print()= command only a variable (as in
+~print(a)~), or we form strings with variable values embedded in them.
+#+name: lst:display-variables
+#+caption: We can use the ~print()~ command to display strings or variables.
+#+begin_src python :session py-vars :results output :exports both :eval never-export
+print('hello world') # print a basic string
+print("hello friend") # print a basic string with alternate delimiters
+print(a) # print the value of a variable
+#+end_src
+
+#+RESULTS: lst:display-variables
+: hello world
+: hello friend
+: 3
+
+
+Basic usages of ~print()~ are shown above in Listing [[lst:display-variables]]. A
+more advanced usage is to use f-strings ([[https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals][formatted string literals]]).
+- To make an f-string, prepend ~f~ onto a string definition, as in ~f'hello
+  world'~ or ~f"x = something"~. 
+- To embed the value of a variable, say, ~x~, insert ~{x}~ in the f-string, as 
+  in ~f"x = {x}"~
+- To format the value of the variable embedded in the f-string, use a
+  formatting string, ~:<formatSpec>~. Examples:
+  - Use ~:s~ if ~x~ is a string
+  - Use ~:m.nf~ to specify a decimal value with a maximum of ~m~ total
+    characters (including a decimal), and ~n~ digits of precision to the right
+    of the decimal
+  - Use ~:0m.nf~ as in the previous case, but have leading zeros
+  - Use ~:md~ to specify an integer representation with a total of ~m~ digits
+
+#+name: lst:display-variables-fstring
+#+caption: We can use ~fstrings~ (formatted strings) to embed variable values in strings. Use ~{~ and ~}~ to define placeholders for a variable value.
+#+begin_src python :lines :session py-vars :results output :exports both :eval never-export
+# Make an f-string (fstr) named myFirstfstr
+#    This has variable values embedded within it
+myFirstfstr = f'c = {c}; d = {d:5.3f}' 
+print(myFirstfstr) # print the f-string
+
+myStr = 'cat' # store a string
+# embed myStr in another string
+mySecondFStr = f'some word: {myStr}'
+print(mySecondFStr)
+#+end_src
+
+#+RESULTS:
+: hello world
+
+** Complex Numbers
+Here is an example of how Python handles complex numbers. In
+Python, we can use =1j= for the imaginary unit, $i$, and, say,
+=5j= for $5i$.
+#+begin_src python :results output :exports both :eval never-export
+# Example: complex numbers
+X = 3 + 2j # complex number
+absX = abs(X)
+
+# print the complex X using an f-string
+#   form the f-string inside of print()
+print(f'X = {X}; |X| = {absX:06.3f}')
+#+end_src
+
+#+RESULTS:
+: X = (3+2j); |X| = 03.606
+
+We also used =abs(X)= to obtain the modulus of $X$.
+
+** Assign Multiple Variables in a Single Line
+One neat trick in Python is that we can define several
+variables using only one assignment statement.
+#+begin_src python :results output :exports both :eval never-export
+x, y, z = 1+2, 2*3, 4/5
+print(f'x = {x}; y = {y}; z = {z:5.3f}')
+#+end_src
+
+#+RESULTS:
+: x = 3; y = 6; z = 0.800
+
+** Variable Types
+- Variables come in different types.
+  - Each variable type–or more generally, class
+    (more on this later)–has a different syntax and behaviors
+    governing what we can do with variables of that type
+- We've encountered some different variable types by now:
+  - strings - store lists of characters, as in text
+  - integers - (self explanatory)
+  - floating point numbers (self explanatory)
+  - complex numbers - (self explanatory)
+- We can interrogate the type of a variable, say, =x=, using the
+  command =type(x)=
+#+caption: We use the =type()= command to return the type of a variable.
+#+begin_src python :results output :exports both :eval never-export
+a, b, c, d = 1, 3.14, 2+3j, False
+
+print('type of a: {0}'.format(type(a)))
+print('type of b: {0}'.format(type(b)))
+print('type of c: {0}'.format(type(c)))
+print('type of d: {0}'.format(type(d)))
+#+end_src
+
+#+RESULTS:
+: type of a: <class 'int'>
+: type of b: <class 'float'>
+: type of c: <class 'complex'>
+: type of d: <class 'bool'>
+
+** Boolean Variables
+- We introdcued another data type: =bool=, short for /Boolean/
+  - Boolean variables have one of two values: =True=, or =False=
+  - These may be used to control whether sections of code get
+    executed or skipped, using logical control statements
+    (a.k.a. logical controls)
+- Boolean variables are typically the result of a comparison
+  - Comparisons may be performed between pairs of variables or values
+    - Here, we must use comparison operators such as =<= (less than),
+      =>= (greater than), ~==~ (equal to), =>== (grater than or equal to),
+      =<== (grater than or equal to), ~!=~ (not equal to), etc.
+  - Comparison operators are used to form logical expressions, which
+    are evaluated as either True or False. Some examples:
+    - The logical expression ~3<5~ will evaluate to =True=, but
+      ~3>5~ will evaluate to ~False~
+      - ~a==b~ may evaluate either to =True= or =False=, depending
+        on the values stored in =a= and =b=.
+        - If the two values are equal, then this statement
+           evaluates to =True=
+        - otherwise, it evaluates to =False=
+  - The value resulting from a logical expression may be:
+    - stored in a variable, which will be of the type =bool=
+    - used in a logical control structure, which determines whether
+      or not a block of code gets executed
+#+name: lst:bool-comparisons
+#+caption: Comparisons may be used to generate variables of type ~bool~.
+#+begin_src python :results output :eval never-export :exports both
+a = 3 < 5
+b = 5 < 3
+c, d, f = 3 > 5, 3 < 5, 3==5
+
+print('type of a: {0}; a = {1}'.format(type(a), a))
+print('type of b: {0}; b = {1}'.format(type(b), b))
+print(f'c = {c}; d = {d}; f = {f}')
+#+end_src
+
+#+RESULTS: lst:bool-comparisons
+: type of a: <class 'bool'>; a = True
+: type of b: <class 'bool'>; b = False
+: c = False; d = True; f = False
+
+* =if= statements
+:PROPERTIES:
+:CUSTOM_ID: if-statements
+:END:
+- ~if~ statements allow you to execute blocks of code depending on the
+  value of a logical expression
+
+- An example of this is shown in Listing [[lst:basic-if-true]].
+
+- The basic if statement:
+
+  - begins with if
+
+  - identifies a variable or condition for evaluation, and
+
+  - ends with a colon (~:~)
+
+#+name: lst:basic-if-true
+#+caption: A basic IF statement example.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both 
+x = True # define a boolean (bool) variable
+
+if x:
+    # This doesn't print if x is set to False
+    print('The condition x evaluates as True.') 
+    # We could include other commands in the IF block
+    # We only use one command here
+    # Additional commands must have the same indentation
+    # as the print() command
+
+print('This is independent of the IF statement.')
+#+end_src
+
+#+RESULTS:
+: The condition x evaluates as True.
+: This is independent of the IF statement.
+
+- We now repeat the code of Listing [[lst:basic-if-true]]
+  in Listing [[lst:basic-if-false]].
+
+  - Here, the ~if~ statement is evaluated as ~False~ (we set it to ~False~
+    in line 1), so the =print()= command conditioned upon the ~if~ is
+    never executed, so we don't see its output.
+
+#+name: lst:basic-if-false
+#+caption: A basic IF statement example with the condition set to FALSE.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both 
+x = False # define a boolean (bool) variable
+
+if x:
+    # This doesn't print if x is set to False
+    print('The condition x evaluates as True.')
+
+print('This is independent of the IF statement.')
+#+end_src
+
+#+RESULTS:
+: This is independent of the IF statement.
+
+- Commands subordinate to the if statement follow it and are defined by
+  their indentation. The first line of code with the same indentation as
+  the if statement is outside of the if statement. Unlike other
+  languages, the Python if statement is not defined using an end
+  statement or a closing deliminter, but rather by returning to the
+  level of indentation of the if statement itself.
+
+** =if-else= Statements
+:PROPERTIES:
+:CUSTOM_ID: if-else-statements
+:END:
+- We can add to an =if SomeExpression:= block an =else:= block that
+  provides code to be executed if the controlling logical expression
+  =SomeExpression= is =False=
+
+  - An example of this is given in Listing [[lst:if-else-basic]]
+
+#+name: lst:if-else-basic
+#+caption: A basic IF-ELSE statement example.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+y = False
+
+if y:
+    print('The condition y evaluates as True.')
+else:
+    print('The condition y evaluates as False.')
+
+# The if statement is now over
+print('This is independent of the IF-ELSE statement.')
+#+end_src
+
+#+RESULTS: python/exampleIF-ELSE-basic.py
+: The condition y evaluates as False.
+: This is independent of the IF-ELSE statement.
+
+** =if-elif-else= Statements
+:PROPERTIES:
+:CUSTOM_ID: if-elif-else-statements
+:END:
+- We will use an =if-elif-else= statement to illustrate the use of the
+  =None= value
+
+- Python's =elif= is equivalent to else if or similar constructs in
+  other languages.
+
+- See Listing [[lst:if-elif-else]]
+
+#+name: lst:if-elif-else
+#+caption: A basic IF-ELSE statement example.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+x = None
+
+if x is None:
+    y = 100
+elif x < 50:
+    y = 200
+else:
+    y = 300
+
+# We're outside of the if-elif-else statement now
+print(f'y = {y}')
+#+end_src
+
+#+RESULTS: python/exampleIF-ELIF-ELSE-basic.py
+: y = 100
+
+** =None= in Logical Expressions
+:PROPERTIES:
+:CUSTOM_ID: none-in-logical-expressions
+:END:
+- Here is another example using =is not None= as the controlling logical
+  expression:
+
+#+name: lst:if-not-None
+#+caption: A basic IF statement with an IS-NOT-NONE check.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+y = True
+
+if y is not None:
+    print('y has a value.')
+#+end_src
+
+#+RESULTS: code:python/exampleIF-not-None.py
+: y has a value.
+
+* Iterables
+:PROPERTIES:
+:CUSTOM_ID: iterables
+:END:
+- Iterables are variables that contain other variables.
+
+  - These are useful for storing multiple related values
+
+  - Iterables are so called because they are collections of items over
+    which we may iterate (as, in a for loop, for example)
+
+** Strings
+:PROPERTIES:
+:CUSTOM_ID: strings
+:END:
+- Strings are iterables.
+
+  - A string, =‘cat’=, for example, is a collection of characters.
+
+  - For a string of \(n\) characters, each character can be addressed
+    using an integer index, \(\left\{ 0,1,2,\ldots,n-1\right\}\).
+
+  - For a string stored in the variable =X=, we reference each element
+    using brackets (=[= and =]=) and an integer index, =k=.
+
+#+name: lst:string-iteration
+#+caption: We extract the individual characters of a string using an index inside brackets.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = 'dog'
+
+print('The first letter of X is "{0}".'.format(X[0]))
+print('The second letter of X is "{0}".'.format(X[1]))
+#+end_src
+
+#+RESULTS: lst:string-iteration
+: The first letter of X is "d".
+: The second letter of X is "o".
+
+- Now, consider a longer string
+
+  - We may not necessarily know /a priori/ how long it is
+
+  - We can easily address its end element using the index =-1=, or the
+    second-to-last character using the index =-2=
+
+  - Additionally, we can reference multiple contiguous elements using a
+    range, =a:b=, with integers =a= and b.
+
+    - This returns elements =X[a]= through =X[b-1]= for a
+      string =X=.
+
+  - Examples of additional string indexing are shown in Listing
+    [[lst:string-index-advanced]] 
+
+#+name: lst:string-index-advanced
+#+caption: We perform additional analyses on a string.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = 'hello world'
+
+# We can find the length of the string using len()
+print('X contains {0} characters.'.format( len(X) ))
+
+# reference from the begining of the string
+print('first letter of X is "{0}".'.format(X[0]))
+print('The second letter of X is "{0}".'.format(X[1]))
+
+# reference from the end of the string
+print('The last letter of X is "{0}".'.format(X[-1]))
+print('The second-to-last letter of X is "{0}".'.format(X[-2]))
+
+# slice part of the string
+a, b = 2, 9
+S = X[a:b]
+print(f'We reference elements {a}:{b}: "{S}"')
+
+c, d = -7, -2
+R = X[c:d]
+print(f'We reference elements {c}:{d}: "{R}"')
+#+end_src
+
+#+RESULTS: python/stringIndexingAdvanced.py
+: X contains 11 characters.
+: first letter of X is "h".
+: The second letter of X is "e".
+: The last letter of X is "d".
+: The second-to-last letter of X is "l".
+: We reference elements 2:9: "llo wor"
+: We reference elements -7:-2: "o wor"
+
+** Lists
+:PROPERTIES:
+:CUSTOM_ID: lists
+:END:
+- Lists are container variables used to contain other variables.
+
+- Lists are flexible in that:
+
+  - A single list may contain variables of different types
+
+  - A list may contain other lists
+
+- A list of several elements may be defined using brackets ([ and ])
+  comma-separated elements.
+
+  - The elements are indexed with an integer 0, 1, 2, ...
+
+  - Individual elements may be accessed using brackets and an indexing
+    integer or expression.
+
+  - Elements may also be referenced using negative indices:
+
+    - =-1= specifies the last element;
+
+    - =-2= specifies the second-to-last element, etc.
+
+#+name: lst:list-example
+#+caption: We build a simple list and reference/print its values.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both 
+x = 9
+
+# form a list
+myList = [x, 's', -3, 'cat', [1,2,3]]
+
+
+# print the first element
+print('The first element is: {0}'.format(myList[0] ) )
+
+# print the second element
+print('The second element is: {0}'.format(myList[1] ) )
+
+# print the last element
+print('The last element is: {0}'.format( myList[-1] ) )
+
+# print the second-to-last element
+print('The second-to-the-last element is: {0}'.format( myList[-2] ) )
+#+end_src
+
+#+RESULTS: python/exampleList.py
+: The first element is: 9
+: The second element is: s
+: The last element is: [1, 2, 3]
+: The second-to-the-last element is: cat
+
+** Tuples
+:PROPERTIES:
+:CUSTOM_ID: tuples
+:END:
+- Tuples are like lists.
+
+  - They are indexed in the same manner, but tuples are immutable.
+
+- Tuples are defined using parentheses =(= and =)= instead of brackets
+  =[= and =]=.
+
+- Tuples are useful when you have a collection of variables and you do
+  not want them altered in any way.
+
+#+name: lst:tuple-example
+#+caption: We build a simple tuple and reference/print its values.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both 
+x = 9
+myTup = (x, 's', -3, 'cat', [1,2,3]) # form a tuple
+
+# print the first element
+print('The first element is: {0}'.format(myTup[0] ) )
+
+# print the second element
+print('The second element is: {0}'.format(myTup[1] ) )
+
+# print the last element
+print('The last element is: {0}'.format(myTup[-1] ) )
+
+# print the second-to-last element
+print('The second-to-the-last element is: {0}'.format( myTup[-2] ) )
+#+end_src
+
+#+RESULTS: python/exampleTuple.py
+: The first element is: 9
+: The second element is: s
+: The last element is: [1, 2, 3]
+: The second-to-the-last element is: cat
+
+** Dicts
+:PROPERTIES:
+:CUSTOM_ID: dicts
+:END:
+- Dict is short for “dictionary”.
+
+  - This is like a list, but elements are not indexed by number, but
+    rather using a string.
+
+  - The referncing/indexing string is called a key, and the associated
+    element is called a value.
+
+  - Thus, a dict contains key-value pairs (KPVs).
+
+- We define a dict using braces { and }
+
+  - KVPs are associated using a colon (:), and
+
+  - KVPs are separated by a comma
+
+  - dicts may be broken up over several lines of code, as can lists and
+    tuples
+
+  - Use spaces for readability
+
+- An example of a simple dict definition is given in Listing
+
+#+name: dict-example
+#+caption: We build a simple dict.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both 
+someDict = {"a": 3,
+            "b": 'dog',
+            "f": 5.4}
+
+""" I used single quotes and double quotes in various places to
+demonstrate their interchangeability. """
+
+print("someDict['a'] = {0}".format(someDict['a']) )
+print("someDict['f'] = {0}".format(someDict["f"]) )
+print('someDict["b"] = {0}'.format(someDict['b']) )
+
+# Now I add a value to the dict
+someDict['d'] = ('New value', 19)
+
+# Finally, I show what it looks like to print a dict
+# and we show the modified dict.
+print(someDict)
+#+end_src
+
+#+RESULTS: python/exampleDict.py
+: someDict['a'] = 3
+: someDict['f'] = 5.4
+: someDict["b"] = dog
+: {'a': 3, 'b': 'dog', 'f': 5.4, 'd': ('New value', 19)}
+
+- Dicts are mutable: KVPs may be added, removed, or modified.
+* Loops and Iteration
+:PROPERTIES:
+:CUSTOM_ID: level-4-loops-and-iteration
+:END:
+- Loops help us peform repeated operations over an iterable.
+
+  - Iterables include lists, tuples, dicts, and ranges.
+
+** Defining a =for= loop
+:PROPERTIES:
+:CUSTOM_ID: defining-a-for-loop
+:END:
+- Some key features of a =for= loop:
+
+  - The first line of a =for= loop
+
+    - begins with the keyword =for=,
+
+    - defines an iterator variable, say, =x=
+
+    - provides an iterable, say, the list =X=
+
+    - and ends with a colon (=:=)
+
+  - Statements to be included in the for loop follow the first line and
+    are indented by a few spaces more than is the first line
+    (=for x in X:=)
+
+    - I typically use an indentation of four spaces.
+
+  - The first statement with equal or lesser indentation than the =for=
+    statement is recognized by Python to be outside of the =for= loop.
+
+- As a first example, I define in Listing [[for-loop-example]] a list and then use
+  two statements to print the elements of the list.
+
+#+name: for-loop-example
+#+caption: We define a simple =FOR= loop.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  X = [1, 'a', (3,2,1), 'fish']
+  # define a list
+
+  # use a FOR loop to print the elements of the list
+  for ix in X:
+      print('Element:') # in the loop
+      print(f' {ix}') # in the loop
+
+  print('The loop has terminated.') # first statement after loop
+  print('Program complete.')
+
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Element:
+ 1
+Element:
+ a
+Element:
+ (3, 2, 1)
+Element:
+ fish
+The loop has terminated.
+Program complete.
+#+end_example
+
+** A FOR loop with an index
+:PROPERTIES:
+:CUSTOM_ID: a-for-loop-with-an-index
+:END:
+- Sometimes we don't just want to loop over the elements, but we also
+  want an integer index for each element.
+
+- To do this, we can use =enumerate=, as shown in Listing [[lst:for-enumerate]]
+
+#+name: lst:for-enumerate
+#+caption: We define a simple FOR loop.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = [5, 3, 7, 9, 8]
+
+Z = [] # empty list
+for idx, x in enumerate(X):
+    print(f'X[{idx}] = {x}')
+#+end_src
+
+#+RESULTS: lst:for-enumerate
+: X[0] = 5
+: X[1] = 3
+: X[2] = 7
+: X[3] = 9
+: X[4] = 8
+
+- Notice that Python is a zero-indexed language, where the index starts
+  at zero.
+
+  - This is like C and C++, and many other languages.
+
+- Some languages, such as Matlab or Maple, are one-indexed.
+
+** A FOR loop with Multiple Data Sets
+:PROPERTIES:
+:CUSTOM_ID: a-for-loop-with-an-index-1
+:END:
+*** Using a Common Index
+:PROPERTIES:
+:CUSTOM_ID: using-a-common-index
+:END:
+- Sometimes we want to use multiple data sets.
+
+- For example, we may want to add the elements of a list =X= to the
+  corresponding elements of another list, =Y=.
+
+  - We could use an enumerate object, as before; or,
+
+  - we may use a range object to obtain an *index* to address
+    corresponding elements of the various lists.
+
+- I'll demonstrate the use of a range in Listing [[lst:for-range]]
+
+  - We make a range that starts at 0 and ends at a number just high
+    enough to capture all the elements of =X=.
+
+  - We also assume that =X= and =Y= have the same number of elements.
+#+name: lst:for-range
+#+caption: We define a simple =FOR= loop that iterates over a range to process two lists.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = [5, 3, 7, 9, 8]
+Y = [1, 4, 2, 11, 6]
+
+Z = [] # empty list
+for idx in range(0, len(X)):
+    newZelement = X[idx] + Y[idx]
+    Z.append( newZelement ) # add newZelement to Z
+    print('X[{0}] + Y[{0}] = {1} + {2} = {3}'.format(idx, X[idx], Y[idx], Z[idx]) )
+
+print(Z)
+#+end_src
+
+#+RESULTS:
+: X[0] + Y[0] = 5 + 1 = 6
+: X[1] + Y[1] = 3 + 4 = 7
+: X[2] + Y[2] = 7 + 2 = 9
+: X[3] + Y[3] = 9 + 11 = 20
+: X[4] + Y[4] = 8 + 6 = 14
+: [6, 7, 9, 20, 14]
+
+
+- The loop contains three instructions:
+
+  - Add the indexed elements of =X= and =Y=, storing this result in
+    =newZelement=
+
+  - Append =newZelement= to =Z=.
+
+  - Print data so we know it worked properly.
+
+- We could combine the first two instructions into one, as in Listing
+  [[lst:for-range]]: 
+#+name: lst:for-range
+#+caption: We define a simple FOR loop that iterates an index over a range to process two lists.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export
+X = [5, 3, 7, 9, 8]
+Y = [1, 4, 2, 11, 6]
+
+Z = [] # empty list
+for x,y in zip(X, Y):
+    Z.append( x + y ) # add to Z
+
+    print('x + y = 0 + 1 = 2'.format( x, y, Z[-1]) )
+
+print(Z)
+#+end_src
+
+#+RESULTS:
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: [6, 7, 9, 20, 14]
+
+** A FOR loop without an index
+:PROPERTIES:
+:CUSTOM_ID: a-for-loop-without-an-index
+:END:
+- We may work with two data lists without making a common index.
+
+- In this technique, we iterate over two lists simultaneously using zip
+  (see Listing [[lst:for-zip]]):
+#+name: lst:for-zip
+#+caption: We define a simple FOR loop that process two lists without an index.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = [5, 3, 7, 9, 8]
+Y = [1, 4, 2, 11, 6]
+
+Z = [] # empty list
+for x,y in zip(X, Y):
+    Z.append( x + y ) # add to Z
+    print('x + y = 0 + 1 = 2'.format( x, y, Z[-1]) )
+
+print(Z)
+#+end_src
+
+#+RESULTS:
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: x + y = 0 + 1 = 2
+: [6, 7, 9, 20, 14]
+
+*** Coding Exercise
+Use ~zip~ and a ~for~ loop to make Python print each first name and last
+name together in pairs on a single line. For example, the first result
+should contain =Sargon Akkad=.
+
+#+name: lst-coding-ex-names
+#+caption: Coding Exercise. Copy this code block into a Jupyter cell and complet the task described for this exercise.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+FirstName = ['Sargon', 'Ambrose', 'Joan', 'Augustine']
+LastName = ['Akkad', 'Milan', 'Arc', 'Hippo']
+#+end_src
+
+** Calculating Data from Members of a List
+:PROPERTIES:
+:CUSTOM_ID: calculating-data-from-members-of-a-list
+:END:
+*** A Traditional Method
+:PROPERTIES:
+:CUSTOM_ID: a-traditional-method
+:END:
+The first method we showcase here is very intuitive: it is the way we
+might do this in another language. We start with a list, =X=, and we
+calculate a new list =Y=, whose elements correspond to the square of the
+elements in =X=:
+
+#+name: lst:coding-exercise-list-calc
+#+Caption: A list =Y= is calculated from the values of another list, =X=, using a =for= loop.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+   X = [1, 2, 3, 4]
+
+   Y = [] # define an empty storage list
+
+   for x in X:
+       Y.append( x**2 )
+
+   print(X)
+   print(Y)
+#+end_src
+
+#+RESULTS:
+: [1, 2, 3, 4]
+: [1, 4, 9, 16]
+
+*** A More Pythonic Way
+:PROPERTIES:
+:CUSTOM_ID: a-more-pythonic-way
+:END:
+A more Pythonic method for calculating =Y= is to use a *list
+comprehension*. Here, we define a list using the brackets again, =[= and
+=]=. Inside the brackets, we include:
+
+1. an expression using a =for=-loop variable,
+
+2. the keyword =for=
+
+3. a declaration of the loop variable =x=
+
+4. the keyword =in=
+
+5. the iterable, =X=, over which we iterate
+
+It looks like the following:
+
+#+name: lst:list-comprehension
+#+Caption: A list =Y= is calculated from the values of another list, =X=, using a list comprehension.
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+X = list(range(1,13))
+
+# Form an array of squared values (list comprehension)
+Y = [x**2 for x in X]
+
+print(X)
+print(Y)
+
+#+end_src
+
+#+RESULTS:
+: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144]
+
+Notice the syntax for the list comprehension is very English-like: we're
+instructing Python to define a list =Y= whose elements are =x**2= (=x=
+squared) for each =x= in the list =X=.

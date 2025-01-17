@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # -*- mode: org -*-
+#+STARTUP: overview indent
 
 #+title: Quantum Phase Estimation
 #+author: Dr. E.P. Blair
@@ -8,111 +9,41 @@
 This example follows the [[https://pennylane.ai/qml/demos/tutorial_qpe][Pennylane QPE tutorial]].
 
 The example operator for which we try to estimate the phase is
-\[\mathbf{U} = \mathbf{R}_{\phi}(2\pi/5)\]
+#+name: eq:testPhase
+\begin{equation}
+\mathbf{U} = \mathbf{R}_{\phi}(2\pi/5)
+\end{equation}
 We apply it to an eigenstate $\left|1\right\rangle$, which has phase $\theta=1/5$.
-
-
-** PennyLane Example
-
-#+begin_src python :results output :session "pl-qpe" :eval never-export
-  import pennylane as qml
-  import numpy as np
-
-  def U(wires):
-      return qml.PhaseShift(2 * np.pi / 5, wires=wires)
-
-#+end_src
-
-#+RESULTS:
-:results:
-:end:
-
-
-#+begin_src python :results output :session "pl-qpe" :eval never-export
-  dev = qml.device("default.qubit")
-
-  @qml.qnode(dev)
-  def circuit_qpe(estimation_wires):
-      # initialize to state |1>
-      qml.PauliX(wires=0)
-
-      for wire in estimation_wires:
-          qml.Hadamard(wires=wire)
-
-      qml.ControlledSequence(U(wires=0), control=estimation_wires)
-
-      qml.adjoint(qml.QFT)(wires=estimation_wires)
-
-      return qml.probs(wires=estimation_wires)
-
-#+end_src
-
-#+RESULTS:
-:results:
-:end:
-
-
-#+begin_src python :results output :session "pl-qpe" :eval never-export
-  import matplotlib.pyplot as plt
-
-  estimation_wires = range(1, 5)
-
-  results = circuit_qpe(estimation_wires)
-
-  bit_strings = [f"0.{x:0{len(estimation_wires)}b}" for x in range(len(results))]
-
-  # Visualize the results
-  plt.close("all")
-  plt.bar(bit_strings, results)
-  plt.xlabel("phase")
-  plt.ylabel("probability")
-  plt.xticks(rotation="vertical")
-  plt.subplots_adjust(bottom=0.3)
-
-  from pathlib import Path
-  Path('img').mkdir(parents=True, exist_ok=True)
-
-  import os
-  fname = os.path.join('img', 'test_qpe_pl.png')
-  plt.savefig( fname )
-
-  print(f'\n[[./{fname}]]')
-
-#+end_src
-
-#+RESULTS:
-:results:
-
-[[./img/test_qpe_pl.png]]
-:end:
-
 
 
 ** Qiskit Example
 
+
 This follows a third-party [[https://quantumcomputinguk.org/tutorials/quantum-phase-estimation-with-code][tutorial]] as well as an old Qiskit
 textbook [[https://github.com/qiskit-community/qiskit-textbook/blob/main/content/ch-algorithms/quantum-phase-estimation.ipynb][tutorial]]
 
-  
-#+begin_src python :results output  :session "qpe" :eval never-export
+We start by importing some tools from =qiskit= and =qiskit-aer=.
+#+begin_src python :results output  :session "qpe" :eval never-export :exports code
   from qiskit_aer import AerSimulator
   from qiskit.visualization import plot_histogram, plot_state_city
   import qiskit.quantum_info as qi
   from qiskit import transpile
 
-  import sys
-  print(sys.executable)
-  #print(qi)
 #+end_src
 
 #+RESULTS:
 :results:
-/Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
 :end:
 
-#+begin_src python :results output :session "qpe" :eval never-export
+The next code block does the following:
+1. Defines a function to build an inverse QFT, which we call =qft_dagger()=.
+2. Sets the value of a phase shift, \(\phi\) for a unitary operator. This is
+   the phase we will be estimating.
+3. Builds a phase estimation circuit
+4. Adds measurement
+
+#+begin_src python :results output :session "qpe" :eval never-export :exports code
   from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
-  # from qiskit.circuit.library import QFT
   import numpy as np
   import os
 
@@ -131,11 +62,10 @@ textbook [[https://github.com/qiskit-community/qiskit-textbook/blob/main/content
           qc.h(j)
 
 
-  N = 3 # number of estimation qubits
-
   phi = 2*np.pi/3  # angle
   theta = phi/(2*np.pi) # phase
 
+  N = 3 # number of estimation qubits
   # N qubits are for estimation
   # The last qubit is the target
   q = QuantumRegister( N + 1, 'q' )
@@ -178,6 +108,7 @@ textbook [[https://github.com/qiskit-community/qiskit-textbook/blob/main/content
 
   print(f'\n[[./{cktfile}]]')
 
+
   print('QPE Circuit constructed.')
 #+end_src
 
@@ -188,10 +119,23 @@ textbook [[https://github.com/qiskit-community/qiskit-textbook/blob/main/content
 QPE Circuit constructed.
 :end:
 
+#+attr_html: :width 1200px
+#+caption: The circuit performs a QPE on three qubits.
 [[./img/ckt_qpe_qiskit.png]]
 
 
-#+begin_src python :results output :session "qpe" :eval never-export
+Next, we transpile the circuit to the ISA (instruction set architecture). The quantum computer
+we intend to use may not have exactly the gates from which we built our circuit, so
+=qiskit= can help us make an equivalent circuit using the ISA available on the target
+computer.
+
+
+#+ATTR_HTML: :width 1200px
+#+CAPTION: This circuit applies the controled \(\mathbf{U}^k\) operation, provides an inverse QFT, and samples the output.
+[[./img/ckt_qpe_qiskit.png]]
+
+
+#+begin_src python :results output :session "qpe" :eval never-export :exports code
   # Transpile for simulator
   simulator = AerSimulator()
   qc_trans = transpile(qc, simulator)
@@ -211,8 +155,11 @@ QPE Circuit constructed.
 [[./img/ckt_qpe_qiskit_trans.png]]
 :end:
 
+#+attr_html: :width 1200px
+#+caption: The transpiled QPE circuit looks exactly like the original design. This is because we will be using the =qisit_aer= simulator, so we don't have to worry about the constraints of actual hardware.
+[[./img/ckt_qpe_qiskit_trans.png]]
 
-#+begin_src python :results output :session "qpe" :eval never-export
+#+begin_src python :results output :session "qpe" :eval never-export :exports code
   # Run and get counts
   result = simulator.run(qc_trans).result()
   counts = result.get_counts(qc_trans)
@@ -231,8 +178,186 @@ QPE Circuit constructed.
 [[./img/qpe_meas_qiskit.jpg]]
 :end:
 
+#+attr_html: :width 600px
+#+caption: The transpiled QPE circuit looks exactly like the original design. This is because we will be using the =qisit_aer= simulator, so we don't have to worry about the constraints of actual hardware.
+[[./img/qpe_meas_qiskit.jpg]]
+
+
+*** A "Leaner" Calculation
+
+
+We can perform a leaner calculation. I say this is "leaner" because I condense everything
+into a single code block. We can change the phase parameter $\phi$ (radians) and the
+number of estimation qubits, \(N\). Then, we can se see how well our QPE algorithm
+estimates $\theta = \phi/2\pi$.
+
+#+begin_src python :results output  :eval never-export :exports code
+  from qiskit_aer import AerSimulator
+  from qiskit.visualization import plot_histogram, plot_state_city
+  import qiskit.quantum_info as qi
+  from qiskit import transpile
+
+  from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+  import numpy as np
+  import os
+
+  # Problem parameters
+  theta = 2*np.pi/4  # phase angle
+  N = 3 # number of estimation qubits
+
+  
+  def qft_dagger(qc, n):
+      """Appends an n-qubit QFTdagger the first n qubits in circ.
+
+      Ref.: [1]  https://github.com/qiskit-community/qiskit-textbook/blob/main/content/ch-algorithms/quantum-phase-estimation.ipynb
+      """
+
+      # Don't forget the Swaps!
+      for qubit in range(n//2):
+          qc.swap(qubit, n-qubit-1)
+      for j in range(n):
+          for m in range(j):
+              qc.cp(-np.pi/float(2**(j-m)), m, j)
+          qc.h(j)
+
+
+  def qpe_oracle( phase, n ):
+      """Builds a quantum phase estimation circuit with
+      n estimation qubits.
+      """
+
+      q = QuantumRegister( n + 1, 'q' )
+      c = ClassicalRegister( n, 'c' )
+
+      qc = QuantumCircuit(q, c)
+
+      phi = phase/(2*np.pi)
+
+      # Apply H to each bit in the estimation register
+      for k in range(n):
+          qc.h( q[k] )
+
+      # The last qubit is the target
+      # set the target bit to 1
+      qc.x( q[n] )
+
+      qc.barrier()
+
+      # Apply controlled phase to each bit in the estimation register
+      for k in range(n):
+          for m in range(2**k):
+              qc.cp( phase, q[k], q[n] )
+
+      qc.barrier()
+
+      return qc
+
+
+  def qpe_circuit( phase, n ):
+      """Builds a quantum phase estimation circuit with
+      n estimation qubits.
+      """
+
+      qc = qpe_oracle( phase, n )
+
+      # Apply the inverse QFT
+      qft_dagger(qc, n)
+
+      qc.barrier()
+
+      # Measurement
+
+      # Add measurement gates on estimation register
+      for k in range(n):
+          qc.measure(k, k)
+
+      return qc
+
+  def qpe_calculation( phase, n):
+
+      theta = phase/(2*np.pi)
+
+      qc = qpe_circuit( phase, n )
+
+      # Transpile for simulator
+      simulator = AerSimulator()
+      qc_trans = transpile(qc, simulator)
+
+      cktfile = os.path.join('img',
+                             'ckt_qpe_qiskit_trans_n{n}_phi{phi:06.4f}.png')
+
+      qc_trans.draw(output='mpl',style='clifford',
+                    filename=cktfile)
+      print(f'\n[[./{cktfile}]]')
+      
+      # Run and get counts
+      result = simulator.run(qc_trans).result()
+      counts = result.get_counts(qc_trans)
+
+
+      # Find total number of shots
+      shots = 0
+      for key in counts:
+          shots += counts[key]
+
+      print(f'Total shots: {shots}')
+      
+      theta_exp = 0.0
+      for key in counts:
+          v = 0
+          revkey = key[::-1]
+          
+          for k in range(n):
+              v += int(revkey[k])*2**k/(2**n)
+
+          p = counts[key]/shots
+          theta_exp += p*v    
+          print(f'key: {key}; v = {v} ; counts: ' \
+                + '{0}'.format(counts[key]) \
+                + ' {0}%'.format(100*p))
+
+      print(f'\nExpectation value of theta: {theta_exp}')
+      print(f'\n     Actual value of theta: {theta}')
+      
+      fname = os.path.join('img',
+                           f'qpe_meas_qiskit_phi_n{n}_phi{phi:06.4f}.jpg')
+
+      plot_histogram(counts, title='Bell-State counts',
+                     filename=fname)
+
+      print(f'\n[[./{fname}]]')
+
+
+
+  phi = theta/(2*np.pi) # fraction
+
+  print(f'QPE calculation with phi = {phi:06.4f}')
+
+  qpe_calculation( theta, N )
+
+#+end_src
+
+#+RESULTS:
+:results:
+QPE calculation with phi = 0.2500
+
+[[./img/ckt_qpe_qiskit_trans_n{n}_phi{phi:06.4f}.png]]
+Total shots: 1024
+key: 010; v = 0.25 ; counts: 1024 100.0%
+
+Expectation value of theta: 0.25
+
+     Actual value of theta: 0.25
+
+[[./img/qpe_meas_qiskit_phi_n3_phi0.2500.jpg]]
+:end:
+
+
+
+*** Estimator Tutorial                                            :noexport:
+
 This is a first use of the esimator
-#+begin_src python :results output :eval never-export
+#+begin_src python :results output :eval never-export :exports code
   from qiskit import transpile
   from qiskit.circuit.library import RealAmplitudes
   from qiskit.quantum_info import SparsePauliOp
@@ -358,6 +483,83 @@ counts for parameterized circuit : {'11': 426, '00': 133, '01': 349, '10': 116}
 #+RESULTS:
 :results:
 :end:
+
+
+** PennyLane Example
+
+#+begin_src python :results output :session "pl-qpe" :eval never-export
+  import pennylane as qml
+  import numpy as np
+
+  def U(wires):
+      return qml.PhaseShift(2 * np.pi / 5, wires=wires)
+
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+
+#+begin_src python :results output :session "pl-qpe" :eval never-export
+  dev = qml.device("default.qubit")
+
+  @qml.qnode(dev)
+  def circuit_qpe(estimation_wires):
+      # initialize to state |1>
+      qml.PauliX(wires=0)
+
+      for wire in estimation_wires:
+          qml.Hadamard(wires=wire)
+
+      qml.ControlledSequence(U(wires=0), control=estimation_wires)
+
+      qml.adjoint(qml.QFT)(wires=estimation_wires)
+
+      return qml.probs(wires=estimation_wires)
+
+#+end_src
+
+#+RESULTS:
+:results:
+:end:
+
+
+#+begin_src python :results output :session "pl-qpe" :eval never-export
+  import matplotlib.pyplot as plt
+
+  estimation_wires = range(1, 5)
+
+  results = circuit_qpe(estimation_wires)
+
+  bit_strings = [f"0.{x:0{len(estimation_wires)}b}" for x in range(len(results))]
+
+  # Visualize the results
+  plt.close("all")
+  plt.bar(bit_strings, results)
+  plt.xlabel("phase")
+  plt.ylabel("probability")
+  plt.xticks(rotation="vertical")
+  plt.subplots_adjust(bottom=0.3)
+
+  from pathlib import Path
+  Path('img').mkdir(parents=True, exist_ok=True)
+
+  import os
+  fname = os.path.join('img', 'test_qpe_pl.png')
+  plt.savefig( fname )
+
+  print(f'\n[[./{fname}]]')
+
+#+end_src
+
+#+RESULTS:
+:results:
+
+[[./img/test_qpe_pl.png]]
+:end:
+
+
 * Notebook Setup                                                   :noexport:
 
 ** Python Setup                                                   :noexport:
