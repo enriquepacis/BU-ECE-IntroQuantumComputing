@@ -2,8 +2,8 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ../html/PythonIntermediateSkills.html
-#+setupfile: custom-setup.org
+#+export_file_name: ../docs/PythonIntermediateSkills.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Intermediate Python Skills
 #+author: Dr. E.P. Blair
@@ -35,6 +35,7 @@ print(sys.executable)
 :PROPERTIES:
 :CUSTOM_ID: level-5-intermediate-python-functions
 :END:
+#+include: "./back-to-index.org"
 - Defining functions is a very powerful feature of many programming
   languages.
 
@@ -303,6 +304,7 @@ Now, let us use square in a FOR loop:
 :PROPERTIES:
 :CUSTOM_ID: level-6-classes
 :END:
+#+include: "./back-to-index.org"
 - Classes are a very powerful programming concept.
 - You get to define:
   - your own data type (a *class*) and

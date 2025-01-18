@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-17 Fri 20:39 -->
+<!-- 2025-01-17 Fri 21:46 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Python Setup</title>
@@ -28,56 +28,56 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org99e69bd">1. Installing Python</a>
+<li><a href="#orgb63e37f">1. Installing Python</a>
 <ul>
-<li><a href="#org505da6d">1.1. Objectives</a></li>
-<li><a href="#orgbf2969f">1.2. Background (optional)</a>
+<li><a href="#org11ab94b">1.1. Objectives</a></li>
+<li><a href="#org66dfcdd">1.2. Background (optional)</a>
 <ul>
-<li><a href="#orgb856cd2">1.2.1. Virtual Environments</a></li>
-<li><a href="#org3eb6231">1.2.2. Creating and Using Virtual Environments</a></li>
-<li><a href="#orgf582865">1.2.3. Benefits of Using Python Virtual Environments</a></li>
+<li><a href="#org265696e">1.2.1. Virtual Environments</a></li>
+<li><a href="#orgfe7b64e">1.2.2. Creating and Using Virtual Environments</a></li>
+<li><a href="#orgb24b78b">1.2.3. Benefits of Using Python Virtual Environments</a></li>
 </ul>
 </li>
-<li><a href="#orge82126d">1.3. Procedure</a>
+<li><a href="#org52de315">1.3. Procedure</a>
 <ul>
-<li><a href="#org8b8056b">1.3.1. Overview</a></li>
-<li><a href="#org6da1b4f">1.3.2. Anaconda Installation</a></li>
-<li><a href="#orga9f86bc">1.3.3. Miniconda Installation</a></li>
-<li><a href="#org574ce19">1.3.4. Standard Python Installation</a></li>
+<li><a href="#org2f10dca">1.3.1. Overview</a></li>
+<li><a href="#org019ddef">1.3.2. Anaconda Installation</a></li>
+<li><a href="#org9b8611c">1.3.3. Miniconda Installation</a></li>
+<li><a href="#orgfb6e8d1">1.3.4. Standard Python Installation</a></li>
 </ul>
 </li>
-<li><a href="#orge5771d0">1.4. Test Your Python Installation</a>
+<li><a href="#org38fee4d">1.4. Test Your Python Installation</a>
 <ul>
-<li><a href="#org9449532">1.4.1. A Hello World Program</a></li>
-<li><a href="#org9101c89">1.4.2. Python Version Check</a></li>
+<li><a href="#orgc040b5d">1.4.1. A Hello World Program</a></li>
+<li><a href="#orgc487f40">1.4.2. Python Version Check</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgc446d1d">2. Set Up a Python Environment</a>
+<li><a href="#org5efbafa">2. Set Up a Python Environment</a>
 <ul>
-<li><a href="#orgc511f4f">2.1. Objectives</a></li>
-<li><a href="#orgcad4c2c">2.2. Overview</a></li>
-<li><a href="#org8968c87">2.3. Create an Environment</a>
+<li><a href="#orgf88e7bf">2.1. Objectives</a></li>
+<li><a href="#orge34ddb2">2.2. Overview</a></li>
+<li><a href="#orgb7c43fe">2.3. Create an Environment</a>
 <ul>
-<li><a href="#org543e5c9">2.3.1. Using <code>conda</code> (recommended)</a></li>
-<li><a href="#org808edbf">2.3.2. Using <code>venv</code> in Standard Python (not recommended)</a></li>
+<li><a href="#orgeacd194">2.3.1. Using <code>conda</code> (recommended)</a></li>
+<li><a href="#org11751d8">2.3.2. Using <code>venv</code> in Standard Python (not recommended)</a></li>
 </ul>
 </li>
-<li><a href="#org94f5d09">2.4. Activate your Environment</a>
+<li><a href="#org4d6970e">2.4. Activate your Environment</a>
 <ul>
-<li><a href="#org4c16a57">2.4.1. Conda Activation</a></li>
-<li><a href="#orge350ed8">2.4.2. Virtual Environment Activation (Standard Python)</a></li>
+<li><a href="#org7bdc9e5">2.4.1. Conda Activation</a></li>
+<li><a href="#orgf2fb695">2.4.2. Virtual Environment Activation (Standard Python)</a></li>
 </ul>
 </li>
-<li><a href="#orgaf28313">2.5. Installing Packages</a>
+<li><a href="#org0ccff64">2.5. Installing Packages</a>
 <ul>
-<li><a href="#orge6e3f04">2.5.1. Install Packages from a Requirements File (Recommended)</a></li>
-<li><a href="#org658190e">2.5.2. Manual Install (not recommended)</a></li>
-<li><a href="#org3d205aa">2.5.3. Verify Package Installation</a></li>
+<li><a href="#orgddd6312">2.5.1. Install Packages from a Requirements File (Recommended)</a></li>
+<li><a href="#orgf7cc3ee">2.5.2. Manual Install (not recommended)</a></li>
+<li><a href="#orgb125e19">2.5.3. Verify Package Installation</a></li>
 </ul>
 </li>
-<li><a href="#orgcb5fdc9">2.6. Operational</a></li>
+<li><a href="#orge38ef21">2.6. Operational Test</a></li>
 </ul>
 </li>
 </ul>
@@ -86,15 +86,15 @@
 
 
 
-<div id="outline-container-org99e69bd" class="outline-2">
-<h2 id="org99e69bd"><span class="section-number-2">1.</span> Installing Python</h2>
+<div id="outline-container-orgb63e37f" class="outline-2">
+<h2 id="orgb63e37f"><span class="section-number-2">1.</span> Installing Python</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
 </p>
 </div>
-<div id="outline-container-org505da6d" class="outline-3">
-<h3 id="org505da6d"><span class="section-number-3">1.1.</span> Objectives</h3>
+<div id="outline-container-org11ab94b" class="outline-3">
+<h3 id="org11ab94b"><span class="section-number-3">1.1.</span> Objectives</h3>
 <div class="outline-text-3" id="text-1-1">
 <ol class="org-ol">
 <li>Install a version of Python packaged in Anaconda or Miniconda</li>
@@ -102,12 +102,12 @@
 </ol>
 </div>
 </div>
-<div id="outline-container-orgbf2969f" class="outline-3">
-<h3 id="orgbf2969f"><span class="section-number-3">1.2.</span> Background (optional)</h3>
+<div id="outline-container-org66dfcdd" class="outline-3">
+<h3 id="org66dfcdd"><span class="section-number-3">1.2.</span> Background (optional)</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-orgb856cd2" class="outline-4">
-<h4 id="orgb856cd2"><span class="section-number-4">1.2.1.</span> Virtual Environments</h4>
+<div id="outline-container-org265696e" class="outline-4">
+<h4 id="org265696e"><span class="section-number-4">1.2.1.</span> Virtual Environments</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li>You can use Python <i>without</i> virtual environments, but things can get messy
@@ -138,8 +138,8 @@ packages required for a specific project or application</li>
 </div>
 </div>
 
-<div id="outline-container-org3eb6231" class="outline-4">
-<h4 id="org3eb6231"><span class="section-number-4">1.2.2.</span> Creating and Using Virtual Environments</h4>
+<div id="outline-container-orgfe7b64e" class="outline-4">
+<h4 id="orgfe7b64e"><span class="section-number-4">1.2.2.</span> Creating and Using Virtual Environments</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <ul class="org-ul">
 <li>There are multiple ways to create virtual environments
@@ -182,14 +182,14 @@ date with the ones on PyPI, the repository for standard Python packages
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf582865" class="outline-4">
-<h4 id="orgf582865"><span class="section-number-4">1.2.3.</span> Benefits of Using Python Virtual Environments</h4>
+<div id="outline-container-orgb24b78b" class="outline-4">
+<h4 id="orgb24b78b"><span class="section-number-4">1.2.3.</span> Benefits of Using Python Virtual Environments</h4>
 <div class="outline-text-4" id="text-1-2-3">
 </div>
 <ol class="org-ol">
-<li><a id="org9ef16ef"></a>Why Use Virtual Environments in Python?<br />
+<li><a id="org8980fc2"></a>Why Use Virtual Environments in Python?<br />
 <ol class="org-ol">
-<li><a id="orgb05cd24"></a>Isolation of Dependencies<br />
+<li><a id="orgd8158c7"></a>Isolation of Dependencies<br />
 <div class="outline-text-6" id="text-1-2-3-1-1">
 <ul class="org-ul">
 <li>Avoid conflicts between package versions required by different projects.</li>
@@ -198,7 +198,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="org5f2d724"></a>Consistency Across Environments<br />
+<li><a id="org9638030"></a>Consistency Across Environments<br />
 <div class="outline-text-6" id="text-1-2-3-1-2">
 <ul class="org-ul">
 <li>Reproduce the same environment for development, testing, and production.</li>
@@ -207,7 +207,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="org282b767"></a>Simplified Dependency Management<br />
+<li><a id="org1b408f6"></a>Simplified Dependency Management<br />
 <div class="outline-text-6" id="text-1-2-3-1-3">
 <ul class="org-ul">
 <li>Install project-specific packages without requiring administrative privileges.</li>
@@ -216,7 +216,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="orgd8ce515"></a>Protection of Global Python Environment<br />
+<li><a id="org4c6ecd5"></a>Protection of Global Python Environment<br />
 <div class="outline-text-6" id="text-1-2-3-1-4">
 <ul class="org-ul">
 <li>Prevent unintended modifications to the global Python environment.</li>
@@ -225,7 +225,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="orgadb1a9c"></a>Flexibility with Python Versions<br />
+<li><a id="orgd61a30e"></a>Flexibility with Python Versions<br />
 <div class="outline-text-6" id="text-1-2-3-1-5">
 <ul class="org-ul">
 <li>Use different Python versions for different projects.</li>
@@ -234,7 +234,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="org7f9f75b"></a>Integration with Development Tools<br />
+<li><a id="org2a0edd7"></a>Integration with Development Tools<br />
 <div class="outline-text-6" id="text-1-2-3-1-6">
 <ul class="org-ul">
 <li>Tools like Jupyter, nbgrader, and linters work seamlessly with the virtual environment.</li>
@@ -243,7 +243,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="org85033a1"></a>Ease of Collaboration<br />
+<li><a id="orgbb841bd"></a>Ease of Collaboration<br />
 <div class="outline-text-6" id="text-1-2-3-1-7">
 <ul class="org-ul">
 <li>Use a `requirements.txt` or `pyproject.toml` file to share the exact environment with team members.</li>
@@ -252,7 +252,7 @@ date with the ones on PyPI, the repository for standard Python packages
 </div>
 </li>
 
-<li><a id="orgda1dca4"></a>Best Practices<br />
+<li><a id="org39f69df"></a>Best Practices<br />
 <div class="outline-text-6" id="text-1-2-3-1-8">
 <ul class="org-ul">
 <li>Always activate the virtual environment when working on the project.</li>
@@ -266,24 +266,24 @@ date with the ones on PyPI, the repository for standard Python packages
 </ol>
 </div>
 </div>
-<div id="outline-container-orge82126d" class="outline-3">
-<h3 id="orge82126d"><span class="section-number-3">1.3.</span> Procedure</h3>
+<div id="outline-container-org52de315" class="outline-3">
+<h3 id="org52de315"><span class="section-number-3">1.3.</span> Procedure</h3>
 <div class="outline-text-3" id="text-1-3">
 </div>
-<div id="outline-container-org8b8056b" class="outline-4">
-<h4 id="org8b8056b"><span class="section-number-4">1.3.1.</span> Overview</h4>
+<div id="outline-container-org2f10dca" class="outline-4">
+<h4 id="org2f10dca"><span class="section-number-4">1.3.1.</span> Overview</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 We provides some guidance on installing Python.
 </p>
 
-<div class="note" id="orgcccb48f">
+<div class="note" id="org0244aa5">
 <p>
 If you're a student in one of my courses, please make sure you install the
-correct release of Python, as listed in Table <a href="#orgbd511db">1</a>.
+correct release of Python, as listed in Table <a href="#org9fb2566">1</a>.
 </p>
 
-<table id="orgbd511db" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org9fb2566" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Table 1:</span> Python versions for various courses.</caption>
 
 <colgroup>
@@ -331,7 +331,7 @@ There are two ways I suggest for installing Python:
 <li>Using standard Python from <a href="https://www.python.org/downloads/">python.org</a> (not recommended, but if option 1 fails, try this)</li>
 </ol>
 
-<div class="info" id="org0df5009">
+<div class="info" id="orgae1e037">
 <p>
 I recommend using Anaconda or Miniconda. They provide the flexibility to create environments with a specific Python version, even if you don't have that version installed yet. With standard Python, you can only create a virtual environment using a Python version that you already have installed.
 </p>
@@ -352,10 +352,10 @@ discuss installing Miniconda.
 </div>
 </div>
 
-<div id="outline-container-org6da1b4f" class="outline-4">
-<h4 id="org6da1b4f"><span class="section-number-4">1.3.2.</span> Anaconda Installation</h4>
+<div id="outline-container-org019ddef" class="outline-4">
+<h4 id="org019ddef"><span class="section-number-4">1.3.2.</span> Anaconda Installation</h4>
 <div class="outline-text-4" id="text-1-3-2">
-<div class="info" id="orgaf69f59">
+<div class="info" id="orgcda0ff6">
 <p>
 I recommend the Anaconda installation over Miniconda and standard Python. In
 fact, most or all of the instructions in these tutorials assume you have
@@ -365,13 +365,13 @@ installed Anaconda, and you have the Anaconda Navigator included with Anaconda.
 </div>
 </div>
 <ol class="org-ol">
-<li><a id="org6d50385"></a>Mac OS<br />
+<li><a id="org6597ebb"></a>Mac OS<br />
 <div class="outline-text-5" id="text-1-3-2-1">
 <p>
 I'm a Mac user, so I know this one best.
 </p>
 
-<div class="info" id="orgb331eb2">
+<div class="info" id="org6d3bd17">
 <p>
 I recommend using the command-line installation. This has worked best for me in
 terms of adding packages.
@@ -397,7 +397,7 @@ you wish.</li>
 </p>
 </div>
 </li>
-<li><a id="org9b65316"></a>Windows<br />
+<li><a id="org57f1b97"></a>Windows<br />
 <div class="outline-text-5" id="text-1-3-2-2">
 <p>
 You can either install Anaconda/Miniconda natively in Windows, or you can use
@@ -415,7 +415,7 @@ For a windows installation:
 </ul>
 </div>
 </li>
-<li><a id="org0a92fa8"></a>UNIX/Linux<br />
+<li><a id="org8ce5bf9"></a>UNIX/Linux<br />
 <div class="outline-text-5" id="text-1-3-2-3">
 <p>
 You are on your own, but I think it should be pretty straight-forward.
@@ -424,15 +424,15 @@ You are on your own, but I think it should be pretty straight-forward.
 </li>
 </ol>
 </div>
-<div id="outline-container-orga9f86bc" class="outline-4">
-<h4 id="orga9f86bc"><span class="section-number-4">1.3.3.</span> Miniconda Installation</h4>
+<div id="outline-container-org9b8611c" class="outline-4">
+<h4 id="org9b8611c"><span class="section-number-4">1.3.3.</span> Miniconda Installation</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <p>
 I do not recommend a Miniconda installation at this time. However, if your
 computer is tight on storage, this may be a better option than Anaconda.
 </p>
 
-<div class="info" id="org160ef66">
+<div class="info" id="org1627179">
 <p>
 If you're a Windows user, I recommend Anaconda over Miniconda, sinc the Anaconda
 Navigator app also includes a PowerShell prompt, where you can use terminal
@@ -451,8 +451,8 @@ command-line installation.
 </p>
 </div>
 </div>
-<div id="outline-container-org574ce19" class="outline-4">
-<h4 id="org574ce19"><span class="section-number-4">1.3.4.</span> Standard Python Installation</h4>
+<div id="outline-container-orgfb6e8d1" class="outline-4">
+<h4 id="orgfb6e8d1"><span class="section-number-4">1.3.4.</span> Standard Python Installation</h4>
 <div class="outline-text-4" id="text-1-3-4">
 <p>
 I do not recommend this installation at this time.
@@ -464,21 +464,21 @@ Visit the <a href="https://www.python.org/downloads/">download page</a> and get 
 
 <p>
 Make sure you get the correct version if you're in one of my courses. Table
-<a href="#orgbd511db">1</a> is a listing of my courses along with the required Python version.
+<a href="#org9fb2566">1</a> is a listing of my courses along with the required Python version.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge5771d0" class="outline-3">
-<h3 id="orge5771d0"><span class="section-number-3">1.4.</span> Test Your Python Installation</h3>
+<div id="outline-container-org38fee4d" class="outline-3">
+<h3 id="org38fee4d"><span class="section-number-3">1.4.</span> Test Your Python Installation</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Let us test your Python operationally. A nice way to run Python is in Jupyter
 Lab.
 </p>
 
-<div class="note" id="orgf0a9fea">
+<div class="note" id="orgd75b92f">
 <p>
 This test assumes you already have <code>jupyter lab</code> installed, which you likely
 have if you used Anaconda. If you used Miniconda or standard Python, you may not
@@ -502,7 +502,7 @@ To run Python, you can do the following:
 <li>On a PC
 <ol class="org-ol">
 <li>Start the Anaconda Navigator</li>
-<li>Launch Jupyter Lab</li>
+<li>Click the "Jupyter Lab" tile/icon</li>
 </ol></li>
 </ol></li>
 <li>Once you have opened Jupyter Lab, a new web browser will arise with a Jupyter Lab graphical interface
@@ -516,15 +516,15 @@ If you need help starting Jupyter Lab, please see my video
 </p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/dviOML11TqE?si=SMM-LUYWGB0w_mtl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-<div id="outline-container-org9449532" class="outline-4">
-<h4 id="org9449532"><span class="section-number-4">1.4.1.</span> A Hello World Program</h4>
+<div id="outline-container-orgc040b5d" class="outline-4">
+<h4 id="orgc040b5d"><span class="section-number-4">1.4.1.</span> A Hello World Program</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <p>
-Try using the code of Listing <a href="#org0c05e26">1</a> as starting code.
+Try using the code of Listing <a href="#org8f6cbd8">1</a> as starting code.
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 1: </span>A "hello world" program is traditionally a beginner's first prgram in any new language.</label><pre class="src src-python" id="orgc6a656a"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'hello world'</span>)
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>A "hello world" program is traditionally a beginner's first prgram in any new language.</label><pre class="src src-python" id="org9c067d1"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'hello world'</span>)
 </pre>
 </div>
 
@@ -548,12 +548,12 @@ output</li>
 </div>
 </div>
 
-<div id="outline-container-org9101c89" class="outline-4">
-<h4 id="org9101c89"><span class="section-number-4">1.4.2.</span> Python Version Check</h4>
+<div id="outline-container-orgc487f40" class="outline-4">
+<h4 id="orgc487f40"><span class="section-number-4">1.4.2.</span> Python Version Check</h4>
 <div class="outline-text-4" id="text-1-4-2">
 <ul class="org-ul">
 <li>Another check you can perform is to make Python print its version, as shown
-in Listing <a href="#orgecf70f4">1</a>
+in Listing <a href="#orgdd4adb8">1</a>
 <ul class="org-ul">
 <li>We see that I'm using Python 3, version 3.11.7.</li>
 <li>The <code>#</code> character is the beginning of an inline comment
@@ -567,7 +567,7 @@ not evaluated</li>
 </ul></li>
 </ul>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 2: </span>This code uses the built-in <code>sys</code> package to query the Python version.</label><pre class="src src-python" id="orgef793a7"><span style="color: #F0DFAF; font-weight: bold;">import</span> sys <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make the sys package available for use</span>
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>This code uses the built-in <code>sys</code> package to query the Python version.</label><pre class="src src-python" id="org448bc1b"><span style="color: #F0DFAF; font-weight: bold;">import</span> sys <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make the sys package available for use</span>
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(sys.version) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the version information</span>
 </pre>
 </div>
@@ -580,16 +580,16 @@ not evaluated</li>
 </div>
 </div>
 
-<div id="outline-container-orgc446d1d" class="outline-2">
-<h2 id="orgc446d1d"><span class="section-number-2">2.</span> Set Up a Python Environment</h2>
+<div id="outline-container-org5efbafa" class="outline-2">
+<h2 id="org5efbafa"><span class="section-number-2">2.</span> Set Up a Python Environment</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
 </p>
 </div>
 
-<div id="outline-container-orgc511f4f" class="outline-3">
-<h3 id="orgc511f4f"><span class="section-number-3">2.1.</span> Objectives</h3>
+<div id="outline-container-orgf88e7bf" class="outline-3">
+<h3 id="orgf88e7bf"><span class="section-number-3">2.1.</span> Objectives</h3>
 <div class="outline-text-3" id="text-2-1">
 <ol class="org-ol">
 <li>Create a Python environment in Conda.</li>
@@ -602,14 +602,14 @@ not evaluated</li>
 </div>
 </div>
 
-<div id="outline-container-orgcad4c2c" class="outline-3">
-<h3 id="orgcad4c2c"><span class="section-number-3">2.2.</span> Overview</h3>
+<div id="outline-container-orge34ddb2" class="outline-3">
+<h3 id="orge34ddb2"><span class="section-number-3">2.2.</span> Overview</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 Here is a video tutorial:
 </p>
 
-<div class="warning" id="org9f726b0">
+<div class="warning" id="orgb56ba92">
 <p>
 A warning about this video: I did not illustrate how to get a specific version
 of Python, so when using <code>conda create ...</code>, please add <code>python=3.XX</code>, where <code>xx</code> is the appropriate release
@@ -618,7 +618,7 @@ number.
 
 </div>
 
-<div class="note" id="org1f34b1d">
+<div class="note" id="orgf28c9af">
 <p>
 Please note: please use <code>pip install ...</code>, even though this video demonstrates
 <code>conda install ...</code>.
@@ -635,12 +635,12 @@ enviornment using <code>conda</code>.
 </div>
 </div>
 
-<div id="outline-container-org8968c87" class="outline-3">
-<h3 id="org8968c87"><span class="section-number-3">2.3.</span> Create an Environment</h3>
+<div id="outline-container-orgb7c43fe" class="outline-3">
+<h3 id="orgb7c43fe"><span class="section-number-3">2.3.</span> Create an Environment</h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org543e5c9" class="outline-4">
-<h4 id="org543e5c9"><span class="section-number-4">2.3.1.</span> Using <code>conda</code> (recommended)</h4>
+<div id="outline-container-orgeacd194" class="outline-4">
+<h4 id="orgeacd194"><span class="section-number-4">2.3.1.</span> Using <code>conda</code> (recommended)</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 To create an environment:
@@ -670,7 +670,7 @@ your environment</li>
 </ol></li>
 <li>This creates your environment and specifies that we want to use
 Python 3.XX, where you replace <code>XX</code> by the numerical value from Table
-<a href="#orgbd511db">1</a>
+<a href="#org9fb2566">1</a>
 <ol class="org-ol">
 <li>Newer versions of Python may not work well with Qiskit</li>
 </ol></li>
@@ -689,8 +689,8 @@ successfully created it</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org808edbf" class="outline-4">
-<h4 id="org808edbf"><span class="section-number-4">2.3.2.</span> Using <code>venv</code> in Standard Python (not recommended)</h4>
+<div id="outline-container-org11751d8" class="outline-4">
+<h4 id="org11751d8"><span class="section-number-4">2.3.2.</span> Using <code>venv</code> in Standard Python (not recommended)</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <p>
 To create an environment:
@@ -732,7 +732,7 @@ virtual environment files will be stored
 </ol></li>
 <li>This creates your environment and specifies that we want to use
 Python 3.XX, where you replace <code>XX</code> by the numerical value from Table
-<a href="#orgbd511db">1</a>
+<a href="#org9fb2566">1</a>
 <ol class="org-ol">
 <li>Newer versions of Python may not work well with Qiskit</li>
 </ol></li>
@@ -740,8 +740,8 @@ Python 3.XX, where you replace <code>XX</code> by the numerical value from Table
 </div>
 </div>
 </div>
-<div id="outline-container-org94f5d09" class="outline-3">
-<h3 id="org94f5d09"><span class="section-number-3">2.4.</span> Activate your Environment</h3>
+<div id="outline-container-org4d6970e" class="outline-3">
+<h3 id="org4d6970e"><span class="section-number-3">2.4.</span> Activate your Environment</h3>
 <div class="outline-text-3" id="text-2-4">
 <ul class="org-ul">
 <li>After creating your environment&#x2013;especially if this is the first
@@ -754,8 +754,8 @@ is active. This means your new environment is <span class="underline">not</span>
 </ul>
 </div>
 
-<div id="outline-container-org4c16a57" class="outline-4">
-<h4 id="org4c16a57"><span class="section-number-4">2.4.1.</span> Conda Activation</h4>
+<div id="outline-container-org7bdc9e5" class="outline-4">
+<h4 id="org7bdc9e5"><span class="section-number-4">2.4.1.</span> Conda Activation</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
 To activate you environment:
@@ -778,7 +778,7 @@ prompt:
 </ol></li>
 </ol></li>
 </ol>
-<div class="info" id="orgdaedb14">
+<div class="info" id="org13baee9">
 <p>
 You can deactivate your environment by typing <code>conda deactivate</code> at
 the Powershell/Terminal prompt, but don't do that yet. We need to keep our
@@ -789,8 +789,8 @@ environment active so we can extend it by installing packages.
 </div>
 </div>
 
-<div id="outline-container-orge350ed8" class="outline-4">
-<h4 id="orge350ed8"><span class="section-number-4">2.4.2.</span> Virtual Environment Activation (Standard Python)</h4>
+<div id="outline-container-orgf2fb695" class="outline-4">
+<h4 id="orgf2fb695"><span class="section-number-4">2.4.2.</span> Virtual Environment Activation (Standard Python)</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
 To activate you environment:
@@ -820,7 +820,7 @@ Windows
 <li>use the packages you previously installed in that environment</li>
 </ol></li>
 </ol>
-<div class="info" id="orgbdf05c3">
+<div class="info" id="orgfdf40f7">
 <p>
 You can deactivate your environment by typing <code>deactivate</code> at
 the Powershell/Terminal prompt, but don't do that yet. We need to keep our
@@ -832,8 +832,8 @@ environment active so we can extend it by installing packages.
 </div>
 </div>
 
-<div id="outline-container-orgaf28313" class="outline-3">
-<h3 id="orgaf28313"><span class="section-number-3">2.5.</span> Installing Packages</h3>
+<div id="outline-container-org0ccff64" class="outline-3">
+<h3 id="org0ccff64"><span class="section-number-3">2.5.</span> Installing Packages</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 We will install the packages you need for this course. The preferred way will be
@@ -841,8 +841,8 @@ to use the <code>requirements.txt</code> file, which installs all the packages I
 to have. If that fails, we can try the manual method.
 </p>
 </div>
-<div id="outline-container-orge6e3f04" class="outline-4">
-<h4 id="orge6e3f04"><span class="section-number-4">2.5.1.</span> Install Packages from a Requirements File (Recommended)</h4>
+<div id="outline-container-orgddd6312" class="outline-4">
+<h4 id="orgddd6312"><span class="section-number-4">2.5.1.</span> Install Packages from a Requirements File (Recommended)</h4>
 <div class="outline-text-4" id="text-2-5-1">
 <ol class="org-ol">
 <li>Make sure your desired conda environment (or virtual environment) is active</li>
@@ -851,11 +851,11 @@ Copy and paste the following command
 into the Terminal or Powershell:
 </p>
 <div class="org-src-container">
-<pre class="src src-shell">pip install -r https://raw.githubusercontent.com/enriquepacis/BU-ECE-IntroQuantumComputing/main/python/requirementsQIS.txt
+<pre class="src src-shell">pip install -r https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/python/requirementsQIS.txt
 </pre>
 </div>
 
-<div class="info" id="org2f8f613">
+<div class="info" id="org72a6173">
 <p>
 This command points to a file <code>requirementsQIS.txt</code>, which is hosted on
 GitHub. It contains information about which packages you need for my course.
@@ -867,8 +867,8 @@ GitHub. It contains information about which packages you need for my course.
 </div>
 
 
-<div id="outline-container-org658190e" class="outline-4">
-<h4 id="org658190e"><span class="section-number-4">2.5.2.</span> Manual Install (not recommended)</h4>
+<div id="outline-container-orgf7cc3ee" class="outline-4">
+<h4 id="orgf7cc3ee"><span class="section-number-4">2.5.2.</span> Manual Install (not recommended)</h4>
 <div class="outline-text-4" id="text-2-5-2">
 <p>
 If you're here, we may assume your install from the requirements file failed, or
@@ -910,8 +910,8 @@ For each package to be installed, enter in the command prompt:
 </div>
 
 
-<div id="outline-container-org3d205aa" class="outline-4">
-<h4 id="org3d205aa"><span class="section-number-4">2.5.3.</span> Verify Package Installation</h4>
+<div id="outline-container-orgb125e19" class="outline-4">
+<h4 id="orgb125e19"><span class="section-number-4">2.5.3.</span> Verify Package Installation</h4>
 <div class="outline-text-4" id="text-2-5-3">
 <p>
 To verify that your packages were installed:
@@ -939,15 +939,119 @@ complete. The next step is to operationally test your installation.
 </div>
 </div>
 </div>
+<div id="outline-container-orge38ef21" class="outline-3">
+<h3 id="orge38ef21"><span class="section-number-3">2.6.</span> Operational Test</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Do your newly-installed Python packages work?
+</p>
 
-<div id="outline-container-orgcb5fdc9" class="outline-3">
-<h3 id="orgcb5fdc9"><span class="section-number-3">2.6.</span> Operational</h3>
+<p>
+Let's find out by doing the following:
+</p>
+
+<ol class="org-ol">
+<li>Launch Jupyter Lab:
+<ol class="org-ol">
+<li>On a Mac
+<ol class="org-ol">
+<li>Open a Terminal window</li>
+<li>type <code>jupyter lab</code> followed by <code>RETURN</code> to launch Jupyter Lab</li>
+</ol></li>
+<li>On a PC
+<ol class="org-ol">
+<li>Start the Anaconda Navigator</li>
+<li>Click "Jupyter Lab" tile/icon</li>
+</ol></li>
+</ol></li>
+<li>Try the following tests:
+<ol class="org-ol">
+<li><p>
+Copy and paste the code of Listing <a href="#orgb539318">3</a> into a Jupyter cell.
+</p>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>This imports the <code>qiskit</code> package and prints its version.</label><pre class="src src-python" id="orgb539318"><span style="color: #F0DFAF; font-weight: bold;">import</span> qiskit
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(qiskit.__version__)
+</pre>
+</div>
+
+<pre class="example">
+1.3.1
+</pre>
+
+
+<p>
+You should expect to see <code>qiskit</code> version <code>1.X</code> after using <code>SHIFT+ENTER</code>
+to evaluate the cell.
+</p></li>
+
+<li><p>
+Copy and paste the code of Listing <a href="#org28fe6a1">4</a> into a Jupyter Lab
+cell, and evaluate it:
+</p>
+<div class="org-src-container">
+<pre class="src src-python" id="org28fe6a1"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
+
+<span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2)
+qc.x(0)
+qc.h(1)
+
+qc.draw()
+</pre>
+</div>
+
+
+<div id="org5cda719" class="figure">
+<p><img src="./img/testQC.png" alt="testQC.png" width="300px" />
+</p>
+<p><span class="figure-number">Figure 1: </span>A simple quantum circuit built and visualized in <code>qiskit</code>. This will work only if <code>qiskit</code> is properly installed, along with <code>pylatexenc</code>.</p>
+</div>
+
+<p>
+If your installation was successful, you may see a circuit image <i>like</i>
+that of Figure <a href="#org5cda719">1</a>. If your circuit rendering is a more
+rudimentary text-art-type drawing, despair not. You can customize your
+rendering as follows:
+</p>
+
+<ol class="org-ol">
+<li>On Mac OS/UNIX/Linux:
+
+<ol class="org-ol">
+<li>Find your <code>qiskit</code> configuration directory. It should be
+<code>~/.qiskit/</code>, where <code>~</code> denotes your user directory (folder), and
+files or directories beginning with <code>.</code> are hidden configuration files.</li>
+
+<li><p>
+Inside the <code>~/.qiskit/</code> directory, add a file named <code>settings.conf</code>
+with the following contents:
+</p>
+<div class="org-src-container">
+<pre class="src src-text">[default]
+circuit_drawer = mpl
+state_drawer = latex
+</pre>
+</div></li>
+</ol></li>
+
+<li>Windows
+<ol class="org-ol">
+<li>Place the <code>settings.conf</code> file described above in the appropriate folder.
+<ol class="org-ol">
+<li>In Windows, the path typically is
+<code>C:\Users\&lt;your_user_name&gt;\.qiskit</code></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol></li>
+</ol>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-01-17 Fri 20:39</p>
+<p class="date">Created: 2025-01-17 Fri 21:46</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

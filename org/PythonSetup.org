@@ -2,7 +2,7 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ../html/PythonSetup.html
+#+export_file_name: ../docs/PythonSetup.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Python Setup
@@ -47,10 +47,11 @@ export ZSH_ENV_VAR="SomeValue"
 
 
 * Installing Python
-
-** Background
-- The objective here is to install a verion of Python and to create a virtual
-  environment.
+#+include: "./back-to-index.org"
+** Objectives
+1. Install a version of Python packaged in Anaconda or Miniconda
+2. Create a virtual environment with a specific Python release
+** Background (optional)
 *** Virtual Environments
 - You can use Python /without/ virtual environments, but things can get messy
   quickly
@@ -147,8 +148,8 @@ correct release of Python, as listed in Table [[tab:PyVersion]].
 #+end_note
 
 There are two ways I suggest for installing Python:
-1. Using [[https://anaconda.org][Anaconda]]
-2. Using standard Python from [[https://www.python.org/downloads/][python.org]]
+1. Using [[https://anaconda.org][Anaconda]] (recommended)
+2. Using standard Python from [[https://www.python.org/downloads/][python.org]] (not recommended, but if option 1 fails, try this)
 
 #+begin_info
 I recommend using Anaconda or Miniconda. They provide the flexibility to create environments with a specific Python version, even if you don't have that version installed yet. With standard Python, you can only create a virtual environment using a Python version that you already have installed.
@@ -159,13 +160,6 @@ Anaconda]] has some discussion on when to choose one version over the other.
 The video tutorial here does not include a Linux installation, nor does it
 discuss installing Miniconda.
 #+end_info
-
-#+caption: Warning
-#+begin_warning
-A warning about this video: I did not illustrate how to get a specific version
-of Python, so when using ~conda create ...~, please add ~python=3.XX~, where ~xx~ is the appropriate release
-number.
-#+end_warning
 
 #+begin_export html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/0YIpRSXcUJI?si=ZIhi8UJn-TCyarHp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -227,15 +221,25 @@ Make sure you get the correct version if you're in one of my courses. Table
 
 ** Test Your Python Installation
 Let us test your Python operationally. A nice way to run Python is in Jupyter
-Lab. To run Python, you can do the following
-- On a Mac
-  - Open a Terminal window
-  - type ~jupyter lab~ followed by ~RETURN~ to launch Jupyter Lab
-- On a PC
-  - Start the Anaconda Navigator
-  - Launch Jupyter Lab
-- Once you have opened Jupyter Lab, a new web browser will arise with a Jupyter Lab graphical interface
-  - You can begin coding once the Jupyter Lab window is open!
+Lab.
+
+#+begin_note
+This test assumes you already have =jupyter lab= installed, which you likely
+have if you used Anaconda. If you used Miniconda or standard Python, you may not
+have =jupyter lab=. If that's the case, we'll install it later after we make a
+(virtual) environment. You can skip over the operational test for now.
+#+end_note
+
+To run Python, you can do the following:
+1. Launch Jupyter Lab:
+   1. On a Mac
+      1. Open a Terminal window
+      2. type ~jupyter lab~ followed by ~RETURN~ to launch Jupyter Lab
+   2. On a PC
+      1. Start the Anaconda Navigator
+      2. Click the "Jupyter Lab" tile/icon
+2. Once you have opened Jupyter Lab, a new web browser will arise with a Jupyter Lab graphical interface
+   - You can begin coding once the Jupyter Lab window is open!
 
 If you need help starting Jupyter Lab, please see my video
    #+begin_export html
@@ -280,10 +284,22 @@ Try using the code of Listing [[lst:helloworld]] as starting code.
 : 3.11.7 (main, Dec 15 2023, 12:09:56) [Clang 14.0.6 ]
 
 * Set Up a Python Environment
+#+include: "./back-to-index.org"
 
-** Overview
-We will create a Python environment in Conda, and we will equip that environment
-with packages which extend its capabilities. This is a video tutorial:
+** Objectives
+1. Create a Python environment in Conda.
+2. Install extend that environment by adding required packages.
+   1. Verify that the desired packages were installed
+   2. Try coding in Python
+
+** Overview 
+Here is a video tutorial:
+
+#+begin_warning
+A warning about this video: I did not illustrate how to get a specific version
+of Python, so when using ~conda create ...~, please add ~python=3.XX~, where ~xx~ is the appropriate release
+number.
+#+end_warning
 
 #+begin_note
 Please note: please use =pip install ...=, even though this video demonstrates
@@ -297,14 +313,19 @@ Please note: please use =pip install ...=, even though this video demonstrates
 The following sections provide detailed instructions for setting up an
 enviornment using ~conda~.
 
-** Conda: Create an Environment
+** Create an Environment
+
+*** Using =conda= (recommended)
 To create an environment:
 
 1. Open a terminal application
    1. On Windows, start the Anaconda Navigator and launch the Powershell
       application
    2. On a Mac, open a Terminal (or iTerm2) window
-2. In the terminal, type =conda create --name <EnvName> python=3.XX=
+2. In the terminal, type
+   #+begin_src shell :eval never
+     conda create --name <EnvName> python=3.XX
+   #+end_src
    and press RETURN (ENTER) to execue the command
    1. Here, you replace =<EnvName>= the the specific name you choose for
       your environment
@@ -314,23 +335,51 @@ To create an environment:
    [[tab:PyVersion]]
    1. Newer versions of Python may not work well with Qiskit
 4. You can verify that your environment is created by typing
-   =conda info --envs=
+   #+begin_src shell :eval never
+     conda info --envs
+   #+end_src
    1. If the environment appears in the resulting list, you have
       successfully created it
    2. Otherwise, you may need to try again
+*** Using =venv= in Standard Python (not recommended)
+To create an environment:
 
-** Activate your Environment (Conda)
+1. Open a terminal application
+   1. On Windows, start the Anaconda Navigator and launch the Powershell
+      application
+   2. On a Mac, open a Terminal (or iTerm2) window
+2. In the terminal,
+   1. Type and customize the following OS-specific command, and press RETURN
+      (ENTER) to execue the command: 
+      1. Mac OS/UNIX/Linux
+         #+begin_src shell :eval never
+           python3.XX -m venv <path/to>/<EnvName>
+         #+end_src
+      2. Windows
+         #+begin_src shell :eval never
+           python3.XX -m venv <path\to>\<EnvName>
+         #+end_src
+   2. Here, you replace =<EnvName>= the the specific name you choose for
+      your environment, and you can specify a path on your computer where the
+      virtual environment files will be stored
+      1. Short, simple environment names will be most effective
+3. This creates your environment and specifies that we want to use
+   Python 3.XX, where you replace =XX= by the numerical value from Table
+   [[tab:PyVersion]]
+   1. Newer versions of Python may not work well with Qiskit
+** Activate your Environment
 - After creating your environment--especially if this is the first
    environment youve created--it is likely that your base environment
    is active. This means your new environment is _not_ active.
 - You can tell this by looking at the start of your prompt string
   - If it says =(base)=, then, then your base environment is active
-
+ 
+*** Conda Activation
 To activate you environment:
 1. Type the following at the Powershell or Terminal
   prompt:
   #+begin_src shell :eval never
-    conda activate <EnvName>
+    conda activate <EnvName>
   #+end_src
 
    1. This activates your environment so that you can:
@@ -342,59 +391,203 @@ the Powershell/Terminal prompt, but don't do that yet. We need to keep our
 environment active so we can extend it by installing packages.
 #+end_info
 
+*** Virtual Environment Activation (Standard Python)
+To activate you environment:
+1. Choose the appropriate command for your OS and enter it a the Powershell or
+   Terminal prompt:
+   1. Mac OS/UNIX/Linux
+      #+begin_src shell :eval never
+        source <path/to>/<EnvName>/bin/activate
+      #+end_src
+   2. Windows
+      #+begin_src shell :eval never
+        <path\to>\<EnvName>\Scripts\activate
+      #+end_src
+2. This activates your environment so that you can:
+   1. install packages or
+   2. use the packages you previously installed in that environment
+#+begin_info
+You can deactivate your environment by typing =deactivate= at
+the Powershell/Terminal prompt, but don't do that yet. We need to keep our
+environment active so we can extend it by installing packages.
+#+end_info
+
 ** Installing Packages
 We will install the packages you need for this course. The preferred way will be
 to use the ~requirements.txt~ file, which installs all the packages I want you
 to have. If that fails, we can try the manual method.
-*** Install Packages from ~requirements.txt~ (Recommended)
+*** Install Packages from a Requirements File (Recommended)
 
-This repository elateive to the
+1. Make sure your desired conda environment (or virtual environment) is active
+2. Copy and paste the following command
+   into the Terminal or Powershell:
+   #+begin_src shell :eval never
+     pip install -r https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/python/requirementsQIS.txt
+   #+end_src
 
-*** Manual Install
-If you're here, we may assume your install from ~requirements.txt~ failed, or
+   #+begin_info
+   This command points to a file ~requirementsQIS.txt~, which is hosted on
+   GitHub. It contains information about which packages you need for my course.
+   #+end_info
+  
+
+*** Manual Install (not recommended)
+If you're here, we may assume your install from the requirements file failed, or
 you just want to do things the hard(er) way.
 - For this course, you must install packages for your new environment
 - Here, we will focus on the following:
   - =jupyterlab= - allows for an interactive session in your new
     environment (its installed by default in the =base= environment)
-
   - =qiskit= - allows you to develop quantum computing circuits
-
   - =qiskit-aer= - allows you to simulate quantum circuits
-
   - =matplotlib= - helps you visualize quantum circuits
-
   - =pylatexenc= - helps you visualize quantum circuits in a nicer
     way than the default
 
-- For a walk-through on the package installation, see my video
-  [[https://youtu.be/MQUu_ZwxViA][A Python Environment for Quantum
-  Computing]]
+- For a walk-through on the manual package installation, see my video
+  [[https://youtu.be/MQUu_ZwxViA][A Python Environment for Quantum Computing]]
 
-  - To install packages in an environment:
+To manually install packages in an environment:
 
-    - Open the Powershell or Terminal as needed
-
-    - Activate the desired environment
-
-    - For each package to be installed:
-
-      - First, try typing =conda install <packagename>=
-
-        - When prompted, type =y= + =RETURN=
-
-  - Troubleshooting
-
-    - If =conda install <packagename>= doesnt work (you see a failed to
-      resolve the environment, try searching for a specific
-      installation command, such as
-      =conda install conda-forge::pylatexenc= in the case of
-      =pylatexenc=
-
-      - This points example points to an installation on the
-        =conda-forge= package collection
-
-    - If =conda install ...= fails despite specifying a package
-      collection, try installing with =pip= instead of =conda=
+1. Open the Powershell or Terminal as needed
+2. Activate the desired environment
+3. For each package to be installed, enter in the command prompt:
+   #+begin_src shell :eval never
+     pip install <packagename>
+   #+end_src
 
 
+*** Verify Package Installation
+
+To verify that your packages were installed:
+1. Use the following command in the Terminal/PowerShell:
+   #+begin_src shell
+     pip list
+   #+end_src
+   This will list all the packages installed in your active Python environment,
+   along with their version numbers.
+2. Check that packages such as =jupyter=, =matplotlib=, =pylatexenc=, and
+   =qiskit= are listed in your result.
+
+If you see the desired packages, you have a good indication that your setup is
+complete. The next step is to operationally test your installation.
+** Notebook Setup                                                 :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+** Operational Test
+Do your newly-installed Python packages work?
+
+Let's find out by doing the following:
+
+1. Launch Jupyter Lab:
+   1. On a Mac
+      1. Open a Terminal window
+      2. type ~jupyter lab~ followed by ~RETURN~ to launch Jupyter Lab
+   2. On a PC
+      1. Start the Anaconda Navigator
+      2. Click "Jupyter Lab" tile/icon
+2. Try the following tests:
+   1. Copy and paste the code of Listing [[lst:importqiskit]] into a Jupyter cell.
+      #+name: lst:importqiskit
+      #+caption: This imports the =qiskit= package and prints its version.
+      #+begin_src python :results output :eval never-export :exports both :session test-qiskit -n
+        import qiskit
+        print(qiskit.__version__)
+      #+end_src
+
+      #+RESULTS: lst:import-qiskit
+      : 1.3.1
+
+      You should expect to see =qiskit= version =1.X= after using =SHIFT+ENTER=
+      to evaluate the cell.
+
+   2. Copy and paste the code of Listing [[lst:testBuildQC]] into a Jupyter Lab
+      cell, and evaluate it:
+      #+name: lst:testBuildQC
+      #+begin_src python :results output :eval never-export :exports code :session test-qiskit -n
+        from qiskit import QuantumCircuit
+
+        qc = QuantumCircuit(2)
+        qc.x(0)
+        qc.h(1)
+
+        qc.draw()
+      #+end_src
+
+      #+RESULTS:
+
+      #+begin_src python :results output :eval never-export :exports none :session test-qiskit -n
+        import os
+        from pathlib import Path
+
+        curdir = os.getcwd()
+        pardir = os.path.dirname(curdir)
+
+        print(pardir)
+
+        docsimg = os.path.join(pardir, 'docs', 'img')
+
+
+        tgt = os.path.join('img', 'testQC.png')
+        tgt2 = os.path.join(docsimg, 'testQC.png')
+
+        Path(docsimg).mkdir(exist_ok=True, parents=True)
+        qc.draw( filename=tgt )
+        qc.draw( filename=tgt2 )
+
+        print(f'[[./{tgt}]]')
+
+      #+end_src
+
+      #+RESULTS:
+      : /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing
+      : [[./img/testQC.png]]
+
+      #+name: fig:firstQC
+      #+attr_html: :width 300px
+      #+caption: A simple quantum circuit built and visualized in =qiskit=. This will work only if =qiskit= is properly installed, along with =pylatexenc=.
+      [[./img/testQC.png]]
+
+      If your installation was successful, you may see a circuit image /like/
+      that of Figure [[fig:firstQC]]. If your circuit rendering is a more
+      rudimentary text-art-type drawing, despair not. You can customize your
+      rendering as follows:
+
+      1. On Mac OS/UNIX/Linux:
+
+         1. Find your =qiskit= configuration directory. It should be
+            =~/.qiskit/=, where =~= denotes your user directory (folder), and
+            files or directories beginning with =.= are hidden configuration files.
+
+         2. Inside the =~/.qiskit/= directory, add a file named =settings.conf=
+            with the following contents:
+            #+begin_src text :eval never :tangle "~/.qiskit/settings.conf" :padline none
+              [default]
+              circuit_drawer = mpl
+              state_drawer = latex
+            #+end_src
+
+      2. Windows
+         1. Place the =settings.conf= file described above in the appropriate folder.
+            1. In Windows, the path typically is
+               =C:\Users\<your_user_name>\.qiskit=
+               

@@ -2,11 +2,12 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ../html/PythonBasics.html
+#+export_file_name: ../docs/PythonBasics.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Python Basics
 #+author: Dr. E.P. Blair
+
 
 * Notebook Setup                                                   :noexport:
 
@@ -32,6 +33,7 @@ print(sys.executable)
 
 
 * Variables
+#+include: "./back-to-index.org"
 
 ** Creating Variables
 
@@ -223,6 +225,7 @@ print(f'c = {c}; d = {d}; f = {f}')
 :PROPERTIES:
 :CUSTOM_ID: if-statements
 :END:
+#+include: "./back-to-index.org"
 - ~if~ statements allow you to execute blocks of code depending on the
   value of a logical expression
 
@@ -372,6 +375,7 @@ if y is not None:
 :PROPERTIES:
 :CUSTOM_ID: iterables
 :END:
+#+include: "./back-to-index.org"
 - Iterables are variables that contain other variables.
 
   - These are useful for storing multiple related values
@@ -615,6 +619,7 @@ print(someDict)
 :PROPERTIES:
 :CUSTOM_ID: level-4-loops-and-iteration
 :END:
+#+include: "./back-to-index.org"
 - Loops help us peform repeated operations over an iterable.
 
   - Iterables include lists, tuples, dicts, and ranges.
