@@ -1,0 +1,10 @@
+#+title: README.org
+
+#+startup: overview indent auto-fill-mode
+
+This repository is designed for my quantum computing courses. The focus here is
+on:
+1. getting a version of Python packaged in Anaconda (or Miniconda)
+2. using ~conda~ to create an environment
+3. installing packages required for using qiskit
+4. introducing basic Python programming
