@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-01-16 Thu 11:55 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Intermediate Python Skills</title>
+<meta name="author" content="Dr. E.P. Blair" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style>
+pre.src {
+counter-reset: line;
+}
+pre.src code::before {
+counter-increment: line;
+content: counter(line) " ";
+display: inline-block;
+width: 3em;
+text-align: right;
+margin-right: 1em;
+color: gray;
+}
+</style>
+<style>
+code {
+font-family: monospace;
+background-color: #f5f5f5; /* Light gray background */
+padding: 0.2em 0.4em;
+border-radius: 3px;
+color: #333; /* Dark gray text */
+}
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Intermediate Python Skills</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#level-5-intermediate-python-functions">1. Functions</a>
+<ul>
+<li><a href="#a-function-as-a-set-of-commands">1.1. A Function as a Set of Commands</a></li>
+<li><a href="#a-function-with-a-single-input">1.2. A Function with a Single Input</a></li>
+<li><a href="#a-function-with-siso">1.3. A Function with a Single Input and a Single Output</a>
+<ul>
+<li><a href="#org6b1b170">1.3.1. Annotating Functions</a></li>
+</ul>
+</li>
+<li><a href="#function-simo">1.4. A Function with a Single Input and Multiple Outputs</a></li>
+</ul>
+</li>
+<li><a href="#level-6-classes">2. Classes</a>
+<ul>
+<li><a href="#defining-a-person-class">2.1. Defining a Person Class</a></li>
+<li><a href="#adding-another-method-to-the-person-class">2.2. Adding Another Method to the Person Class</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-level-5-intermediate-python-functions" class="outline-2">
+<h2 id="level-5-intermediate-python-functions"><span class="section-number-2">1.</span> Functions</h2>
+<div class="outline-text-2" id="text-level-5-intermediate-python-functions">
+<ul class="org-ul">
+<li>Defining functions is a very powerful feature of many programming
+languages.
+
+<ul class="org-ul">
+<li>Functions allow for the automation of repeated tasks.</li>
+
+<li>Complex tasks may be programmed once, and errors may be worked out.</li>
+
+<li>Then, the finished function can be used repeatedly without having to
+code the process again.</li>
+
+<li>This eliminates opportunities for error, and it saves the programmer
+time!</li>
+</ul></li>
+
+<li>In Python, we define a function using the <code>def</code> keyword. We do the
+following:
+
+<ul class="org-ul">
+<li>Function header (first line)
+
+<ul class="org-ul">
+<li>Write <code>def</code>, followed by &#x2026;</li>
+
+<li>a function name, followed by &#x2026;</li>
+
+<li>any input arguments</li>
+
+<li>Terminate using a colon (<code>:</code>)</li>
+</ul></li>
+
+<li>Statements internal to the function
+
+<ul class="org-ul">
+<li>These are delineated by writing code with (at least) one level of
+indentation with respect to the function header</li>
+</ul></li>
+</ul></li>
+
+<li>In a script block, we define the function first with no indentation
+for the function header.
+
+<ul class="org-ul">
+<li>Subsequent code following the function definition may then invoke
+the function.</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-a-function-as-a-set-of-commands" class="outline-3">
+<h3 id="a-function-as-a-set-of-commands"><span class="section-number-3">1.1.</span> A Function as a Set of Commands</h3>
+<div class="outline-text-3" id="text-a-function-as-a-set-of-commands">
+<p>
+A function may be as simple as a set of commands we wish to use and
+reuse. In this case, a function may not even require an input or provide
+any outputs. An example of a basic function is shown in Listing
+<a href="#org13bb23c">1</a>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>A very basic function with no outputs.</label><pre class="src src-python" id="org13bb23c"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">foo</span>():
+    <span style="color: #9FC59F;">'''</span>
+<span style="color: #9FC59F;">        This function, FOO, prints messages. It receives no inputs, nor does it return any functional outputs.</span>
+<span style="color: #9FC59F;">    '''</span>
+
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Function (foo) command 1.'</span>)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Function (foo) command 2.'</span>)
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The function definition is over, since we have reset</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">indentation back to zero.</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Subsequent commands may invoke foo print('This is the first command outside the function foo.')</span>
+
+foo() <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">we invoke the function defined above</span>
+</pre>
+</div>
+
+<pre class="example">
+Function (foo) command 1.
+Function (foo) command 2.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-a-function-with-a-single-input" class="outline-3">
+<h3 id="a-function-with-a-single-input"><span class="section-number-3">1.2.</span> A Function with a Single Input</h3>
+<div class="outline-text-3" id="text-a-function-with-a-single-input">
+<p>
+Listing <a href="#org85a596c">2</a> shows simple function with one input and zero
+outputs.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>A very basic function with no outputs. <a href="code:python/functionExSquare.py">code:python/functionExSquare.py</a></label><pre class="src src-python" id="org85a596c"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">square</span>(x):
+    <span style="color: #9FC59F;">'''</span>
+<span style="color: #9FC59F;">    square prints the square of its single input.</span>
+<span style="color: #9FC59F;">    '''</span>
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'{0} squared is {1}.'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(x, x**2))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The function definition is over,</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">since we have reset indentation  back to zero.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Subsequent commands may invoke square</span>
+
+<span style="color: #DFAF8F;">z</span> = 7
+square(z)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can even use (and reuse) square</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Now, let us use square in a FOR loop:'</span>)
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> y <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(0,12):
+    square(y)
+</pre>
+</div>
+
+<pre class="example" id="orge8ee47b">
+7 squared is 49.
+
+Now, let us use square in a FOR loop:
+0 squared is 0.
+1 squared is 1.
+2 squared is 4.
+3 squared is 9.
+4 squared is 16.
+5 squared is 25.
+6 squared is 36.
+7 squared is 49.
+8 squared is 64.
+9 squared is 81.
+10 squared is 100.
+11 squared is 121.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-a-function-with-siso" class="outline-3">
+<h3 id="a-function-with-siso"><span class="section-number-3">1.3.</span> A Function with a Single Input and a Single Output</h3>
+<div class="outline-text-3" id="text-a-function-with-siso">
+<ul class="org-ul">
+<li>Listing <a href="#org2283ae8">3</a> shows an example of a simple function with one input
+and one output.</li>
+<li>To obtain a single output, use the <code>return</code> keyword at the end of your
+function followed by the variable or expression you wish to return.</li>
+</ul>
+
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>A very basic function with a single input and a single output.</label><pre class="src src-python" id="org2283ae8"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">cube</span>(x):
+    <span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">"' cube returns the cube of its single input. &#8221;'</span>
+
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> x**3
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The function definition is over, since we have reset indentation back to zero.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Subsequent commands may invoke square</span>
+
+<span style="color: #DFAF8F;">z</span> = 7
+<span style="color: #DFAF8F;">zc</span> = cube(z)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can even use (and reuse) square</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'z^3 = </span>{zc}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+z^3 = 343
+</pre>
+</div>
+
+<div id="outline-container-org6b1b170" class="outline-4">
+<h4 id="org6b1b170"><span class="section-number-4">1.3.1.</span> Annotating Functions</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<ul class="org-ul">
+<li>A nicer vesrion of our function includes optional <a href="https://peps.python.org/pep-0008/#function-annotations">function annotations</a>, as
+specified in <a href="https://peps.python.org/pep-0008">PEP8 - Style Guide for Python Code</a>
+<ul class="org-ul">
+<li>These help a human reader know types of input arguments, as well as the
+return type</li>
+</ul></li>
+<li>To make annotations:
+<ul class="org-ul">
+<li>Follow each input arugment by a colon (<code>:</code>) and its type (or class)</li>
+<li>After the input specification (but before the <code>:</code>, use <code>-&gt;</code> and the return
+type (or class)</li>
+<li>A document string is provided specifying the arguments and what the function
+returns</li>
+</ul></li>
+<li>An example is given in Listing <a href="#orgfff28d5">4</a></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 4: </span>A very basic function with a single input, a single output, and function annotations.</label><pre class="src src-python" id="orgfff28d5"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">cube</span>(x: <span style="color: #DCDCCC; font-weight: bold;">float</span>) -&gt; <span style="color: #DCDCCC; font-weight: bold;">float</span>:
+    <span style="color: #9FC59F;">"""Returns the cube of its single input.</span>
+
+<span style="color: #9FC59F;">    Args:</span>
+<span style="color: #9FC59F;">        x (float): The number to cube.</span>
+
+<span style="color: #9FC59F;">    Returns:</span>
+<span style="color: #9FC59F;">        float: The cube of the input number.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> x**3
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The function definition is over, since we have reset indentation back to zero.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Subsequent commands may invoke square</span>
+
+<span style="color: #DFAF8F;">z</span> = 7.19
+<span style="color: #DFAF8F;">zc</span> = cube(z)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can even use (and reuse) square</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'z^3 = </span>{zc}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+z^3 = 371.69495900000004
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-function-simo" class="outline-3">
+<h3 id="function-simo"><span class="section-number-3">1.4.</span> A Function with a Single Input and Multiple Outputs</h3>
+<div class="outline-text-3" id="text-function-simo">
+<ul class="org-ul">
+<li>Listing <a href="#org9b5ce18">5</a> is a simple function with one input and multiple
+outputs.</li>
+<li>Formally, a Python function can return only a single output.</li>
+<li>To extract multiple outputs, we can make the function return a list or an
+other iterable.</li>
+<li>Here, we use a tuple:</li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>A very basic function with one input and multiple output values combined into a tuple.</label><pre class="src src-python" id="org9b5ce18"><span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">bar</span>(x: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #DCDCCC; font-weight: bold;">tuple</span>[<span style="color: #DCDCCC; font-weight: bold;">int</span>, <span style="color: #DCDCCC; font-weight: bold;">bool</span>]:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">    Returns two values for a single input x: the square of x and whether x is odd.</span>
+
+<span style="color: #9FC59F;">    Args:</span>
+<span style="color: #9FC59F;">        x (int): The input integer.</span>
+
+<span style="color: #9FC59F;">    Returns:</span>
+<span style="color: #9FC59F;">        tuple[int, bool]: A tuple containing:</span>
+<span style="color: #9FC59F;">            - int: The square of the input (x**2).</span>
+<span style="color: #9FC59F;">            - bool: True if x is odd, False otherwise.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #DFAF8F;">xsq</span> = x**2
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">% is the modulo operator.</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Thus: x % 2 is x modulo 2</span>
+
+    <span style="color: #DFAF8F;">xsq_odd</span> = x % 2 == 1
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The return value is a tuple containing</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">two elements</span>
+
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> (xsq, xsq_odd)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The function definition is over, since we have reset</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">indentation back to zero. # Subsequent commands may invoke square</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">There are two ways in which we can retrieve our output:</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">METHOD 1: We can treat the output as a list/tuple/iterable.</span>
+
+<span style="color: #DFAF8F;">out_list</span> = bar(2) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The single output is a tuple in this case</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'For an input of 2, bar returns:'</span>)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(out_list)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">METHOD 2: We can allow Python to "unpack" the tuple into</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">distinct variables</span>
+<span style="color: #DFAF8F;">z</span> = 3
+<span style="color: #DFAF8F;">zc</span>, <span style="color: #DFAF8F;">zc_odd</span> = bar(z) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">function output is unpacked into two variables</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">z = </span>{z}<span style="color: #CC9393;">; z^2 = </span>{zc}<span style="color: #CC9393;">; z^2 = odd? </span>{zc_odd}<span style="color: #CC9393;">'</span>)
+
+<span style="color: #DFAF8F;">w</span> = 4
+<span style="color: #DFAF8F;">wc</span>, <span style="color: #DFAF8F;">wc_odd</span> = bar(w)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">w = </span>{w}<span style="color: #CC9393;">; w^2 = </span>{wc}<span style="color: #CC9393;">; z^2 = odd? </span>{wc_odd}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+For an input of 2, bar returns:
+(4, False)
+
+z = 3; z^2 = 9; z^2 = odd? True
+
+w = 4; w^2 = 16; z^2 = odd? False
+</pre>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-level-6-classes" class="outline-2">
+<h2 id="level-6-classes"><span class="section-number-2">2.</span> Classes</h2>
+<div class="outline-text-2" id="text-level-6-classes">
+<ul class="org-ul">
+<li>Classes are a very powerful programming concept.</li>
+<li>You get to define:
+<ul class="org-ul">
+<li>your own data type (a <b>class</b>) and</li>
+<li>how variables of your class (<b>objects</b>) behave and interact.</li>
+</ul></li>
+<li>Classes and objects generalize the concepts of <b>types</b> and <b>variables</b>
+<ul class="org-ul">
+<li>This could be written in an analogy: <code>variable:type::object:class</code></li>
+</ul></li>
+<li>Classes are useful because we can define classes that use objects to represent
+real-world systems in a natural way.
+<ul class="org-ul">
+<li>This is done in two major ways:
+<ul class="org-ul">
+<li>defining <b>attributes</b> for the class and/or ojbects of that class
+<ul class="org-ul">
+<li><b>attributes</b> may also be called <b>properties</b> or <b>members</b></li>
+<li>Examples:
+<ul class="org-ul">
+<li>A class representing a person might have the following attributes:
+<code>name</code>, <code>age</code>, <code>sex</code>, etc.</li>
+<li>A class representing a pet might have properties such as <code>name</code>,
+<code>kind</code> (<code>'dog'</code>, <code>'cat'</code>, <code>'fish'</code>, &#x2026;), <code>age</code>, etc.</li>
+</ul></li>
+</ul></li>
+<li>defining <b>behaviors</b> for objects in the class
+<ul class="org-ul">
+<li>Behaviors are also called <b>methods</b> or <b>method functions</b></li>
+<li>These are simply functions that are associated with the class that can
+be used to manipulate or transform objects</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>
+As an example, we might define a <code>Person</code> class to store information about
+various individuals. Each individual we wish to represent will have his
+or her own object. We would define in the class properties (attributes)
+that people have, such as a name and an age.
+</p>
+
+<p>
+We have elementary data types, such as <code>int</code>, <code>float</code>, <code>char</code>, etc. We
+also have iterables (<code>list</code>, <code>tuple</code>, <code>dict</code>, etc.). Classes allow us to
+define objects which may be composite data types: objects in the class
+may have properties of various elementary types.
+</p>
+
+<p>
+Let's learn how the basics of this very powerful concept here.
+</p>
+</div>
+
+<div id="outline-container-defining-a-person-class" class="outline-3">
+<h3 id="defining-a-person-class"><span class="section-number-3">2.1.</span> Defining a Person Class</h3>
+<div class="outline-text-3" id="text-defining-a-person-class">
+<p>
+To define a class, we need the basic parts.
+</p>
+
+<ul class="org-ul">
+<li>Header line.
+
+<ul class="org-ul">
+<li>Every class definition begins with the keyword <code>class</code>.</li>
+
+<li>The class name follows <code>class</code>, and typically begins with a capital
+letter, signifying that this is a user-defined class.</li>
+
+<li>The class header ends in a colon (<code>:</code>)</li>
+</ul></li>
+
+<li>Body
+
+<ul class="org-ul">
+<li>The body includes any code following the header delineated by at
+least one level of indentation deeper than the header.</li>
+</ul></li>
+
+<li>Listing <a href="#orge2567bb">6</a> defines a <code>Person</code> class with two attributes. These
+are defined in the <code>__init__()</code> method (function).
+<ul class="org-ul">
+<li>The <code>__init__()</code> method plays a very special role, since it initializes
+instances of the class (objects)</li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>This defines a simple <code>Person</code> class, and it includes <code>name</code> and <code>age</code> as attributes.</label><pre class="src src-python" id="orge2567bb"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Person</span>:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">    Represents a person with a name and age.</span>
+
+<span style="color: #9FC59F;">    Attributes:</span>
+<span style="color: #9FC59F;">        name (str): The name of the person.</span>
+<span style="color: #9FC59F;">        age (int): The age of the person.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">__init__</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, name: <span style="color: #DCDCCC; font-weight: bold;">str</span>, age: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #BFEBBF;">None</span>:
+        <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">        Initializes a Person instance with a name and age.</span>
+
+<span style="color: #9FC59F;">        Args:</span>
+<span style="color: #9FC59F;">            name (str): The name of the person.</span>
+<span style="color: #9FC59F;">            age (int): The age of the person.</span>
+<span style="color: #9FC59F;">        """</span>
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.<span style="color: #DFAF8F;">name</span>: <span style="color: #DCDCCC; font-weight: bold;">str</span> = name
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.<span style="color: #DFAF8F;">age</span>: <span style="color: #DCDCCC; font-weight: bold;">int</span> = age
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Indentation is reset to end the class definition</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Now, we use the class</span>
+
+<span style="color: #DFAF8F;">me</span> = Person(<span style="color: #CC9393;">'Ricky'</span>, <span style="color: #CC9393;">'23'</span>)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define me as an object of cass Person</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(me)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print information about the object</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can access object attributes (fields, properties) using "dot" notation</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(me.name)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(me.age)
+
+</pre>
+</div>
+
+<pre class="example">
+&lt;__main__.Person object at 0x0000015FC8155D00&gt;
+Ricky
+23
+</pre>
+
+
+<ul class="org-ul">
+<li>Note that the <code>self</code> argument is important in defining methods.
+<ul class="org-ul">
+<li><code>self</code> is a reference to an object that we wish to create or manipulate or
+modify</li>
+<li><code>self</code> is is a required argument to any method</li>
+</ul></li>
+</ul>
+
+<p>
+We observe that classes are useful for storing related pieces of
+information in a custom-variable known as an <b>object</b>.
+</p>
+
+<p>
+Now, let us add another method to indicate how useful it is to define
+both properties and methods.
+</p>
+</div>
+</div>
+
+<div id="outline-container-adding-another-method-to-the-person-class" class="outline-3">
+<h3 id="adding-another-method-to-the-person-class"><span class="section-number-3">2.2.</span> Adding Another Method to the Person Class</h3>
+<div class="outline-text-3" id="text-adding-another-method-to-the-person-class">
+<ul class="org-ul">
+<li>We write another method by defining this function (<code>def introduce(self):</code>) one
+level of indentation subordinate to the class definition.</li>
+<li>This is shown in Listing <a href="#org65deff1">7</a></li>
+</ul>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>We add an <code>introduce()</code> method to the <code>Person</code> class.</label><pre class="src src-python" id="org65deff1"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Person</span>:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">    Represents a person with a name and age.</span>
+
+<span style="color: #9FC59F;">    Attributes:</span>
+<span style="color: #9FC59F;">        name (str): The name of the person.</span>
+<span style="color: #9FC59F;">        age (int): The age of the person.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">__init__</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>, name: <span style="color: #DCDCCC; font-weight: bold;">str</span>, age: <span style="color: #DCDCCC; font-weight: bold;">int</span>) -&gt; <span style="color: #BFEBBF;">None</span>:
+        <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">        Initializes a Person instance with a name and age.</span>
+
+<span style="color: #9FC59F;">        Args:</span>
+<span style="color: #9FC59F;">            name (str): The name of the person.</span>
+<span style="color: #9FC59F;">            age (int): The age of the person.</span>
+<span style="color: #9FC59F;">        """</span>
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.<span style="color: #DFAF8F;">name</span>: <span style="color: #DCDCCC; font-weight: bold;">str</span> = name
+        <span style="color: #F0DFAF; font-weight: bold;">self</span>.<span style="color: #DFAF8F;">age</span>: <span style="color: #DCDCCC; font-weight: bold;">int</span> = age
+
+    <span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">introduce</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>) -&gt; <span style="color: #BFEBBF;">None</span>:
+        <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">        Prints an introduction message including the person's name and age.</span>
+
+<span style="color: #9FC59F;">        Example:</span>
+<span style="color: #9FC59F;">            &gt;&gt;&gt; person = Person("Alice", 30)</span>
+<span style="color: #9FC59F;">            &gt;&gt;&gt; person.introduce()</span>
+<span style="color: #9FC59F;">            I am Alice, and I'm 30 years old.</span>
+<span style="color: #9FC59F;">        """</span>
+        <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">"I am {0}, and I'm {1} years old."</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(<span style="color: #F0DFAF; font-weight: bold;">self</span>.name, <span style="color: #F0DFAF; font-weight: bold;">self</span>.age))
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Indentation is reset to end the class definition</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Now, we use the class</span>
+<span style="color: #DFAF8F;">me</span> = Person(<span style="color: #CC9393;">'Ricky'</span>, <span style="color: #CC9393;">'23'</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Invoke the "introduce" method</span>
+
+me.introduce()
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Note: the syntax for calling a method is obj.method()</span>
+
+</pre>
+</div>
+
+<pre class="example">
+I am Ricky, and I'm 23 years old.
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr. E.P. Blair</p>
+<p class="date">Created: 2025-01-16 Thu 11:55</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
