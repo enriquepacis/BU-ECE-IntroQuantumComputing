@@ -748,7 +748,7 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 
   #+name: fig:defaultName
   #+attr_html: :width 480px
-  #+caption: Default caption.
+  #+caption: This is a two-qubit circuit with a measurement in the middle of the circuit.
   [[./img/CktAerSim.png]]
 
   - Here, the =save_statevector()= method defines a point in the circuit at
@@ -777,5 +777,59 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
   \begin{equation}
   \frac{\sqrt{2}}{2} |10\rangle+\frac{\sqrt{2}}{2} |11\rangle
   \end{equation}
+** Example 2: Circuit with Statevector in Middle of Circuit
+- Now, we provide an example where the state vector is saved from a point prior to the end of the circuit.
+  #+begin_src python :results output :session aersim :exports both
+    qc = QuantumCircuit(4)
+    qc.h(3)
+    qc.cx(3,2)
+    qc.save_statevector()
+    qc.cx(3,1)
+    qc.cx(3,0)
+    qc.measure_all()
 
-  
+    qc.draw(reverse_bits=True)
+  #+end_src
+
+  #+begin_src python :results output :session aersim :exports none
+    fname = os.path.join( 'html', 'img', 'AerSimMultiStatevectCkt.png')
+    qc.draw(reverse_bits=True, filename=fname)
+
+    orgfig( fname[5:] )
+  #+end_src
+
+  #+RESULTS:
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/AerSimMultiStatevectCkt.png]]
+
+  #+name: fig:defaultName
+  #+attr_html: :width 640px
+  #+caption: This circuit saves a =Statevector= in the middle of the calculation and just prior to measurement.
+  [[./img/AerSimMultiStatevectCkt.png]]
+
+*** Transpile and Run the Circuit
+- Next, we transpile and run the circuit:
+  #+begin_src python :results output :session aersim :exports both
+    qc_aer = transpile(qc, backend=simulator_aer)
+
+    result = simulator_aer.run(qc_aer).result()
+ 
+    ψ = result.get_statevector()
+    ψ
+  #+end_src
+
+  #+RESULTS:
+
+  #+begin_src python :results output :session aersim :exports none
+    print(ψ.draw(output='latex_source'))
+  #+end_src
+
+  #+RESULTS:
+  : \frac{\sqrt{2}}{2} |0000\rangle+\frac{\sqrt{2}}{2} |1100\rangle
+
+  \begin{equation}
+  \frac{\sqrt{2}}{2} |0000\rangle+\frac{\sqrt{2}}{2} |1100\rangle
+  \end{equation}
