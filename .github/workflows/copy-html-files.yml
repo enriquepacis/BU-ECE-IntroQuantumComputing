@@ -1,0 +1,51 @@
+name: Copy Specific HTML Files
+
+on:
+  push:
+    paths:
+      - 'org/html/**' # Trigger the workflow when files in org/html/ change
+
+jobs:
+  copy-html:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Copy specific HTML files
+      run: |
+        # Define the list of HTML files to copy
+        files_to_copy=(
+          "org/html/index.html"
+          "org/html/PythonSetup.html"
+          "org/html/PythonBasics.html"
+          "org/html/PythonIntermediateSkills.html"
+          "org/html/AppendixQiskitIBMSimRun.html"
+        )
+
+        # Ensure the docs directory exists
+        mkdir -p docs
+
+        # Copy each file from the list to the docs/ directory
+        for file in "${files_to_copy[@]}"; do
+          if [ -f "$file" ]; then
+            cp "$file" docs/
+          else
+            echo "Warning: $file does not exist, skipping."
+          fi
+        done
+
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add docs/
+        git commit -m "Copy specific HTML files from org/html to docs"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: List files in docs
+      run: ls -l docs
+

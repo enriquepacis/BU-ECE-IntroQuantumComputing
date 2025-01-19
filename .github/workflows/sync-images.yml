@@ -1,0 +1,31 @@
+name: Sync Images
+
+on:
+  push:
+    paths:
+      - 'org/html/img/**' # Trigger the workflow only when files in org/img change
+
+jobs:
+  sync-images:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Copy images to docs/img
+      run: |
+        mkdir -p docs/img
+        cp -r org/html/img/* docs/img/
+
+    - name: Commit and push changes
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add docs/img/
+        git commit -m "Sync images from org/html/img to docs/img"
+        git push
+      env:
+        # Provide access to push back to the repository
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
