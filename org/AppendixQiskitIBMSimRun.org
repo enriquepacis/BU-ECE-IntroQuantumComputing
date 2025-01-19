@@ -918,4 +918,154 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 : {'111111111111111111111111': 537, '000000000000000000000000': 487}
 : Time elapsed:  0.025 s
 
-**** Simulation Methods
+** Simulation Methods
+- Qiskit Aer supports different types of simulation, accessible through the
+  =method= keyword argument to the =run()= command.
+  - The default is =method='statevector'=
+    - The limit here is 24 qubits
+  - Other methods include ='matrix_product_state'=
+*** Build a Large Circuit
+
+#+begin_src python :results output :session aersim :exports both
+  n = 50
+  qc = QuantumCircuit(n)
+  qc.h(n-1)
+
+  for i in range(n-1, 0, -1):
+      qc.cx(i,i-1)
+
+  qc.measure_all()
+
+  if n < 16:
+      display(qc.draw(reverse_bits=True))
+  else:
+      print('Suppressed display of large circuit.')
+#+end_src
+
+#+RESULTS:
+: Suppressed display of large circuit.
+
+*** Run and Time the Simulation
+
+#+begin_src python :results output :session aersim :exports both
+  # In Jupyter Lab, uncomment the '%%time'
+  # %%time
+
+  # timing for non-Jupyter-Lab work
+  start = time.time() # log start time - not required for Jupyter
+  result = simulator_aer.run( qc, shots=1024, method='matrix_product_state' ).result()
+  end = time.time() # log end time - not required for Jupyter
+  time_aer_sim = end - start # not needed in Jupyter
+
+  counts = result.get_counts()
+  print(counts)
+
+  # print() not needed if using %%time in Jupyter Lab
+  print('Time elapsed: {0:6.3f} s'.format( time_aer_sim ))
+#+end_src
+
+#+RESULTS:
+: {'11111111111111111111111111111111111111111111111111': 492, '00000000000000000000000000000000000000000000000000': 532}
+: Time elapsed:  0.081 s
+
+** Noisy Simulation
+
+*** Build a Circuit
+#+begin_src python :results output :session aersim :exports both
+  qc = QuantumCircuit(2,2)
+  qc.h(1)
+  qc.cx(1,0)
+  qc.measure([1,0],[1,0])
+
+  qc.draw()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session aersim :exports none
+  fname = os.path.join( 'html', 'img', 'noisyCktExample.png')
+
+  qc.draw(filename=fname)
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/noisyCktExample.png]]
+
+#+name: fig:cktAerSimNoisy
+#+attr_html: :width 480px
+#+caption: This is a small circuit for noisy simulation using the =AerSimulator=.
+[[./img/noisyCktExample.png]]
+
+*** Ideal Result
+
+#+begin_src python :results output :session aersim :exports both
+  # This will throw an error for n > 25 using method='statevector'
+  qc_aer = transpile( qc, backend=simulator_aer )
+  result_ideal = simulator_aer.run( qc_aer, shots=1024 ).result()
+  counts_ideal = result_ideal.get_counts()
+  print(counts_ideal)
+#+end_src
+
+#+RESULTS:
+: {'11': 520, '00': 504}
+
+*** Noisy Result
+
+#+begin_src python :results output :session aersim :exports both
+  from qiskit_aer import noise
+
+  prob = 0.1
+  error = noise.depolarizing_error( prob, 2 )
+
+  noise_model = noise.NoiseModel()
+  noise_model.add_all_qubit_quantum_error( error, ['cx'])
+  basis_gates = noise_model.basis_gates
+
+  result_noisy = simulator_aer.run(qc,
+                                  shots=1024,
+                                  noise_model=noise_model,
+                                  basis_gates=basis_gates).result()
+
+  counts_noisy = result_noisy.get_counts()
+#+end_src
+
+#+RESULTS:
+
+*** Compare Ideal Result and Noisy Result
+
+#+begin_src python :results output :session aersim :exports both
+  from qiskit.visualization import plot_histogram, plot_distribution
+
+  # In Jupyter Lab, uncomment this to see the compared distributions
+  # plot_distribution( [counts_ideal, counts_noisy], title='Noiseless vs. Noisy Simulated Counts' )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session aersim :exports none
+  fig = plot_distribution( [counts_ideal, counts_noisy], title='Noiseless vs. Noisy Simulated Counts' )
+
+  fname = os.path.join('html', 'img', 'AerSimIdealvsNoisy.png')
+
+  fig.savefig( fname )
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/AerSimIdealvsNoisy.png]]
+
+#+name: fig:IdealvNoisyAerSim
+#+attr_html: :width 640px
+#+caption: An ideal =AerSimulator= result is compared to a noisy result.
+[[./img/AerSimIdealvsNoisy.png]]
