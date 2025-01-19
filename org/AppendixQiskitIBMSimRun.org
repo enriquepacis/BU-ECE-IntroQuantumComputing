@@ -2,7 +2,7 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ./html/AppendixQiskitIBM.html
+#+export_file_name: ./html/AppendixQiskitIBMSimRun.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Qiskit + IBM: Simulation and Calculation
@@ -729,8 +729,6 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
   #+end_src
 
   #+RESULTS: lst:AerSimCkt
-  : /var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-kdqTaU:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
-  :   qc.h(0).c_if(0,1) # apply a X gate to qubit 0 if classical bit 1 is 1
     
   #+name: lst:AerSimCktOrgExport
   #+begin_src python :results output :session aersim :exports none
@@ -738,9 +736,15 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
     fname = os.path.join('html', 'img', 'CktAerSim.png')
     qc.draw(reverse_bits=True, filename=fname)
 
+    orgfig( fname[5:] )
   #+end_src
 
   #+RESULTS: lst:AerSimCktOrgExport
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/CktAerSim.png]]
 
   #+name: fig:defaultName
   #+attr_html: :width 480px
@@ -749,3 +753,29 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 
   - Here, the =save_statevector()= method defines a point in the circuit at
     which we wish to knkow the state vector
+** Run the =AerSimulator()=
+
+- We first transpile the circuit so it is suitable for our simulator, and then we run it:
+  #+begin_src python :results output :session aersim :exports both
+    qc_aer = transpile(qc, backend=simulator_aer)
+ 
+    result = simulator_aer.run(qc_aer).result()
+ 
+    ψ = result.get_statevector()
+    ψ # show the state vector in Jupyter Lab
+  #+end_src
+
+  #+RESULTS:
+
+  #+begin_src python :results output :session aersim :exports none
+    print( ψ.draw(output='latex_source') ) # show the state vector in Jupyter Lab
+  #+end_src
+
+  #+RESULTS:
+  : \frac{\sqrt{2}}{2} |10\rangle+\frac{\sqrt{2}}{2} |11\rangle
+
+  \begin{equation}
+  \frac{\sqrt{2}}{2} |10\rangle+\frac{\sqrt{2}}{2} |11\rangle
+  \end{equation}
+
+  
