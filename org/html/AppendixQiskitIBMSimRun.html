@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-18 Sat 22:19 -->
+<!-- 2025-01-18 Sat 22:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Qiskit + IBM: Simulation and Calculation</title>
@@ -63,47 +63,48 @@
 <li><a href="#qinfoOverview">1. Overview</a></li>
 <li><a href="#qinfoModule">2. The <code>quantum_info</code> Module</a>
 <ul>
-<li><a href="#org82293e4">2.1. Overview</a></li>
-<li><a href="#org2e2515a">2.2. Make a Quantum Circuit</a></li>
-<li><a href="#orgfab4499">2.3. Get an Output <code>Statevector()</code> Object</a></li>
-<li><a href="#orgf3dab58">2.4. Measurement Probabilities</a></li>
-<li><a href="#org65c83cb">2.5. Simulated Experiments</a>
+<li><a href="#orgf64525d">2.1. Overview</a></li>
+<li><a href="#orgc388719">2.2. Make a Quantum Circuit</a></li>
+<li><a href="#orgbe46017">2.3. Get an Output <code>Statevector()</code> Object</a></li>
+<li><a href="#orgf5d72cd">2.4. Measurement Probabilities</a></li>
+<li><a href="#org3101e43">2.5. Simulated Experiments</a>
 <ul>
-<li><a href="#orgd1a2213">2.5.1. Measurement Outcomes for Each Shot</a></li>
-<li><a href="#org0ec31eb">2.5.2. Cumulative Results over an Ensemble</a></li>
-<li><a href="#org2a008f8">2.5.3. Expectation Values</a></li>
-<li><a href="#org06eacb7">2.5.4. Bloch Vectors</a></li>
-<li><a href="#org83b463e">2.5.5. Density Matrices</a></li>
+<li><a href="#org1e4386d">2.5.1. Measurement Outcomes for Each Shot</a></li>
+<li><a href="#orge9ead87">2.5.2. Cumulative Results over an Ensemble</a></li>
+<li><a href="#org3191c80">2.5.3. Expectation Values</a></li>
+<li><a href="#org0772a39">2.5.4. Bloch Vectors</a></li>
+<li><a href="#org4ab8e88">2.5.5. Density Matrices</a></li>
 </ul>
 </li>
-<li><a href="#org373033b">2.6. Conclusion</a></li>
+<li><a href="#orgd3605f6">2.6. Conclusion</a></li>
 </ul>
 </li>
 <li><a href="#sec:BasicSimulator">3. The <code>BasicSimulator</code> Class</a>
 <ul>
-<li><a href="#org4ab5f53">3.1. Build a Circuit</a></li>
-<li><a href="#orgaad0189">3.2. Simulating the Circuit</a></li>
-<li><a href="#org4044ad5">3.3. Getting the Results</a>
+<li><a href="#org9ee9ba8">3.1. Build a Circuit</a></li>
+<li><a href="#org0095d7d">3.2. Simulating the Circuit</a></li>
+<li><a href="#org6dee416">3.3. Getting the Results</a>
 <ul>
-<li><a href="#orgc702fda">3.3.1. Simulation Counts</a></li>
-<li><a href="#orgd03e8d3">3.3.2. Visualizing the Results</a></li>
-<li><a href="#org428a407">3.3.3. Inspecting Results from Individual Measurements</a></li>
+<li><a href="#org859a65f">3.3.1. Simulation Counts</a></li>
+<li><a href="#org5332d55">3.3.2. Visualizing the Results</a></li>
+<li><a href="#org0e2fbd7">3.3.3. Inspecting Results from Individual Measurements</a></li>
 </ul>
 </li>
-<li><a href="#org2480fe5">3.4. Handling Complex Circuits</a>
+<li><a href="#org215bbaa">3.4. Handling Complex Circuits</a>
 <ul>
-<li><a href="#orgcf1a859">3.4.1. Transpilation</a></li>
+<li><a href="#org1337698">3.4.1. Transpilation</a></li>
 </ul>
 </li>
-<li><a href="#orgcf42d95">3.5. Conclusion</a></li>
+<li><a href="#org3dc7866">3.5. Conclusion</a></li>
 </ul>
 </li>
 <li><a href="#sec:QiskitAerSimulator">4. The Qiskit <code>AerSimulator</code></a>
 <ul>
-<li><a href="#org0a7c1bc">4.1. Overview</a></li>
-<li><a href="#orgd711833">4.2. Imports</a></li>
-<li><a href="#orgff8b0c7">4.3. Build a Circuit</a></li>
-<li><a href="#org17e40dc">4.4. Run the <code>AerSimulator()</code></a></li>
+<li><a href="#orga3bd323">4.1. Overview</a></li>
+<li><a href="#org989c55b">4.2. Imports</a></li>
+<li><a href="#orgc697c9f">4.3. Build a Circuit</a></li>
+<li><a href="#orga91a114">4.4. Run the <code>AerSimulator()</code></a></li>
+<li><a href="#org96ab8de">4.5. Example 2: Circuit with Statevector in Middle of Circuit</a></li>
 </ul>
 </li>
 </ul>
@@ -153,8 +154,8 @@ syntax of job submission.</li>
 </p>
 </div>
 
-<div id="outline-container-org82293e4" class="outline-3">
-<h3 id="org82293e4"><span class="section-number-3">2.1.</span> Overview</h3>
+<div id="outline-container-orgf64525d" class="outline-3">
+<h3 id="orgf64525d"><span class="section-number-3">2.1.</span> Overview</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>The <code>quantum_info</code> module is built into <code>qiskit</code> and provides some basic
@@ -170,14 +171,14 @@ output of a circuit</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org2e2515a" class="outline-3">
-<h3 id="org2e2515a"><span class="section-number-3">2.2.</span> Make a Quantum Circuit</h3>
+<div id="outline-container-orgc388719" class="outline-3">
+<h3 id="orgc388719"><span class="section-number-3">2.2.</span> Make a Quantum Circuit</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 In a Jupyter notebook we could make a cell like this:
 </p>
 <div class="org-src-container">
-<pre class="src src-python" id="orgbe5334f"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
+<pre class="src src-python" id="org1ec8c0a"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
 <span style="color: #F0DFAF; font-weight: bold;">import</span> qiskit.quantum_info <span style="color: #F0DFAF; font-weight: bold;">as</span> qi
 
 <span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2)
@@ -192,18 +193,18 @@ qc.h([0,1]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;"
 
 <p>
 In Jupyter Lab, your result may be displayed automatically and look like Figure
-<a href="#org85a0881">1</a>.
+<a href="#orged921b9">1</a>.
 </p>
 
-<div id="org85a0881" class="figure">
+<div id="orged921b9" class="figure">
 <p><img src="./img/xh2.png" alt="xh2.png" width="300px" />
 </p>
 <p><span class="figure-number">Figure 1: </span>A simple <code>qiskit</code> quantum circuit.</p>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfab4499" class="outline-3">
-<h3 id="orgfab4499"><span class="section-number-3">2.3.</span> Get an Output <code>Statevector()</code> Object</h3>
+<div id="outline-container-orgbe46017" class="outline-3">
+<h3 id="orgbe46017"><span class="section-number-3">2.3.</span> Get an Output <code>Statevector()</code> Object</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 We can then obtain the circuit output in <code>Statevector</code> form:
@@ -231,15 +232,15 @@ to  see a result that's nicer than the one shown here. It may look like this:
 </p>
 
 \begin{equation}
-\label{org3f832a7}
+\label{orgeb6e887}
 \frac{1}{2} |00\rangle- \frac{1}{2} |01\rangle+\frac{1}{2} |10\rangle-
 \frac{1}{2} |11\rangle
 \end{equation}
 </div>
 </div>
 
-<div id="outline-container-orgf3dab58" class="outline-3">
-<h3 id="orgf3dab58"><span class="section-number-3">2.4.</span> Measurement Probabilities</h3>
+<div id="outline-container-orgf5d72cd" class="outline-3">
+<h3 id="orgf5d72cd"><span class="section-number-3">2.4.</span> Measurement Probabilities</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Once we have a <code>Statevector</code> object, we can use it to see the probabilities of
@@ -263,8 +264,8 @@ occurring.
 </div>
 </div>
 
-<div id="outline-container-org65c83cb" class="outline-3">
-<h3 id="org65c83cb"><span class="section-number-3">2.5.</span> Simulated Experiments</h3>
+<div id="outline-container-org3101e43" class="outline-3">
+<h3 id="org3101e43"><span class="section-number-3">2.5.</span> Simulated Experiments</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 Generally, a quantum computing experiment requires establishing a circuit and
@@ -273,8 +274,8 @@ and a collection of shots is an <b>ensemble</b> of measurements.
 </p>
 </div>
 
-<div id="outline-container-orgd1a2213" class="outline-4">
-<h4 id="orgd1a2213"><span class="section-number-4">2.5.1.</span> Measurement Outcomes for Each Shot</h4>
+<div id="outline-container-org1e4386d" class="outline-4">
+<h4 id="org1e4386d"><span class="section-number-4">2.5.1.</span> Measurement Outcomes for Each Shot</h4>
 <div class="outline-text-4" id="text-2-5-1">
 <p>
 We can use <code>ψ</code> to simulate circuit measurements using the <code>sample_memory()</code>
@@ -291,13 +292,13 @@ samples, that is, the number of times each outcome was measured.
 </div>
 
 <pre class="example">
-['11' '01' '11' '00' '11' '00' '11' '11' '10' '10']
+['10' '11' '00' '01' '10' '00' '11' '00' '11' '11']
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org0ec31eb" class="outline-4">
-<h4 id="org0ec31eb"><span class="section-number-4">2.5.2.</span> Cumulative Results over an Ensemble</h4>
+<div id="outline-container-orge9ead87" class="outline-4">
+<h4 id="orge9ead87"><span class="section-number-4">2.5.2.</span> Cumulative Results over an Ensemble</h4>
 <div class="outline-text-4" id="text-2-5-2">
 <ul class="org-ul">
 <li>If we don't care about each shot, but rather, we care more about aggregate
@@ -314,7 +315,7 @@ a frequency (number of occurrences) for each outcome measured.</li>
 </div>
 
 <pre class="example">
-{np.str_('00'): np.int64(267), np.str_('01'): np.int64(264), np.str_('10'): np.int64(232), np.str_('11'): np.int64(261)}
+{np.str_('00'): np.int64(255), np.str_('01'): np.int64(274), np.str_('10'): np.int64(242), np.str_('11'): np.int64(253)}
 </pre>
 
 
@@ -330,7 +331,7 @@ following, but uncomment the <code>plot_histogram()</code> command:
 </div>
 
 
-<div id="orgf5aa9e0" class="figure">
+<div id="orgd771e8f" class="figure">
 <p><img src="./img/basic_hist.png" alt="basic_hist.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 2: </span>This is a histogram of simulated measurents based on a <code>Statevector</code> output from a quantum circuit.</p>
@@ -343,15 +344,15 @@ vector object to simulate measurements.
 </div>
 </div>
 
-<div id="outline-container-org2a008f8" class="outline-4">
-<h4 id="org2a008f8"><span class="section-number-4">2.5.3.</span> Expectation Values</h4>
+<div id="outline-container-org3191c80" class="outline-4">
+<h4 id="org3191c80"><span class="section-number-4">2.5.3.</span> Expectation Values</h4>
 <div class="outline-text-4" id="text-2-5-3">
 <p>
 State vector simulations also allow us to get expectation values, as defined in
-Equation \eqref{org47e934f}
+Equation \eqref{org564ac59}
 </p>
 \begin{equation}
-\label{org47e934f}
+\label{org564ac59}
 \left\langle \mathbf{O} \right\rangle = \left\langle \psi \left| \mathbf{O} \right| \psi  \right\rangle 
 \end{equation}
 
@@ -396,8 +397,8 @@ Next, we supply \(\mathbf{O}\) to the <code>ψ</code> (a <code>Statevector</code
 </div>
 </div>
 
-<div id="outline-container-org06eacb7" class="outline-4">
-<h4 id="org06eacb7"><span class="section-number-4">2.5.4.</span> Bloch Vectors</h4>
+<div id="outline-container-org0772a39" class="outline-4">
+<h4 id="org0772a39"><span class="section-number-4">2.5.4.</span> Bloch Vectors</h4>
 <div class="outline-text-4" id="text-2-5-4">
 <p>
 We can ask Python to draw the Bloch vector for ψ:
@@ -422,7 +423,7 @@ plt.savefig( fname )
 </div>
 
 
-<div id="org77698dc" class="figure">
+<div id="org2a917dc" class="figure">
 <p><img src="./img/basicBlochVect.png" alt="basicBlochVect.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 3: </span>Bloch vectors for the two qubits in ψ.</p>
@@ -431,8 +432,8 @@ plt.savefig( fname )
 </div>
 
 
-<div id="outline-container-org83b463e" class="outline-4">
-<h4 id="org83b463e"><span class="section-number-4">2.5.5.</span> Density Matrices</h4>
+<div id="outline-container-org4ab8e88" class="outline-4">
+<h4 id="org4ab8e88"><span class="section-number-4">2.5.5.</span> Density Matrices</h4>
 <div class="outline-text-4" id="text-2-5-5">
 <p>
 Similar to a <code>Statevector</code>, we can also get a <code>DensityMarix</code> from a
@@ -445,7 +446,7 @@ vector:
 </div>
 
 <ol class="org-ol">
-<li><a id="org73cee84"></a>Matrix Output<br />
+<li><a id="org38b7047"></a>Matrix Output<br />
 <div class="outline-text-5" id="text-2-5-5-1">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #DFAF8F;">&#961;</span> = qi.DensityMatrix( qc )
@@ -484,17 +485,17 @@ In Jupyter, we can plot the elements of the density matrix:
 </p>
 </div>
 </li>
-<li><a id="orgb2d3259"></a>The City Plot<br />
+<li><a id="orgb3c52ce"></a>The City Plot<br />
 <div class="outline-text-5" id="text-2-5-5-2">
 
-<div id="orga94b0df" class="figure">
+<div id="org14d0864" class="figure">
 <p><img src="./img/dmCityScape.png" alt="dmCityScape.png" width="600px" />
 </p>
 </div>
 </div>
 </li>
 
-<li><a id="org0ac5ef9"></a>Partial Trace<br />
+<li><a id="orgf0036fb"></a>Partial Trace<br />
 <div class="outline-text-5" id="text-2-5-5-3">
 <p>
 Given a multi-qubit density matrix, we can get a reduced density matrix for any
@@ -519,8 +520,8 @@ DensityMatrix([[0.5+0.j, 0.5+0.j],
 </div>
 </div>
 
-<div id="outline-container-org373033b" class="outline-3">
-<h3 id="org373033b"><span class="section-number-3">2.6.</span> Conclusion</h3>
+<div id="outline-container-orgd3605f6" class="outline-3">
+<h3 id="orgd3605f6"><span class="section-number-3">2.6.</span> Conclusion</h3>
 <div class="outline-text-3" id="text-2-6">
 <ul class="org-ul">
 <li>The <code>quantum_info</code> module is useful for:
@@ -550,8 +551,8 @@ DensityMatrix([[0.5+0.j, 0.5+0.j],
 include measurement gates</li>
 </ul>
 </div>
-<div id="outline-container-org4ab5f53" class="outline-3">
-<h3 id="org4ab5f53"><span class="section-number-3">3.1.</span> Build a Circuit</h3>
+<div id="outline-container-org9ee9ba8" class="outline-3">
+<h3 id="org9ee9ba8"><span class="section-number-3">3.1.</span> Build a Circuit</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Following Diego Serrano's tutorial, I build a circuit which includes
@@ -590,7 +591,7 @@ qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
 </div>
 
 <pre class="example">
-/var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-RdKXze:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
+/var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-D86V4J:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
   qc.x(0).c_if(1,1) # apply a X gate to qubit 0 if classical bit 1 is 1
 </pre></li>
 </ul></li>
@@ -598,7 +599,7 @@ qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
 
 
 
-<div id="orgf0e082b" class="figure">
+<div id="org3f99829" class="figure">
 <p><img src="./img/QCwithMeas.png" alt="QCwithMeas.png" width="525px" />
 </p>
 <p><span class="figure-number">Figure 4: </span>This circuit has two qubits and two classical bits. The classical bits are required for measuremnt.</p>
@@ -606,12 +607,12 @@ qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
 
 <p>
 In a Jupyter notebook, the output of <code>qc.draw()</code> will resemble Figure
-<a href="#orgf0e082b">4</a>.
+<a href="#org3f99829">4</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-orgaad0189" class="outline-3">
-<h3 id="orgaad0189"><span class="section-number-3">3.2.</span> Simulating the Circuit</h3>
+<div id="outline-container-org0095d7d" class="outline-3">
+<h3 id="org0095d7d"><span class="section-number-3">3.2.</span> Simulating the Circuit</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li><p>
@@ -642,8 +643,8 @@ simulation results</li>
 </div>
 </div>
 
-<div id="outline-container-org4044ad5" class="outline-3">
-<h3 id="org4044ad5"><span class="section-number-3">3.3.</span> Getting the Results</h3>
+<div id="outline-container-org6dee416" class="outline-3">
+<h3 id="org6dee416"><span class="section-number-3">3.3.</span> Getting the Results</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li><p>
@@ -660,7 +661,7 @@ We save the results as <code>results</code>:
 
 <pre class="example">
 &lt;class 'qiskit.result.result.Result'&gt;
-Result(backend_name='basic_simulator', backend_version='0.1', qobj_id='9d814686-89b7-496f-99ad-af52e2190dbd', job_id='ec5c6c3a-6930-412c-9fdc-e286062fdea6', success=True, results=[ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 507, '0x3': 517}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['c', 0], ['c', 1]], memory_slots=2, creg_sizes=[['c', 2]], name='circuit-255', global_phase=0.0, metadata={}), status=DONE, name='circuit-255', seed_simulator=np.int32(924760573), time_taken=0.017041921615600586)], date=None, status=COMPLETED, header=QobjHeader(backend_name='basic_simulator', backend_version='0.1'), time_taken=0.017048120498657227)
+Result(backend_name='basic_simulator', backend_version='0.1', qobj_id='8b3a5a24-8ff2-49d9-8882-9b67b528e454', job_id='44805e92-5618-4af2-a934-3dfd2d0f42c3', success=True, results=[ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 509, '0x3': 515}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['c', 0], ['c', 1]], memory_slots=2, creg_sizes=[['c', 2]], name='circuit-283', global_phase=0.0, metadata={}), status=DONE, name='circuit-283', seed_simulator=np.int32(1603108953), time_taken=0.01787590980529785)], date=None, status=COMPLETED, header=QobjHeader(backend_name='basic_simulator', backend_version='0.1'), time_taken=0.0178830623626709)
 </pre></li>
 
 <li>The results object has lots of information about our quantum experiment
@@ -668,8 +669,8 @@ simulation</li>
 </ul>
 </div>
 
-<div id="outline-container-orgc702fda" class="outline-4">
-<h4 id="orgc702fda"><span class="section-number-4">3.3.1.</span> Simulation Counts</h4>
+<div id="outline-container-org859a65f" class="outline-4">
+<h4 id="org859a65f"><span class="section-number-4">3.3.1.</span> Simulation Counts</h4>
 <div class="outline-text-4" id="text-3-3-1">
 <ul class="org-ul">
 <li><p>
@@ -683,14 +684,14 @@ A <code>get_counts()</code> method helps us retrieve the outcomes and their freq
 </div>
 
 <pre class="example">
-{'00': 507, '11': 517}
+{'00': 509, '11': 515}
 </pre></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgd03e8d3" class="outline-4">
-<h4 id="orgd03e8d3"><span class="section-number-4">3.3.2.</span> Visualizing the Results</h4>
+<div id="outline-container-org5332d55" class="outline-4">
+<h4 id="org5332d55"><span class="section-number-4">3.3.2.</span> Visualizing the Results</h4>
 <div class="outline-text-4" id="text-3-3-2">
 <ul class="org-ul">
 <li>We can plot the measurement results in two ways:
@@ -709,14 +710,14 @@ display( plot_histogram( counts ) )
 </div>
 
 
-<div id="org58bdd4f" class="figure">
+<div id="orgff770ce" class="figure">
 <p><img src="./img/basicSimHist.png" alt="basicSimHist.png" width="600px" />
 </p>
 <p><span class="figure-number">Figure 5: </span>A histogram from the results of a <code>BasicSimulator.run()</code> simulation.</p>
 </div>
 
 
-<div id="orgb079965" class="figure">
+<div id="org8d48821" class="figure">
 <p><img src="./img/basicSimPD.png" alt="basicSimPD.png" width="600px" />
 </p>
 <p><span class="figure-number">Figure 6: </span>A quasi-probability distribution from the results of a <code>BasicSimulator.run()</code> simulation. Quasiprobabilities are not actual probabilities, but rather estimates of probabilites obtained by dividing the number of occurrences of an event by the total number of experiments (shots).</p>
@@ -724,8 +725,8 @@ display( plot_histogram( counts ) )
 </div>
 </div>
 
-<div id="outline-container-org428a407" class="outline-4">
-<h4 id="org428a407"><span class="section-number-4">3.3.3.</span> Inspecting Results from Individual Measurements</h4>
+<div id="outline-container-org0e2fbd7" class="outline-4">
+<h4 id="org0e2fbd7"><span class="section-number-4">3.3.3.</span> Inspecting Results from Individual Measurements</h4>
 <div class="outline-text-4" id="text-3-3-3">
 <ul class="org-ul">
 <li>We can see the results of individual measurements if we use the <code>get_memory()</code> method for a <code>Results</code> object
@@ -746,14 +747,14 @@ overwhelming ourselves with numerous results</li>
 </div>
 
 <pre class="example">
-['00', '00', '00', '00', '11', '11', '00', '11']
+['11', '11', '00', '00', '00', '00', '11', '11']
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org2480fe5" class="outline-3">
-<h3 id="org2480fe5"><span class="section-number-3">3.4.</span> Handling Complex Circuits</h3>
+<div id="outline-container-org215bbaa" class="outline-3">
+<h3 id="org215bbaa"><span class="section-number-3">3.4.</span> Handling Complex Circuits</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>The basic simulator cannot handle more complex circuits readily, such as the QFT circuit</li>
@@ -771,15 +772,15 @@ qc.draw()
 </div>
 
 
-<div id="orgdd0f979" class="figure">
+<div id="orga9a166e" class="figure">
 <p><img src="./img/BasicSimQFT.png" alt="BasicSimQFT.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 7: </span>This is a more complex circuit including a QFT. <code>BasicSimulator</code> cannot handle this unless we first transpile it.</p>
 </div>
 </div>
 
-<div id="outline-container-orgcf1a859" class="outline-4">
-<h4 id="orgcf1a859"><span class="section-number-4">3.4.1.</span> Transpilation</h4>
+<div id="outline-container-org1337698" class="outline-4">
+<h4 id="org1337698"><span class="section-number-4">3.4.1.</span> Transpilation</h4>
 <div class="outline-text-4" id="text-3-4-1">
 <ul class="org-ul">
 <li>Circuits may be composed of gates of various types</li>
@@ -795,7 +796,7 @@ qc.draw()
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 1: </span>This code transpiles the circuit of Figure <a href="#orgdd0f979">7</a></label><pre class="src src-python" id="orgd50f3d0"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> transpile
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>This code transpiles the circuit of Figure <a href="#orga9a166e">7</a></label><pre class="src src-python" id="org5039637"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> transpile
 
 <span style="color: #DFAF8F;">qc_trans</span> = transpile( qc, backend=simulator_basic)
 
@@ -805,20 +806,20 @@ qc_trans.draw()
 </div>
 
 <p>
-Jupyter output for Listing will resemble Figure <a href="#orgd93dce5">8</a>
+Jupyter output for Listing will resemble Figure <a href="#orgc3d0d7e">8</a>
 </p>
 
-<div id="orgd93dce5" class="figure">
+<div id="orgc3d0d7e" class="figure">
 <p><img src="./img/BasicSimQFTtrans.png" alt="BasicSimQFTtrans.png" width="640px" />
 </p>
-<p><span class="figure-number">Figure 8: </span>This is a transpiled version of the circuit from Figure <a href="#orgdd0f979">7</a></p>
+<p><span class="figure-number">Figure 8: </span>This is a transpiled version of the circuit from Figure <a href="#orga9a166e">7</a></p>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgcf42d95" class="outline-3">
-<h3 id="orgcf42d95"><span class="section-number-3">3.5.</span> Conclusion</h3>
+<div id="outline-container-org3dc7866" class="outline-3">
+<h3 id="org3dc7866"><span class="section-number-3">3.5.</span> Conclusion</h3>
 <div class="outline-text-3" id="text-3-5">
 <ul class="org-ul">
 <li>The <code>BasicSimulator()</code> class is useful when we simulate a job where we need to
@@ -841,8 +842,8 @@ find counts or samples of a circuit with mid-circuit measurements</li>
 </p>
 </div>
 
-<div id="outline-container-org0a7c1bc" class="outline-3">
-<h3 id="org0a7c1bc"><span class="section-number-3">4.1.</span> Overview</h3>
+<div id="outline-container-orga3bd323" class="outline-3">
+<h3 id="orga3bd323"><span class="section-number-3">4.1.</span> Overview</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>The Qiskit Aer AerSimulator class can be used to simulate complex circuits with mid-circuit measurements</li>
@@ -850,8 +851,8 @@ find counts or samples of a circuit with mid-circuit measurements</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd711833" class="outline-3">
-<h3 id="orgd711833"><span class="section-number-3">4.2.</span> Imports</h3>
+<div id="outline-container-org989c55b" class="outline-3">
+<h3 id="org989c55b"><span class="section-number-3">4.2.</span> Imports</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>We begin by importing the required packages
@@ -873,15 +874,15 @@ find counts or samples of a circuit with mid-circuit measurements</li>
 </div>
 
 
-<div id="outline-container-orgff8b0c7" class="outline-3">
-<h3 id="orgff8b0c7"><span class="section-number-3">4.3.</span> Build a Circuit</h3>
+<div id="outline-container-orgc697c9f" class="outline-3">
+<h3 id="orgc697c9f"><span class="section-number-3">4.3.</span> Build a Circuit</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li><p>
-We define a circuit in Listing <a href="#org7003292">1</a>
+We define a circuit in Listing <a href="#org4969d33">1</a>
 </p>
 <div class="org-src-container">
-<pre class="src src-python" id="orgdb59841"><span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2,2) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">two qubits, and two classical bits</span>
+<pre class="src src-python" id="org60189ae"><span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2,2) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">two qubits, and two classical bits</span>
 
 qc.h(1) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">apply a H gate to qubit 1</span>
 qc.measure(1, 0) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">measure qubit 1, record its bit to classical bit 0</span>
@@ -893,16 +894,16 @@ qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
 </div>
 
 <pre class="example">
-/var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-pIoUIO:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
+/var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-Rj81dG:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
   qc.h(0).c_if(0,1) # apply a X gate to qubit 0 if classical bit 1 is 1
 </pre>
 
 
 
-<div id="orgf88ca56" class="figure">
+<div id="org5699b79" class="figure">
 <p><img src="./img/CktAerSim.png" alt="CktAerSim.png" width="480px" />
 </p>
-<p><span class="figure-number">Figure 9: </span>Default caption.</p>
+<p><span class="figure-number">Figure 9: </span>This is a two-qubit circuit with a measurement in the middle of the circuit.</p>
 </div>
 
 <ul class="org-ul">
@@ -912,8 +913,8 @@ which we wish to knkow the state vector</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org17e40dc" class="outline-3">
-<h3 id="org17e40dc"><span class="section-number-3">4.4.</span> Run the <code>AerSimulator()</code></h3>
+<div id="outline-container-orga91a114" class="outline-3">
+<h3 id="orga91a114"><span class="section-number-3">4.4.</span> Run the <code>AerSimulator()</code></h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li><p>
@@ -935,11 +936,40 @@ We first transpile the circuit so it is suitable for our simulator, and then we 
 </ul>
 </div>
 </div>
+<div id="outline-container-org96ab8de" class="outline-3">
+<h3 id="org96ab8de"><span class="section-number-3">4.5.</span> Example 2: Circuit with Statevector in Middle of Circuit</h3>
+<div class="outline-text-3" id="text-4-5">
+<ul class="org-ul">
+<li><p>
+Now, we provide an example where the state vector is saved from a point prior to the end of the circuit.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">qc</span> = QuantumCircuit(4)
+qc.h(3)
+qc.cx(3,2)
+qc.save_statevector()
+qc.cx(3,1)
+qc.cx(3,0)
+qc.measure_all()
+
+qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
+</pre>
+</div>
+
+
+<div id="org7413462" class="figure">
+<p><img src="./img/AerSimMultiStatevectCkt.png" alt="AerSimMultiStatevectCkt.png" width="640px" />
+</p>
+<p><span class="figure-number">Figure 10: </span>This circuit saves a <code>Statevector</code> in the middle of the calculation and just prior to measurement.</p>
+</div></li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-01-18 Sat 22:19</p>
+<p class="date">Created: 2025-01-18 Sat 22:34</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
