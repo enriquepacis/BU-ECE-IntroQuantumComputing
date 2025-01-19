@@ -833,3 +833,89 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
   \begin{equation}
   \frac{\sqrt{2}}{2} |0000\rangle+\frac{\sqrt{2}}{2} |1100\rangle
   \end{equation}
+
+** Efficient Simulation
+- Portions of the =AerSimulator= code are compiled to =C=
+  - This allows faster and more efficient simulations, which enables simulations
+    of larger and more complex circuits. 
+
+*** Build a Circuit
+#+begin_src python :results output :session aersim :exports both
+  n = 24
+  qc = QuantumCircuit(n)
+  qc.h(n-1)
+
+  for i in range(n-1, 0, -1):
+      qc.cx(i,i-1)
+
+  qc.measure_all()
+
+  if n < 16:
+      display(qc.draw(reverse_bits=True))
+  else:
+      print('Suppressed display of large circuit.')
+#+end_src
+
+#+RESULTS:
+: Suppressed display of large circuit.
+
+*** Run and Time the Circuit: =BasicSimulator= vs =AerSimulator=
+
+**** BasicSimulator
+- In the following code, I simulate and time the circuit
+- In Jupyter Lab, the time to run a cell can be obtained by adding ~%%time~ at
+  the top of the cell.
+- These notes are not written in Jupyter Lab, so I use the =time= module
+  - Key instructions:
+    - =import time= to access the module
+    - Use =time.time()= to get the current time
+    - The difference between two =time= objects can be used to calculate a time
+      interval in seconds
+      
+#+begin_src python :results output :session aersim :exports both
+  # In Jupyter Lab, uncomment the '%%time'
+  # %%time
+
+  # timing for non-Jupyter-Lab work
+  import time
+  start = time.time() # log start time - not required for Jupyter
+  result = simulator_basic.run( qc, shots=1024 ).result()
+  end = time.time() # log end time - not required for Jupyter
+  time_basic_sim = end - start # not needed in Jupyter
+
+  counts = result.get_counts()
+  print(counts)
+
+  # print() not needed if using %%time in Jupyter Lab
+  print('Time elapsed: {0:6.3f} s'.format( time_basic_sim ))
+#+end_src
+
+#+RESULTS:
+: {'000000000000000000000000': 531, '111111111111111111111111': 493}
+: Time elapsed: 17.700 s
+
+**** =AerSimulator=
+- We now run and time the same circuit using the =AerSimulator=, and we see it
+  is much faster for larger circuits
+#+begin_src python :results output :session aersim :exports both
+  # In Jupyter Lab, uncomment the '%%time'
+  # %%time
+
+  # timing for non-Jupyter-Lab work
+  start = time.time() # log start time - not required for Jupyter
+  result = simulator_aer.run( qc, shots=1024 ).result()
+  end = time.time() # log end time - not required for Jupyter
+  time_aer_sim = end - start # not needed in Jupyter
+
+  counts = result.get_counts()
+  print(counts)
+
+  # print() not needed if using %%time in Jupyter Lab
+  print('Time elapsed: {0:6.3f} s'.format( time_aer_sim ))
+#+end_src
+
+#+RESULTS:
+: {'111111111111111111111111': 537, '000000000000000000000000': 487}
+: Time elapsed:  0.025 s
+
+**** Simulation Methods
