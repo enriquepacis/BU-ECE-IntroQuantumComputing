@@ -52,6 +52,10 @@ export ZSH_ENV_VAR="SomeValue"
 
 [[./PythonSetup.html][Python Setup]]
 
-[[./PythonBasics.org][Basic Python Programming]]
+[[./PythonBasics.html][Basic Python Programming]]
 
-[[./PythonIntermediateSkills.org][Intermediate Python Programming]]
+[[./PythonIntermediateSkills.html][Intermediate Python Programming]]
+
+** Appendix
+
+[[./AppendixQiskitIBMSimRun.html][Qiskit + IBM Simulations and Calculations]]
