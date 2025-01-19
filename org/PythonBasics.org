@@ -2,7 +2,7 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ../docs/PythonBasics.html
+#+export_file_name: ./html/PythonBasics.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Python Basics
@@ -15,7 +15,7 @@ The following is helpful if we want to have =org-mode= sessions linking
 multiple code blocks /and/ we are using =direnv=.
 
 #+begin_src emacs-lisp :eval never-export
-(setq-local org-babel-python-command (expand-file-name "./.direnv/python-3.11/bin/python3"))
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
 #+end_src
 
 #+RESULTS:

@@ -1,0 +1,751 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ./html/AppendixQiskitIBM.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+
+#+title: Qiskit + IBM: Simulation and Calculation
+#+author: Dr. E.P. Blair
+
+
+* Notebook Setup                                                   :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+
+
+* Overview
+:PROPERTIES:
+:CUSTOM_ID: qinfoOverview
+:END:
+#+include: "./back-to-index.org"
+
+- This page focuses on quantum computing simulations or job submissions on IBM
+  hardware
+  - There are several ways to simulate quantum computations
+    - Statevector simulations
+    - Using SamplerV2 or EstimatorV2
+
+The general work-flow is to:
+1. Create a quantum circuit 
+2. Decide whether to simulate it or run it on quantum hardware
+   1. Typically, we simulate it first
+   2. We want our simulation syntax to match as closely as possible to the
+      syntax of job submission.
+
+* The =quantum_info= Module
+:PROPERTIES:
+:CUSTOM_ID: qinfoModule
+:END:
+#+include: "./back-to-index.org"
+
+** Overview
+- The =quantum_info= module is built into =qiskit= and provides some basic
+  simulations
+  - This is useful when we want to understand the quantum properties of the
+    output of a circuit
+  - It provides:
+    - =Statevector= simulations
+** Make a Quantum Circuit
+
+In a Jupyter notebook we could make a cell like this:
+#+name: qinfoCircuit
+#+begin_src python :results output :session qinfo :exports code
+  from qiskit import QuantumCircuit
+  import qiskit.quantum_info as qi
+
+  qc = QuantumCircuit(2)
+  qc.x(0) # add a NOT gate to qubit 0
+  qc.h([0,1]) # add a H to both qubits
+
+  # In a Jupyter notebook, you can uncomment "qc.draw()"
+  # to see your circuit
+  # qc.draw()
+#+end_src
+
+#+RESULTS: qinfoCircuit
+
+#+begin_src python :results output :session qinfo :exports none
+  import os
+  from pathlib import Path
+
+  imgdir = os.path.join('html', 'img')
+  Path(imgdir).mkdir( exist_ok=True, parents=True )
+  fname = os.path.join(imgdir, 'xh2.png')
+  qc.draw('mpl', filename=fname)
+
+  print( f'[[./{fname[5:]}]]' )
+#+end_src
+
+#+RESULTS:
+: [[./img/xh2.png]]
+
+In Jupyter Lab, your result may be displayed automatically and look like Figure
+[[fig:basicQuantumCircuit]].
+#+name: fig:basicQuantumCircuit
+#+attr_html: :width 300px
+#+caption: A simple =qiskit= quantum circuit.
+[[./img/xh2.png]]
+** Get an Output =Statevector()= Object
+We can then obtain the circuit output in =Statevector= form:
+
+#+begin_src python :results output :session qinfo :exports both
+  ψ = qi.Statevector( qc )
+
+  print( ψ )
+
+  # In a Jupyter Lab notebook, you can see the result using this:
+  # ψ.draw()
+#+end_src
+
+#+RESULTS:
+: Statevector([ 0.5+0.j, -0.5+0.j,  0.5+0.j, -0.5+0.j],
+:             dims=(2, 2))
+
+In a Jupyter notebook, you can comment ~print( ψ )~ and uncomment ~ψ.draw()~
+to  see a result that's nicer than the one shown here. It may look like this:
+
+#+name: eq:psiOutput
+\begin{equation}
+\frac{1}{2} |00\rangle- \frac{1}{2} |01\rangle+\frac{1}{2} |10\rangle-
+\frac{1}{2} |11\rangle
+\end{equation}
+
+#+begin_src python :results output :session qinfo :exports none
+  print( ψ.draw( output='latex_source' ) )
+#+end_src
+
+#+RESULTS:
+: \frac{1}{2} |00\rangle- \frac{1}{2} |01\rangle+\frac{1}{2} |10\rangle- \frac{1}{2} |11\rangle
+: test
+
+** Measurement Probabilities
+
+Once we have a ~Statevector~ object, we can use it to see the probabilities of
+measurement, which are the modulii squared of the coefficients:
+
+#+begin_src python :results output :session qinfo :exports both
+  print( psi.probabilities() )
+#+end_src
+
+#+RESULTS:
+: [0.25 0.25 0.25 0.25]
+
+In this case, there are four outcomes, each with a 1/4 probability of
+occurring.
+
+** Simulated Experiments
+
+Generally, a quantum computing experiment requires establishing a circuit and
+performing measurements many times. Each repetition is a *shot* or a *trial*,
+and a collection of shots is an *ensemble* of measurements.
+
+*** Measurement Outcomes for Each Shot
+We can use ~ψ~ to simulate circuit measurements using the ~sample_memory()~
+method. We specify a number of shots (trials), and we get a histogram of
+samples, that is, the number of times each outcome was measured.
+
+#+begin_src python :results output :session qinfo :exports both
+  samples = ψ.sample_memory( shots = 10 )
+
+  # This lists the outcomes measured for each of the 10 shots
+  print(samples)
+#+end_src
+
+#+RESULTS:
+: ['11' '01' '10' '10' '01' '11' '01' '11' '01' '11']
+
+*** Cumulative Results over an Ensemble
+- If we don't care about each shot, but rather, we care more about aggregate
+  data, we can use ~sample_counts()~
+  - For a given number of shots, it simulates the set of measurements, returning
+    a frequency (number of occurrences) for each outcome measured.
+#+begin_src python :results output :session qinfo :exports both
+  counts = ψ.sample_counts( shots = 1024 )
+  print(counts)
+#+end_src
+
+#+RESULTS:
+: {np.str_('00'): np.int64(266), np.str_('01'): np.int64(256), np.str_('10'): np.int64(244), np.str_('11'): np.int64(258)}
+
+The counts can be visualized in a histogram. In a Jupyter notebook, use the
+following, but uncomment the ~plot_histogram()~ command:
+#+begin_src python :results output :session qinfo :exports both
+  from qiskit.visualization import plot_histogram
+  # Uncomment in Jupyter to see histogram
+  # plot_histogram( counts )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qinfo :exports none
+  fname = os.path.join( 'html', 'img', 'basic_hist.png')
+  plot_histogram( counts, filename=fname )
+
+  print(f'[[./{fname[5:]}]]')
+#+end_src
+
+#+RESULTS:
+: [[./img/basic_hist.png]]
+
+#+name: fig:basicStatevectorCountsHist
+#+attr_html: :width 480px
+#+caption: This is a histogram of simulated measurents based on a =Statevector= output from a quantum circuit.
+[[./img/basic_hist.png]]
+
+State vector simulations get us a state vector, and we are using that state
+vector object to simulate measurements.
+
+*** Expectation Values
+
+State vector simulations also allow us to get expectation values, as defined in
+Equation [[eq:ExpectationValue]]
+#+name: eq:ExpectationValue
+\begin{equation}
+\left\langle \mathbf{O} \right\rangle = \left\langle \psi \left| \mathbf{O} \right| \psi  \right\rangle 
+\end{equation}
+
+First, we form an operator:
+#+begin_src python :results output :session qinfo :exports both
+  O = qi.SparsePauliOp(['ZZ', 'XX', 'II'], [0.2, -0.3, 0.4])
+
+  # Uncomment this in Jupyter
+  # display(O.to_operator())
+
+  # Comment/omit this in Jupyter
+  print(O.to_operator())
+
+#+end_src
+
+#+RESULTS:
+: Operator([[ 0.6+0.j,  0. +0.j,  0. +0.j, -0.3+0.j],
+:           [ 0. +0.j,  0.2+0.j, -0.3+0.j,  0. +0.j],
+:           [ 0. +0.j, -0.3+0.j,  0.2+0.j,  0. +0.j],
+:           [-0.3+0.j,  0. +0.j,  0. +0.j,  0.6+0.j]],
+:          input_dims=(2, 2), output_dims=(2, 2))
+
+Next, we supply $\mathbf{O}$ to the ~ψ~ (a =Statevector= object) in its
+=expectation_value()= method:
+#+begin_src python :results output :session qinfo :exports both
+  O_exp = ψ.expectation_value( O )
+
+  print(O_exp)
+#+end_src
+
+#+RESULTS:
+: (0.6999999999999997+0j)
+
+*** Bloch Vectors
+
+We can ask Python to draw the Bloch vector for ψ:
+#+begin_src python :results output :session qinfo :exports both
+  # Use this in Jupyter:
+  # ψ.draw('bloch')
+
+  # Comment this out or omit the following in Jupyter
+  p
+  fname = os.join('html', 'img', 'basicBlochVect.png')
+  ψ.draw('bloch', filename=fname)
+  import matplotlib.pyplot as plt
+  plt.savefig( fname )
+  print(f'[[./{fname[5:]}]]')
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src python :results output :session qinfo :exports none
+  from qiskit.visualization import plot_bloch_multivector
+  import matplotlib.pyplot as plt
+
+  fname = os.path.join('html', 'img', 'basicBlochVect.png')
+
+  # print(fname)
+  # Plot the Bloch vector of the state
+  fig = plot_bloch_multivector(ψ)
+
+  fig.set_size_inches(5,6)
+
+  plt.tight_layout()
+  # Save the plot to a file
+  fig.savefig( fname )
+
+  # plt.savefig( fname )
+  print(f'[[./{fname[5:]}]]')
+
+#+end_src
+
+#+RESULTS:
+: [[./img/basicBlochVect.png]]
+: test
+
+#+begin_src shell
+  ls *.png
+#+end_src
+
+#+RESULTS:
+
+#+attr_html: :width 480px
+#+name: fig:BlochVectEx
+#+caption: Bloch vectors for the two qubits in ψ.
+[[./img/basicBlochVect.png]]
+
+
+*** Density Matrices
+
+Similar to a =Statevector=, we can also get a =DensityMarix= from a
+circuit. Recall that a density matrix \(\rho\) may be obtained from a state
+vector:
+\begin{equation}
+\rho = \ket{\psi} \bra{\psi}
+\end{equation}
+
+**** Matrix Output
+#+begin_src python :results output :session qinfo :exports both
+  ρ = qi.DensityMatrix( qc )
+  print(ρ)
+
+  # In Jupyter Lab, you may use
+  #display( ρ )
+#+end_src
+
+#+RESULTS:
+: DensityMatrix([[ 0.25+0.j, -0.25+0.j,  0.25+0.j, -0.25+0.j],
+:                [-0.25+0.j,  0.25+0.j, -0.25+0.j,  0.25+0.j],
+:                [ 0.25+0.j, -0.25+0.j,  0.25+0.j, -0.25+0.j],
+:                [-0.25+0.j,  0.25+0.j, -0.25+0.j,  0.25+0.j]],
+:               dims=(2, 2))
+
+
+#+begin_src python :results output :session qinfo :exports none
+  print(ρ.draw( output='latex_source'))
+
+  # In Jupyter Lab, you may use
+  #display( ρ )
+#+end_src
+
+#+RESULTS:
+: 
+: 
+: \begin{bmatrix}
+: \frac{1}{4} & - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4}  \\
+:  - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4} & \frac{1}{4}  \\
+:  \frac{1}{4} & - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4}  \\
+:  - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4} & \frac{1}{4}  \\
+:  \end{bmatrix}
+
+In Jupyter, you may see output like this from the =display()= command:
+\begin{equation}
+\begin{bmatrix}
+\frac{1}{4} & - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4}  \\
+- \frac{1}{4} & \frac{1}{4} & - \frac{1}{4} & \frac{1}{4}  \\
+\frac{1}{4} & - \frac{1}{4} & \frac{1}{4} & - \frac{1}{4}  \\
+- \frac{1}{4} & \frac{1}{4} & - \frac{1}{4} & \frac{1}{4}  \\
+\end{bmatrix}
+\end{equation}
+
+
+In Jupyter, we can plot the elements of the density matrix:
+#+begin_src python :results output :session qinfo :exports none :eval never
+  # Draw the "cityscape" plot
+  ρ.draw('city')
+#+end_src
+
+**** The City Plot
+
+#+begin_src python :results output :session qinfo :exports none
+  # Draw the "cityscape" plot
+  fig = ρ.draw('city')
+
+  fname = os.path.join( 'html', 'img', 'dmCityScape.png')
+  # Save the plot as an image file
+  fig.savefig(fname, dpi=300)
+
+  print(f'[[./{fname[5:]}]]')
+#+end_src
+
+#+RESULTS:
+: [[./img/dmCityScape.png]]
+
+#+attr_html: :width 600px
+[[./img/dmCityScape.png]]
+
+**** Partial Trace
+
+Given a multi-qubit density matrix, we can get a reduced density matrix for any
+subset of qubits.
+
+#+begin_src python :results output :session qinfo :exports both
+  ρ1 = qi.partial_trace( ρ, [0] )
+
+  print(ρ1)
+#+end_src
+
+#+RESULTS:
+: DensityMatrix([[0.5+0.j, 0.5+0.j],
+:                [0.5+0.j, 0.5+0.j]],
+:               dims=(2,))
+
+** Conclusion
+- The =quantum_info= module is useful for:
+  - very basic simulations
+  - exploring the quantum output of a circuit
+- The =quantum_info= module does not handle circuit simulations that:
+  - are too large
+  - involve any measurement gates
+
+* The =BasicSimulator= Class
+:PROPERTIES:
+:CUSTOM_ID: sec:BasicSimulator
+:END:
+#+include: "./back-to-index.org"
+
+- We need the =BasicSimulator= class to perform simulations for circuits that
+  include measurement gates
+** Build a Circuit
+- Following Diego Serrano's tutorial, I build a circuit which includes
+  measurement gates
+  - Start by importing required code
+    #+begin_src python :results output :session basicsim :exports both
+      from qiskit import QuantumCircuit
+      from qiskit.providers.basic_provider import BasicSimulator
+
+      simulator_basic = BasicSimulator()
+    #+end_src
+
+    #+RESULTS:
+
+    - The main things we've accomplished in this code are:
+      - We have imported the =BasicSimulator= class
+      - We have created =simulator_basic= as a =BasicSimulator= object.
+  - Build the circuit with two quantum bits and two classical bits
+    #+begin_src  python :results output :session basicsim :exports both
+      qc = QuantumCircuit(2,2) # two qubits, and two classical bits
+
+      qc.h(1) # apply a H gate to qubit 1
+      qc.measure(1, 1) # measure qubit 1, record its bit to classical bit 1
+      qc.x(0).c_if(1,1) # apply a X gate to qubit 0 if classical bit 1 is 1 
+      qc.measure(0, 0) # measure qubit 0, record its result to classical bit 0
+      qc.draw(reverse_bits=True)
+    #+end_src
+    
+    #+RESULTS:
+    : /var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-AGP0D6:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
+    :   qc.x(0).c_if(1,1) # apply a X gate to qubit 0 if classical bit 1 is 1
+
+
+    #+begin_src  python :results output :session basicsim :exports none
+      import os
+      from pathlib import Path
+
+      fname = os.path.join('html', 'img', 'QCwithMeas.png')
+      qc.draw(reverse_bits=True, filename = fname)
+
+      print(f"[[./{fname[5:]}]]")
+    #+end_src
+
+    #+RESULTS:
+    : [[./img/QCwithMeas.png]]
+
+    #+name: fig:cktWithMeas
+    #+attr_html: :width 525px
+    #+caption: This circuit has two qubits and two classical bits. The classical bits are required for measuremnt.
+    [[./img/QCwithMeas.png]]
+
+    In a Jupyter notebook, the output of =qc.draw()= will resemble Figure
+    [[fig:cktWithMeas]].
+** Helper Function: =orgfig=                                      :noexport:
+#+begin_src  python :results output :session basicsim :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+** Simulating the Circuit
+- To run the circuit, we use the BasicSimulator.run() method, and we supply the
+  desired circuit, and we can specify the number of shots for our simulation:
+  #+begin_src  python :results output :session basicsim :exports both
+    # The .run() method performs the simulation, and and the run is
+    # saved as job
+    job = simulator_basic.run( qc, shots=1024 )
+
+    print(type(job))
+  #+end_src
+
+  #+RESULTS:
+  : <class 'qiskit.providers.basic_provider.basic_provider_job.BasicProviderJob'>
+  - This =run()= method returns a =BasicProviderJob= object
+    - This has a =result()= method that returns a =Result()= object contains our
+      simulation results
+
+** Getting the Results
+- We save the results as =results=:
+  #+begin_src  python :results output :session basicsim :exports both
+    results = job.result()
+
+    print(type(results))
+
+    print(results)
+  #+end_src  
+
+  #+RESULTS:
+  : <class 'qiskit.result.result.Result'>
+  : Result(backend_name='basic_simulator', backend_version='0.1', qobj_id='5fa46fbe-251b-4733-b29c-6cd05bb52024', job_id='5abb07aa-3a06-4ff7-94e5-a27a9e678d07', success=True, results=[ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 519, '0x3': 505}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['c', 0], ['c', 1]], memory_slots=2, creg_sizes=[['c', 2]], name='circuit-160', global_phase=0.0, metadata={}), status=DONE, name='circuit-160', seed_simulator=np.int32(1719395928), time_taken=0.07600593566894531)], date=None, status=COMPLETED, header=QobjHeader(backend_name='basic_simulator', backend_version='0.1'), time_taken=0.0760350227355957)
+
+- The results object has lots of information about our quantum experiment
+  simulation
+
+*** Simulation Counts 
+- A =get_counts()= method helps us retrieve the outcomes and their frequencies.
+  #+begin_src  python :results output :session basicsim :exports both
+    counts = results.get_counts()
+
+    print(counts)
+  #+end_src  
+
+  #+RESULTS:
+  : {'00': 519, '11': 505}
+  
+*** Visualizing the Results
+- We can plot the measurement results in two ways:
+  - as a histogram (counts) using =plot_histogram()=, or
+  - as a probability distribution using =plot_distribution()=.
+#+begin_src  python :results output :session basicsim :exports both
+  from qiskit.visualization import plot_histogram, plot_distribution
+
+  display( plot_distribution( counts ) )
+
+  display( plot_histogram( counts ) )
+#+end_src  
+
+#+RESULTS:
+
+#+begin_src  python :results output :session basicsim :exports none
+  fname = os.path.join('html', 'img', 'basicSimHist.png')
+  plot_histogram( counts, filename=fname )
+  print(f'\n[[./{fname[5:]}]]')
+
+  fname = os.path.join('html', 'img', 'basicSimPD.png')
+  plot_distribution( counts, filename=fname )
+  print(f'\n[[./{fname[5:]}]]')
+#+end_src  
+
+#+RESULTS:
+: 
+: [[./img/basicSimHist.png]]
+: 
+: [[./img/basicSimPD.png]]
+
+#+name: fig:BasicSimHist
+#+attr_html: :width 600px
+#+caption: A histogram from the results of a =BasicSimulator.run()= simulation.
+[[./img/basicSimHist.png]]
+
+#+name: fig:BasicSimHist
+#+attr_html: :width 600px
+#+caption: A quasi-probability distribution from the results of a =BasicSimulator.run()= simulation. Quasiprobabilities are not actual probabilities, but rather estimates of probabilites obtained by dividing the number of occurrences of an event by the total number of experiments (shots).
+[[./img/basicSimPD.png]]
+
+*** Inspecting Results from Individual Measurements
+- We can see the results of individual measurements if we use the =get_memory()= method for a =Results= object
+  - This requires using the ~memory~ keyword with a value of ~True~ in the
+    ~run()~ method for our basic simulator
+- Here, we do this with a fewer number of shots so that we can avoid
+  overwhelming ourselves with numerous results
+#+begin_src  python :results output :session basicsim :exports both
+  small_job = simulator_basic.run( qc, shots=8, memory=True)
+  small_result = small_job.result()
+  samples = small_result.get_memory()
+
+  print(samples)
+#+end_src    
+
+#+RESULTS:
+: ['00', '00', '00', '00', '11', '11', '11', '00']
+
+** Handling Complex Circuits
+- The basic simulator cannot handle more complex circuits readily, such as the QFT circuit
+- To handle complex circuits, we must first transpile our circuit.
+#+begin_src  python :results output :session basicsim :exports both
+  from qiskit.circuit.library import QFT
+
+  qc = QuantumCircuit(3, 3) # 3 qubits, 3 classical bits
+  qc.append( QFT(3), range(3) )
+  qc.measure( range(3), range(3) )
+
+  qc.draw()
+#+end_src    
+
+#+RESULTS:
+
+#+begin_src  python :results output :session basicsim :exports none
+  fname = os.path.join('html', 'img', 'BasicSimQFT.png')
+  qc.draw( filename = fname )
+
+  orgfig( fname[5:] )
+
+#+end_src    
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/BasicSimQFT.png]]
+
+#+name: fig:BasicQFTCircuit
+#+attr_html: :width 480px
+#+caption: This is a more complex circuit including a QFT. =BasicSimulator= cannot handle this unless we first transpile it.
+[[./img/BasicSimQFT.png]]
+
+*** Transpilation
+
+- Circuits may be composed of gates of various types
+- Some gates may not exist natively on a particular quantum processing unit
+  (QPU), but may be implemented using the available gates on the QPU
+  - The set of available gates is often called the instruction set architecture
+    (ISA)
+- To transpile a circuit is to represent it in the ISA of a particular machine
+- In this case, we transpile the QFT into gates available within the
+  =BasicSimulator= class.
+
+#+name: lst:transpileQFT
+#+caption: This code transpiles the circuit of Figure [[fig:BasicQFTCircuit]]
+#+begin_src python :results output :session basicsim :exports both
+  from qiskit import transpile
+
+  qc_trans = transpile( qc, backend=simulator_basic)
+
+  qc_trans.draw()
+
+#+end_src
+
+#+RESULTS:
+
+#+begin_src  python :results output :session basicsim :exports none
+  fname = os.path.join('html', 'img', 'BasicSimQFTtrans.png')
+  qc_trans.draw( filename = fname )
+
+  orgfig( fname[5:] )
+#+end_src    
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/BasicSimQFTtrans.png]]
+
+Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
+#+name: fig:QFTtranspiled
+#+attr_html: :width 640px
+#+caption: This is a transpiled version of the circuit from Figure [[fig:BasicQFTCircuit]]
+[[./img/BasicSimQFTtrans.png]]
+
+** Conclusion
+- The =BasicSimulator()= class is useful when we simulate a job where we need to
+  find counts or samples of a circuit with mid-circuit measurements
+- The =BasicSimulator()= class should not be used for:
+  - large circuits with many qubits or many gates
+  - circuits where a coherent state is desired (state vector or density matrix)
+  - noisy simulations
+* The Qiskit =AerSimulator=
+:PROPERTIES:
+:CUSTOM_ID: sec:QiskitAerSimulator
+:END:
+#+include: "./back-to-index.org"
+
+** Overview
+
+- The Qiskit Aer AerSimulator class can be used to simulate complex circuits with mid-circuit measurements
+- We can obtain unitary results from these simulations.
+** Helper Function: =orgfig=                                      :noexport:
+#+begin_src  python :results output :session aersim :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+** Imports
+
+- We begin by importing the required packages
+  - This introduces the =qiskit_aer= package and the =AerSimulator= class
+#+begin_src  python :results output :session aersim :exports both
+  from qiskit import QuantumCircuit, transpile
+  from qiskit.quantum_info import Statevector
+  from qiskit.providers.basic_provider import BasicSimulator
+  from qiskit_aer import AerSimulator
+
+  simulator_basic = BasicSimulator()
+  simulator_aer = AerSimulator()
+#+end_src
+
+#+RESULTS:
+
+
+** Build a Circuit
+
+- We define a circuit in Listing [[lst:AerSimCkt]]
+  #+name: lst:AerSimCkt
+  #+begin_src python :results output :session aersim :exports both
+    qc = QuantumCircuit(2,2) # two qubits, and two classical bits
+
+    qc.h(1) # apply a H gate to qubit 1
+    qc.measure(1, 0) # measure qubit 1, record its bit to classical bit 0
+    qc.h(0).c_if(0,1) # apply a X gate to qubit 0 if classical bit 1 is 1
+    qc.save_statevector()
+
+    qc.draw(reverse_bits=True)
+  #+end_src
+
+  #+RESULTS: lst:AerSimCkt
+  : /var/folders/88/d26ncvp97zg50164_cmmlyf511m8tn/T/babel-bmQJhU/python-kdqTaU:5: DeprecationWarning: The method ``qiskit.circuit.instructionset.InstructionSet.c_if()`` is deprecated as of qiskit 1.3.0. It will be removed in 2.0.0.
+  :   qc.h(0).c_if(0,1) # apply a X gate to qubit 0 if classical bit 1 is 1
+    
+  #+name: lst:AerSimCktOrgExport
+  #+begin_src python :results output :session aersim :exports none
+    import os
+    fname = os.path.join('html', 'img', 'CktAerSim.png')
+    qc.draw(reverse_bits=True, filename=fname)
+
+  #+end_src
+
+  #+RESULTS: lst:AerSimCktOrgExport
+
+  #+name: fig:defaultName
+  #+attr_html: :width 480px
+  #+caption: Default caption.
+  [[./img/CktAerSim.png]]
+
+  - Here, the =save_statevector()= method defines a point in the circuit at
+    which we wish to knkow the state vector

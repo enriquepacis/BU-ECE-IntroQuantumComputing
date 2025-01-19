@@ -2,7 +2,7 @@
 # -*- mode: org -*-
 
 #+startup: overview indent auto-fill
-#+export_file_name: ../docs/PythonSetup.html
+#+export_file_name: ./html/PythonSetup.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
 #+title: Python Setup
@@ -514,7 +514,7 @@ Let's find out by doing the following:
         print(qiskit.__version__)
       #+end_src
 
-      #+RESULTS: lst:import-qiskit
+      #+RESULTS: lst:importqiskit
       : 1.3.1
 
       You should expect to see =qiskit= version =1.X= after using =SHIFT+ENTER=
@@ -533,6 +533,8 @@ Let's find out by doing the following:
         qc.draw()
       #+end_src
 
+      #+RESULTS: lst:testBuildQC
+
       #+RESULTS:
 
       #+begin_src python :results output :eval never-export :exports none :session test-qiskit -n
@@ -544,17 +546,14 @@ Let's find out by doing the following:
 
         print(pardir)
 
-        docsimg = os.path.join(pardir, 'docs', 'img')
-
-
-        tgt = os.path.join('img', 'testQC.png')
+        tgt = os.path.join('html', 'img', 'testQC.png')
         tgt2 = os.path.join(docsimg, 'testQC.png')
 
         Path(docsimg).mkdir(exist_ok=True, parents=True)
         qc.draw( filename=tgt )
         qc.draw( filename=tgt2 )
 
-        print(f'[[./{tgt}]]')
+        print(f'[[./{tgt[5:]}]]')
 
       #+end_src
 
