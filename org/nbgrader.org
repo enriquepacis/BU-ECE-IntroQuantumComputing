@@ -1,0 +1,260 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ./html/nbgrader.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+
+#+title: Autograding using =Nbgrader=
+#+author: Dr. E.P. Blair
+
+
+* Notebook Setup                                                   :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+
+* Introduction
+
+* Using =nbgrader=
+
+** Installation/Setup
+
+To use =nbgrader=, you need:
+
+1. Jupyter Notebook or Jupyter Lab (I prefer Lab!)
+2. =nbgrader=
+3. The =nbgrader= extensions for Jupyter Lab or Jupyter Notebook
+   1. I installed these within the Jupyter Lab GUI
+
+
+* Workflow and File Structure
+
+** Initializing the File Structure
+
+1. Create a directory for assignments, such as =assignment-dir=. In Mac
+   OS/UNIX/Linux, this might look like
+   #+begin_src shell :eval never
+     mkdir assignment-dir
+   #+end_src
+2. Navigate to =assignment-dir= and launch Jupyter Lab from an environment that
+   has =nbgrader= and its Juptyer Lab extensions. In Mac
+   OS/UNIX/Linux, this might look like
+   #+begin_src shell :eval never
+     cd assignment-dir
+     jupyter lab
+   #+end_src
+   This will open up a Jupyter Lab window in a browser
+3. Click on the =NBgrader= menu, and choose =FormGrader=
+
+   #+begin_src shell
+     ls ~/Desktop/tempvideo/
+   #+end_src
+
+   #+RESULTS:
+   : nbgrader-start-formgrader.mov
+
+   
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-start-formgrader.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+     convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+   #+end_src
+
+   #+RESULTS:
+   : Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-start-formgrader.mov (exists: True)
+   : /Users/enrique_blair
+   : /Users/enrique_blair/Desktop/tempvideo/nbgrader-start-formgrader.mov
+   : html/img/nbgrader-start-formgrader.gif
+   : {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-21T23:40:44.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-21T17:37:28-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2634, 1490], 'bitrate': 3025, 'fps': 59.06, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-21T23:40:44.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 6.16, 'bitrate': 3144, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2634, 1490], 'video_bitrate': 3025, 'video_fps': 59.06, 'video_duration': 6.16, 'video_n_frames': 363}
+   : /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/nbgrader-start-formgrader.mov -loglevel error -f image2pipe -vf scale=2634:1490 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   : MoviePy - Building file html/img/nbgrader-start-formgrader.gif with imageio.
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-start-formgrader.gif]]
+   
+1. Make your first assignment:
+   #+attr_html: :width 600px
+   [[./img/nbgrader-new-asgn.gif]]
+
+   1. Click on =Manage Assignments=. You should see an empty list of assignments.
+   2. Click on *Add new assignment*, and choose a simple name (recommended), such
+      as =asgn01=. Then, click *Save*
+
+      #+begin_src python :results output :exports none
+        import moviepy as mp
+
+        def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                               end_time=None, fps=10):
+            """Converts a MOV file to GIF."""
+
+            clip = mp.VideoFileClip(mov_file)
+            if end_time:
+                clip = clip.subclip(start_time, end_time)
+            clip.write_gif(gif_file, fps=fps)
+
+        # Example usage
+        import os
+
+        fname = 'nbgrader-new-asgn.mov'
+        home = os.path.expanduser("~")
+        src = os.path.join( home, 'Desktop',
+                            'tempvideo', fname)
+        src_exists = os.path.isfile( src )
+
+
+        dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+        print(f'Source file: {src} (exists: {src_exists})')
+        print(home)
+        print(src)
+        print(dest)
+
+        if not os.path.isfile( dest ):
+            convert_mov_to_gif(src, dest, fps=15)
+
+        os.path.exists(dest)
+
+        print(f'\n#+attr_html: :width 600px\n[[./img/{fname}]]')
+
+      #+end_src
+
+      #+RESULTS:
+      : Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-new-asgn.mov (exists: True)
+      : /Users/enrique_blair
+      : /Users/enrique_blair/Desktop/tempvideo/nbgrader-new-asgn.mov
+      : html/img/nbgrader-new-asgn.gif
+      : 
+      : #+attr_html: :width 600px
+      : [[./img/nbgrader-new-asgn.mov]]
+   
+      This creates a new directory, =source=, within the
+      =assignment-dir=, and within =source=, we also get a directory =asgn01=.
+2. Make a new notebook in your new =source/asgn01= folder:
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-new-notebook.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   : Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-new-notebook.mov (exists: True)
+   : /Users/enrique_blair
+   : /Users/enrique_blair/Desktop/tempvideo/nbgrader-new-notebook.mov
+   : html/img/nbgrader-new-notebook.gif
+   : 
+   : #+attr_html: :width 600px
+   : [[./img/nbgrader-new-notebook.gif]]
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-new-notebook.gif]]
+
+   1. Click on the new assignment name, =asgn01=. This causes the working Jupyter
+      directory to be =source/asgn01=
+   2.  Add a new Jupyter notebook within =source/asgn01=. It is recommended to name the
+      notebook =asgn01.ipynb=
+3. Add the assignment prompts and solution content to this Jupyter
+   notebook. More details on this are included in the next section.
+
+** Authoring an Assignment Notebook
+
+1. Make student solution cells
+2. Make autograded test cells
+3. Return to the FormGrader tab
+4. In the row for your assignment, click the hat under the *Generate* column to
+   generate an assignment version of the notebook.
+   1. This will create a directory =assignments/release/asgn01= as a home for a
+      new notebook, =asgn01.ipynb=
+   2. You will distribute this version to the students.
+      1. =nbgrader= will have removed solution parts of the notebook
+
+** Collecting Assignments
+
+*** Local Grading
+
+1. When grading assignments locally on your machine, create a directory
+   =assignments/submitted=.
+2. For each student, make a directory within submitted with some name, =1234=,
+   which will be recognized a unique student ID for each student.
+3. Within the folder for each student, create a directory for each assignment,
+   as in =asgn01=.
+4. Place each student's completed work, =asgn01.ipynb=, in their individual
+   folder =submitted/1234/asgn01=
