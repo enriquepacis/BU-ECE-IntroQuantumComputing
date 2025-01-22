@@ -302,7 +302,7 @@ number.
 #+end_warning
 
 #+begin_note
-Please note: please use =pip install ...=, even though this video demonstrates
+Note: please use =pip install ...=, even though this video demonstrates
 ~conda install ...~.
 #+end_note
 
@@ -312,6 +312,21 @@ Please note: please use =pip install ...=, even though this video demonstrates
 
 The following sections provide detailed instructions for setting up an
 enviornment using ~conda~.
+
+#+begin_note
+If you're a student in one of my courses, please make sure you install the
+correct release of Python, as listed in Table [[tab:PyVersion]].
+
+#+name: tab:PyVersion
+#+caption: Python versions for various courses.
+|------+----------+-------------------+---------|
+| Year | Semester | Course            | Release |
+|------+----------+-------------------+---------|
+| 2025 | Spring   | Quantum Computing |    3.11 |
+|------+----------+-------------------+---------|
+| 2024 | Spring   | Quantum Computing |    3.10 |
+|------+----------+-------------------+---------|
+#+end_note
 
 ** Create an Environment
 
