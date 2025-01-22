@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-01-21 Tue 19:09 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Autograding using =Nbgrader=</title>
+<meta name="author" content="Dr. E.P. Blair" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Autograding using <code>Nbgrader</code></h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgd318f4e">1. Introduction</a></li>
+<li><a href="#org25b0ea8">2. Using <code>nbgrader</code></a>
+<ul>
+<li><a href="#orgd21e09b">2.1. Installation/Setup</a></li>
+</ul>
+</li>
+<li><a href="#org63944e0">3. Workflow and File Structure</a>
+<ul>
+<li><a href="#orge50a3c2">3.1. Initializing the File Structure</a></li>
+<li><a href="#orgb64b53f">3.2. Authoring an Assignment Notebook</a></li>
+<li><a href="#orgfca40bb">3.3. Collecting Assignments</a>
+<ul>
+<li><a href="#orga0527e7">3.3.1. Local Grading</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgd318f4e" class="outline-2">
+<h2 id="orgd318f4e"><span class="section-number-2">1.</span> Introduction</h2>
+</div>
+
+<div id="outline-container-org25b0ea8" class="outline-2">
+<h2 id="org25b0ea8"><span class="section-number-2">2.</span> Using <code>nbgrader</code></h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgd21e09b" class="outline-3">
+<h3 id="orgd21e09b"><span class="section-number-3">2.1.</span> Installation/Setup</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+To use <code>nbgrader</code>, you need:
+</p>
+
+<ol class="org-ol">
+<li>Jupyter Notebook or Jupyter Lab (I prefer Lab!)</li>
+<li><code>nbgrader</code></li>
+<li>The <code>nbgrader</code> extensions for Jupyter Lab or Jupyter Notebook
+<ol class="org-ol">
+<li>I installed these within the Jupyter Lab GUI</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org63944e0" class="outline-2">
+<h2 id="org63944e0"><span class="section-number-2">3.</span> Workflow and File Structure</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orge50a3c2" class="outline-3">
+<h3 id="orge50a3c2"><span class="section-number-3">3.1.</span> Initializing the File Structure</h3>
+<div class="outline-text-3" id="text-3-1">
+<ol class="org-ol">
+<li><p>
+Create a directory for assignments, such as <code>assignment-dir</code>. In Mac
+OS/UNIX/Linux, this might look like
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">mkdir assignment-dir
+</pre>
+</div></li>
+<li><p>
+Navigate to <code>assignment-dir</code> and launch Jupyter Lab from an environment that
+has <code>nbgrader</code> and its Juptyer Lab extensions. In Mac
+OS/UNIX/Linux, this might look like
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #DCDCCC; font-weight: bold;">cd</span> assignment-dir
+jupyter lab
+</pre>
+</div>
+<p>
+This will open up a Jupyter Lab window in a browser
+</p></li>
+<li><p>
+Click on the <code>NBgrader</code> menu, and choose <code>FormGrader</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-shell">ls ~/Desktop/tempvideo/
+</pre>
+</div></li>
+</ol>
+
+
+
+<div id="org4305106" class="figure">
+<p><img src="./img/nbgrader-start-formgrader.gif" alt="nbgrader-start-formgrader.gif" width="600px" />
+</p>
+</div>
+
+<ol class="org-ol">
+<li><p>
+Make your first assignment:
+</p>
+
+<div id="org7d2f9fa" class="figure">
+<p><img src="./img/nbgrader-new-asgn.gif" alt="nbgrader-new-asgn.gif" width="600px" />
+</p>
+</div>
+
+<ol class="org-ol">
+<li>Click on <code>Manage Assignments</code>. You should see an empty list of assignments.</li>
+<li><p>
+Click on <b>Add new assignment</b>, and choose a simple name (recommended), such
+as <code>asgn01</code>. Then, click <b>Save</b>
+</p>
+
+<p>
+This creates a new directory, <code>source</code>, within the
+<code>assignment-dir</code>, and within <code>source</code>, we also get a directory <code>asgn01</code>.
+</p></li>
+</ol></li>
+<li><p>
+Make a new notebook in your new <code>source/asgn01</code> folder:
+</p>
+
+<div id="org9ce1bbc" class="figure">
+<p><img src="./img/nbgrader-new-notebook.gif" alt="nbgrader-new-notebook.gif" width="600px" />
+</p>
+</div>
+
+<ol class="org-ol">
+<li>Click on the new assignment name, <code>asgn01</code>. This causes the working Jupyter
+directory to be <code>source/asgn01</code></li>
+<li>Add a new Jupyter notebook within <code>source/asgn01</code>. It is recommended to name the
+notebook <code>asgn01.ipynb</code></li>
+</ol></li>
+<li>Add the assignment prompts and solution content to this Jupyter
+notebook. More details on this are included in the next section.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgb64b53f" class="outline-3">
+<h3 id="orgb64b53f"><span class="section-number-3">3.2.</span> Authoring an Assignment Notebook</h3>
+<div class="outline-text-3" id="text-3-2">
+<ol class="org-ol">
+<li>Make student solution cells</li>
+<li>Make autograded test cells</li>
+<li>Return to the FormGrader tab</li>
+<li>In the row for your assignment, click the hat under the <b>Generate</b> column to
+generate an assignment version of the notebook.
+<ol class="org-ol">
+<li>This will create a directory <code>assignments/release/asgn01</code> as a home for a
+new notebook, <code>asgn01.ipynb</code></li>
+<li>You will distribute this version to the students.
+<ol class="org-ol">
+<li><code>nbgrader</code> will have removed solution parts of the notebook</li>
+</ol></li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgfca40bb" class="outline-3">
+<h3 id="orgfca40bb"><span class="section-number-3">3.3.</span> Collecting Assignments</h3>
+<div class="outline-text-3" id="text-3-3">
+</div>
+<div id="outline-container-orga0527e7" class="outline-4">
+<h4 id="orga0527e7"><span class="section-number-4">3.3.1.</span> Local Grading</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ol class="org-ol">
+<li>When grading assignments locally on your machine, create a directory
+<code>assignments/submitted</code>.</li>
+<li>For each student, make a directory within submitted with some name, <code>1234</code>,
+which will be recognized a unique student ID for each student.</li>
+<li>Within the folder for each student, create a directory for each assignment,
+as in <code>asgn01</code>.</li>
+<li>Place each student's completed work, <code>asgn01.ipynb</code>, in their individual
+folder <code>submitted/1234/asgn01</code></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr. E.P. Blair</p>
+<p class="date">Created: 2025-01-21 Tue 19:09</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
