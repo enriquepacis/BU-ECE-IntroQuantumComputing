@@ -921,7 +921,10 @@ instructing Python to define a list =Y= whose elements are =x**2= (=x=
 squared) for each =x= in the list =X=.
 
 * Binary and Bitwise Operations
-
+:PROPERTIES:
+:CUSTOM_ID: binaryBitwise
+:END:
+#+include: "./back-to-index.org"
 ** Convert Integers to Bit Strings
 
 - Python can help us convert integers to bit strings and perform logical
@@ -1062,3 +1065,467 @@ A right-shift basically removes the least significant bit (LSB).
 : Bitwise XOR (^)
 :    Dec: 12 ^ 9 = 5;
 :    Bin: 1100 | 1001 = 0101
+* =numpy=: Numerical Python Tools
+:PROPERTIES:
+:CUSTOM_ID: numpy
+:END:
+#+include: "./back-to-index.org"
+- Until now, we have leveraged only standard Python tools.
+- =numpy= (short for /Numerical Python/) is a Python package that extends the capabilities of standard Python
+  to support various numerical analyses including linear algebra
+- To use =numpy=, we must first import it.
+  #+begin_src python :results output :session numpy :exports both
+    import numpy as np
+  #+end_src
+
+  #+RESULTS:
+
+** Define Vectors
+#+begin_src python :results output :session numpy :exports both
+  # now we can use np to define a vector (by default, a list, neither row nor column)
+  a = np.array([1, 2, 3, 4, 5, 6])
+  print('The shape of a is: {0}'.format( a.shape ) )
+  print(a)
+  print(type(a)) # what is it?
+  print('Length of a: {0} (there are {0} elements)'.format(len(a))) # what is the length of a?
+#+end_src
+
+#+RESULTS:
+: The shape of a is: (6,)
+: [1 2 3 4 5 6]
+: <class 'numpy.ndarray'>
+: Length of a: 6 (there are 6 elements)
+
+- Notice that when we print =a=, it looks like a Python list (no commas, however).
+- We can add a row dimension or a column dimension to make a matrix that has
+  either only a row or a column
+
+*** Indexing
+- We can refer to the \(k\)-th element of \(a\) using the following syntax:
+  #+begin_src python :results output :session numpy :exports both
+    print('First element of a: {0}'.format(a[0]))
+    print('Second element of a: {0}'.format(a[1]))
+    print('Last element of a: {0}'.format(a[-1]))
+    print('Slice of a: {0}'.format(a[2:4]))
+    print('Another slice of a: {0}'.format(a[-3:-1]))
+  #+end_src
+
+  #+RESULTS:
+  : First element of a: 1
+  : Second element of a: 2
+  : Last element of a: 6
+  : Slice of a: [3 4]
+  : Another slice of a: [4 5]
+*** A Column Vector
+
+- To transform our =numpy= array =a= into column vector, we add a new axis:
+  #+begin_src python :results output :session numpy :exports both
+    acol = a[:, np.newaxis]
+    print('The shape of acol is: {0}'.format( acol.shape ) )
+    print(acol)
+    print(type(acol)) # what is it?
+    print('Length of acol: {0}'.format(len(acol))) # what is the length of a?
+  #+end_src
+
+  #+RESULTS:
+  : The shape of acol is: (6, 1)
+  : [[1]
+  :  [2]
+  :  [3]
+  :  [4]
+  :  [5]
+  :  [6]]
+  : <class 'numpy.ndarray'>
+  : Length of acol: 6
+
+- Now we see that our column matrix is an =np.array()= object
+- =acol= looks like a list of one-element lists.
+- Let's ask for the 3rd element of acol:
+  #+begin_src python :results output :session numpy :exports both
+    print(acol[2])
+    print(type(acol[2]))
+  #+end_src
+
+  #+RESULTS:
+  : [3]
+  : <class 'numpy.ndarray'>
+- It's still an array. We can slice again:
+  #+begin_src python :results output :session numpy :exports both
+    print(acol[2][0])
+    print(type(acol[2][0]))
+  #+end_src
+
+  #+RESULTS:
+  : 3
+  : <class 'numpy.int64'>
+*** A Row Vector
+- To transform our =numpy= array =a= into row vector, we add a new axis:
+  #+begin_src python :results output :session numpy :exports both
+    arow = a[np.newaxis,:]
+    print('The shape of arow is: {0}'.format( arow.shape ) )
+    print(arow)
+    print('Length of arow: {0}'.format(len(arow))) # what is the length of a?
+  #+end_src
+
+  #+RESULTS:
+  : The shape of arow is: (1, 6)
+  : [[1 2 3 4 5 6]]
+  : Length of arow: 1
+  - Our row matrix is an =np.array()= object
+  - =arow= looks like a list containing a single list
+    - The only valid element of arow is =arow[0]=, which is the first and only
+      row of =arow=:
+      #+begin_src python :results output :session numpy :exports both
+        print(arow[0])
+      #+end_src
+
+      #+RESULTS:
+      : [1 2 3 4 5 6]
+    - Thus, we must be careful when using the length (=len()=) function
+      - There's only one row in arow, but overall, six elements.
+- Combining our observations, we can say that by default, Python's
+  =numpy.array()= is a row-major system
+  - We think of a matrix as a list of lists
+    - the interior lists are rows, and
+    - the exterior list stacks those rows to
+      form a 2D =numpy.array()= object.
+  #+begin_src python :results output :session numpy :exports both
+    # define a b vector for future use
+    b = np.array([7, -8, 9, -10, -11, 12])
+    bcol = b[:, np.newaxis] # column vector
+    brow = b[np.newaxis, :] # row vector
+  #+end_src
+
+  #+RESULTS:
+
+*** Defining Matrices
+- Define matrices using lists of lists, and then providing the composite list to
+  =np.array()=.
+  #+begin_src python :results output :session numpy :exports both
+    M = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    print(M)
+    print('Shape of M: {0}'.format(M.shape))
+  #+end_src
+
+  #+RESULTS:
+  : [[1 2 3]
+  :  [4 5 6]
+  :  [7 8 9]]
+  : Shape of M: (3, 3)
+- We get the \((j,k)\) element by indexing as =M[j][k]= or =M[j,k]=.
+  #+begin_src python :results output :session numpy :exports both
+    print(M[2][1])
+    print(M[2,1])
+  #+end_src
+
+  #+RESULTS:
+  : 8
+  : 8
+- Here are two ways to get the second row of =M=:
+  #+begin_src python :results output :session numpy :exports both
+    print(M[1,:]) # (second row, cleaner)
+    print(type(M[1,:]))
+
+    print(M[1]) # (second row, cleaner still)
+    print(type(M[1]))
+  #+end_src
+
+  #+RESULTS:
+  : [4 5 6]
+  : <class 'numpy.ndarray'>
+  : [4 5 6]
+  : <class 'numpy.ndarray'>
+- Similarly, we can get the third column of =M=:
+  #+begin_src python :results output :session numpy :exports both
+    print(M[:,2]) # (second row, cleaner)
+    print(type(M[:,2]))
+  #+end_src
+
+  #+RESULTS:
+  : [3 6 9]
+  : <class 'numpy.ndarray'>
+*** Random Matrix of Integers
+- We can use =numpy.random.randint= to obtain a randomized matrix:
+  #+begin_src python :results output :exports both :session numpy
+    from numpy.random import randint
+
+    r, c = 3, 5 # rows, columns
+    minInt, maxInt = -5, 5 # min and max for integer values
+
+    Mrand = randint(minInt, maxInt, [r,c])
+
+    print(Mrand)
+  #+end_src
+
+  #+RESULTS:
+  : [[-3  1  2  3  2]
+  :  [-1  2 -2  0 -2]
+  :  [ 2 -3 -4  2  2]]
+
+*** Random Complex Matrices
+- Here is one way to make a randomized matrix of complex values:
+  #+begin_src python :results output :exports both :session numpy
+    r, c = 3, 5 # rows, columns
+    minInt, maxInt = -5, 5 # min and max for integer values
+
+    Mrand = randint(minInt, maxInt, [r,c]) \
+        + 1j*randint(minInt, maxInt, [r,c])   # imaginary part
+
+    print(Mrand)
+  #+end_src
+
+  #+RESULTS:
+  : [[ 2.-4.j  4.+0.j  4.+3.j  3.+4.j  3.+2.j]
+  :  [ 2.+0.j  2.-2.j  2.+1.j  3.+2.j  0.+3.j]
+  :  [-4.+0.j  2.+2.j  3.-5.j -3.-5.j -3.-3.j]]
+
+** Matrix and Vector Operations
+
+*** Vector Addition and Subtraction
+#+begin_src python :results output :exports both :session numpy
+  # Add vectors
+  d = a + b
+  print(f'd is {d}')
+
+  print(f'\na - b is {a-b}')
+#+end_src
+
+#+RESULTS:
+: d is [ 8 -6 12 -6 -6 18]
+: 
+: a - b is [-6 10 -6 14 16 -6]
+
+*** Scalar Multiplication
+#+begin_src python :results output :exports both :session numpy
+  print(f'arow = {arow}')
+  print(f'2*arow = {2*arow}')
+#+end_src
+
+#+RESULTS:
+: arow = [[1 2 3 4 5 6]]
+: 2*arow = [[ 2  4  6  8 10 12]]
+
+*** Complex Vectors
+#+begin_src python :results output :exports both :session numpy
+  '''
+     Use 1j for the imaginary unit.
+   
+     Use 7j for 7*1j.
+  '''
+  # complex vectors
+  f = acol - 1j*bcol # complex vector
+  print(f'f is:\n{f}')
+#+end_src
+
+#+RESULTS:
+: f is:
+: [[1. -7.j]
+:  [2. +8.j]
+:  [3. -9.j]
+:  [4.+10.j]
+:  [5.+11.j]
+:  [6.-12.j]]
+
+**** Conjugate Transpose (Hermitian Conjugate)
+#+begin_src python :results output :exports both :session numpy
+  # f.T transposes f
+  # 
+  f_dagger = f.T.conjugate()
+  print(f'f is:\n{f}')
+  print(f'\nf_dagger is:\n{f_dagger}')
+#+end_src
+
+#+RESULTS:
+#+begin_example
+f is:
+[[1. -7.j]
+ [2. +8.j]
+ [3. -9.j]
+ [4.+10.j]
+ [5.+11.j]
+ [6.-12.j]]
+
+f_dagger is:
+[[1. +7.j 2. -8.j 3. +9.j 4.-10.j 5.-11.j 6.+12.j]]
+#+end_example
+
+***** A =dag()= Function
+- You might get lay (efficient) and want to write a function to help you do the
+  Hermitian conjugate
+- This can actually save you time and effort in the long run, as well as avoid
+  mistakes:
+  #+begin_src python :results output :exports both :session numpy
+    def dag(M: np.ndarray) -> np.ndarray:
+        """
+        Compute the Hermitian conjugate (dagger) of a matrix.
+
+        Parameters:
+        M (ndarray): A NumPy array representing the matrix.
+
+        Returns:
+        ndarray: The Hermitian conjugate of the input matrix.
+        """
+        return M.T.conjugate()
+
+    print(f'\nf is: {f}')
+    print(f'\nf_dagger is: {dag(f)}')
+#+end_src
+
+#+RESULTS:
+: 
+: f is: [[1. -7.j]
+:  [2. +8.j]
+:  [3. -9.j]
+:  [4.+10.j]
+:  [5.+11.j]
+:  [6.-12.j]]
+: 
+: f_dagger is: [[1. +7.j 2. -8.j 3. +9.j 4.-10.j 5.-11.j 6.+12.j]]
+
+**** Inner Product
+
+***** Real Vectors
+#+begin_src python :results output :exports both :session numpy
+  # inner product of lists
+  a_dot_b = np.dot(a, b) # dot() operation
+  print(f'dot(a, b) = {a_dot_b}') # it's a scalar
+
+  # inner product of vectors - inner dimensions must match
+  a_dot_b_v01 = np.dot(arow, bcol) # dot() operation
+  print(f'\ndot(arow, bcol) = {a_dot_b_v01}') # it's a scalar
+
+  # matrix multiply
+  a_dot_b_v01 = arow @ bcol # linear algebra
+  print('\narow @ bcol = {0}'.format(a_dot_b_v01)) # it's a 1x1 matrix
+#+end_src
+
+#+RESULTS:
+: dot(a, b) = -5
+: 
+: dot(arow, bcol) = [[-5]]
+: 
+: arow @ bcol = [[-5]]
+
+#+begin_warning
+Careful: ~*~ with two vectors is an element-wise multiplication.
+
+For matrix or vector multiplication, use the ~@~ operator.
+#+end_warning
+
+#+begin_src python :results output :exports both :session numpy
+  a_mult_b = a * b # element-wise multiplication
+  print(a_mult_b)
+#+end_src
+
+#+RESULTS:
+: [  7 -16  27 -40 -55  72]
+
+***** Complex Vectors
+#+begin_src python :results output :exports both :session numpy
+  # inner product of lists
+
+  def random_complex_vector( dim :int,
+                             min_int:int = -5,
+                             max_int:int = 5) -> np.ndarray:
+      """Generate a vector of randomized complex values.
+
+      Args:
+      dim (int): Dimension of the vector. Defaults to 2.
+      min_int (int): Minimum integer value for the real and imaginary parts. Defaults to -5.
+      max_int (int): Maximum integer value for the real and imaginary parts. Defaults to 5.
+
+      Returns:
+      ndarray: A vector of shape (dim, 1) containing complex values.
+      """
+      return randint(minInt, maxInt, [dim,1]) \
+          + 1j*randint(minInt, maxInt, [dim,1])
+
+  X = random_complex_vector( 3 )
+  Y = random_complex_vector( 3 )
+
+  print(f'\nX = {X}')
+
+  print(f'\nY = {Y}')
+
+  print(f'\nX @ Y = { dag(X) @ Y }')
+
+  print(f'\nnp.dot( dag(X), Y ) = { np.dot( dag(X), Y )}')
+
+  print(f'\nY @ X = { dag(Y) @ X }')
+
+  print(f'\nnp.dot( dag(Y), X ) = { np.dot( dag(Y), X )}')
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+X = [[2.-2.j]
+ [0.+3.j]
+ [2.-3.j]]
+
+Y = [[-4.-4.j]
+ [ 0.-4.j]
+ [ 0.-1.j]]
+
+X @ Y = [[-9.-18.j]]
+
+np.dot( dag(X), Y ) = [[-9.-18.j]]
+
+Y @ X = [[-9.+18.j]]
+
+np.dot( dag(Y), X ) = [[-9.+18.j]]
+#+end_example
+
+- Observations:
+  - To get the inner product correct, we need to apply the Hermitian conjugate
+    of the first vector and then use the matrix multiplication (~@~) or ~np.dot()~.
+  - This gets us the proper result: \(\vec{X} \cdot \vec{Y} = \left(\vec{Y}
+    \cdot \vec{X} \right)^{\ast}\)
+- We could get lazy (smart, efficient) and make our own inner product function:
+  #+begin_src python :results output :exports both :session numpy
+    # inner product of lists
+
+    def inner_product( W: np.ndarray, V: np.ndarray ) -> np.ndarray:
+        """Calculate the inner (scalar) product Generate a vector of randomized complex values.
+
+        Args:
+          W (np.ndarray): first vector
+          V (np.ndarray): second vector
+
+        Returns:
+          np.ndarray: the inner product of W and V.
+        """
+        return dag(W) @ V
+
+    N = 5
+    X = random_complex_vector( N )
+    Y = random_complex_vector( N )
+
+    print(f'\nX = {X}')
+
+    print(f'\nY = {Y}')
+
+    print(f'\nX @ Y = { inner_product(X, Y) }')
+
+    print(f'\nY @ X = { inner_product(Y, X) }')
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+
+  X = [[ 2.-3.j]
+   [-1.-5.j]
+   [ 0.+2.j]
+   [ 1.+0.j]
+   [-2.+3.j]]
+
+  Y = [[-5.+2.j]
+   [-1.-5.j]
+   [ 1.+1.j]
+   [ 4.+1.j]
+   [-5.-3.j]]
+
+  X @ Y = [[17.+9.j]]
+
+  Y @ X = [[17.-9.j]]
+  #+end_example
