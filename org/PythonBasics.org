@@ -919,3 +919,146 @@ print(Y)
 Notice the syntax for the list comprehension is very English-like: we're
 instructing Python to define a list =Y= whose elements are =x**2= (=x=
 squared) for each =x= in the list =X=.
+
+* Binary and Bitwise Operations
+
+** Convert Integers to Bit Strings
+
+- Python can help us convert integers to bit strings and perform logical
+  operations.
+- Let's start by converting an integer to a bit string using the
+  ~bin()~ function.
+  #+begin_src python :results output :exports both
+    for x in range(5):
+        print(bin(x))
+  #+end_src
+
+  #+RESULTS:
+  : 0b0
+  : 0b1
+  : 0b10
+  : 0b11
+  : 0b100
+- The =0.b= prefix indicates a binary result.
+  - We could remove the =0.b= using string slicing:
+    #+begin_src python :results output :exports both
+      for x in range(5):
+          print(bin(x)[2:])
+    #+end_src
+
+    #+RESULTS:
+    : 0
+    : 1
+    : 10
+    : 11
+    : 100
+
+- We can also add zero padding if we want a fixed number of bits:
+    #+begin_src python :results output :exports both
+      for x in range(5):
+          print(bin(x)[2:].zfill(4))
+    #+end_src
+
+    #+RESULTS:
+    : 0000
+    : 0001
+    : 0010
+    : 0011
+    : 0100
+    
+** The Left-Shift and Right-Shift Operations
+- We can shift a bit string left or right using the right-shift ~>>~ or
+  left-shift ~<<~ operators.
+
+*** Rightward Shifts
+A right-shift basically removes the least significant bit (LSB).
+#+begin_src python :results output :session shiftlr :exports both
+  a = 13
+  print(bin(a)[2:])
+
+  # Here are some right shifts.
+  # Think of it as converting to binary and removing the least significant bit
+  print('Right shifts:')
+  for s in range(0,3):
+      print('Dec: {0} >> {1} = {2}; Bin: {0:04b} >> {1} = {2:04b}'\
+            .format(a, s, a>>s))
+  
+#+end_src
+
+#+RESULTS:
+: 1101
+: Right shifts:
+: Dec: 13 >> 0 = 13; Bin: 1101 >> 0 = 1101
+: Dec: 13 >> 1 = 6; Bin: 1101 >> 1 = 0110
+: Dec: 13 >> 2 = 3; Bin: 1101 >> 2 = 0011
+
+*** Leftward Shifts
+- A left-shift operation adds a zero on the right end of the binary word,
+  shifting all other bits to the left
+  - This equivalent to a multiplication by 2
+  - The analogous to this in decimal is the fact that a multiplication by the
+    base (10) means adding a zero on the right end of our decimal number
+#+begin_src python :results output :session shiftlr :exports both
+  # Here are some left shifts.
+  # Just like left shifting in base 10 is a multiplication by 10,
+  # in binary (base 2), left-shifting is a multiplication by 2
+  print('\nLeft shifts:')
+  for s in range(0,3):
+      print('Dec: {0} << {1} = {2}; Bin: {0:04b} << {1} = {2:04b}'\
+            .format(a, s, a<<s))
+#+end_src
+
+#+RESULTS:
+: 
+: Left shifts:
+: Dec: 13 << 0 = 13; Bin: 1101 << 0 = 1101
+: Dec: 13 << 1 = 26; Bin: 1101 << 1 = 11010
+: Dec: 13 << 2 = 52; Bin: 1101 << 2 = 110100
+
+- We show more left shifts:
+#+begin_src python :results output :session shiftlr :exports both
+  # Here are more shifts.
+  # Think of it as converting to binary and removing the least significant bit
+  b=1
+  print('\nMore left shifts:')
+  for s in range(0,3):
+      print('Dec: {0} << {1} = {2}; Bin: {0:04b} << {1} = {2:04b}'\
+            .format(b, s, b<<s))
+#+end_src
+
+#+RESULTS:
+: 
+: More left shifts:
+: Dec: 1 << 0 = 1; Bin: 0001 << 0 = 0001
+: Dec: 1 << 1 = 2; Bin: 0001 << 1 = 0010
+: Dec: 1 << 2 = 4; Bin: 0001 << 2 = 0100
+** Bitwise AND, OR, and XOR (Exclusive OR)
+
+- We demonstrate the use of bitwise logical operations
+- These work on a pair of integers
+  - Consider the integers 2 and 3, which are 0b10 and 0b11 in binary
+  - ~2 & 3~ returns the bitwise AND of 0b10 and 0b11, which is 0b10 = 2
+  - ~2 | 3~ returns the bitwise OR of 0b10 and 0b11, which is 0b11 = 3
+  - ~2 ^ 3~ returns the bitwise XOR of 0b10 and 0b11, which is 0b01 = 1
+#+begin_src python :results output :exports both
+  f, g = 9, 12
+  print('Bitwise AND (&)\n   Dec: {0} & {1} = {2};\n   Bin: {0:04b} & {1:04b} = {2:04b}'\
+            .format(g, f, f & g))
+
+  print('Bitwise OR (|)\n   Dec: {0} | {1} = {2};\n   Bin: {0:04b} | {1:04b} = {2:04b}'\
+            .format(g, f, f | g))
+
+  print('Bitwise XOR (^)\n   Dec: {0} ^ {1} = {2};\n   Bin: {0:04b} | {1:04b} = {2:04b}'\
+            .format(g, f, f ^ g))
+#+end_src
+
+#+RESULTS:
+: Bitwise AND (&)
+:    Dec: 12 & 9 = 8;
+:    Bin: 1100 & 1001 = 1000
+: Bitwise OR (|)
+:    Dec: 12 | 9 = 13;
+:    Bin: 1100 | 1001 = 1101
+: Bitwise XOR (^)
+:    Dec: 12 ^ 9 = 5;
+:    Bin: 1100 | 1001 = 0101
