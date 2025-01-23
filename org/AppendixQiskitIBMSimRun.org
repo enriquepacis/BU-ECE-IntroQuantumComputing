@@ -1069,3 +1069,311 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 #+attr_html: :width 640px
 #+caption: An ideal =AerSimulator= result is compared to a noisy result.
 [[./img/AerSimIdealvsNoisy.png]]
+
+** Summary
+The ~AerSimulator()~ is useful when we want to:
+1. Find counts/samples of large circuits (simulators are efficient)
+2. Find state vector/density matrix of circuits with measurements
+3. Simulate circuits with noise
+   
+The AerSimulator() results do not match the output format of Qiskit IBM runtime
+(the quantum hardware).
+
+Qiskit Aer has its own sampler/estimator, which provide a closer match to the
+inputs and outputs of the hardware, but these are being deprecated.
+
+In the next section, we explore [[https://docs.quantum.ibm.com/api/qiskit/primitives][primitives]], which are used
+in Qiskit IBM runtime.
+
+* Qiskit Primitives
+
+** Overview
+
+- The interface for the various simulators (BasicSimulator, AerSimulator) were
+  identical to the Qiskit IBM Provider interface to the quantum hardware
+- The backend was an abstraction for something that was either simulator or an
+  actual quantum processor.
+- Primitives abstract the interface between users and backends
+- There are two available primitives:
+  - Sampler - this samples the output state of a circuit
+  - Estimator - this stimates expectation values of a state with respect to
+    observables
+- Qiskit, Qiskit Aer, and Qiskit IBM Runtime each provide different primitives.
+- Diego recommends starting with the version 2 primitives, which are compatible
+  with the current hardware:
+
+- Qiskit
+  - StatevectorSampler
+  - StatevectorEstimator
+- Qiskit Aer (none or being deprecated)
+- Qiskit IBM Runtime
+  - SamplerV2
+  - EstimatorV2
+
+** Primitives
+Qiskit primitives are computational building blocks used in larger applications that require quantum resources to efficiently produce outputs. The inputs to a primitive consists of primitive unified blocs (PUBs).
+
+There are two types of primitives:
+1. ~EstimatorV2~
+2. ~SamplerV2~
+
+The workflow is as before: build a circuit, and then simulate it (or run it on
+hardware).
+
+*** Helper Function: =orgfig=                                    :noexport:
+#+begin_src  python :results output :session qisprim :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+*** Imports
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit import QuantumCircuit
+  from qiskit.primitives import StatevectorSampler, StatevectorEstimator
+  from qiskit.providers.basic_provider import BasicSimulator
+#+end_src
+
+#+RESULTS:
+
+*** Build a Circuit
+
+#+begin_src python :results output :session qisprim :exports both
+  qc = QuantumCircuit(2, 2)
+  qc.h(1)
+  qc.cx(1,0)
+  qc.measure([1,0],[1,0]) # measurement register: c
+  qc.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  import os
+  fname = os.path.join('html', 'img', 'qisprimckt01.png')
+  qc.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/qisprimckt01.png]]
+
+#+name: fig:qisprimckt01
+#+attr_html: :width 480px
+#+caption: This is a circuit for use with the =qiskit= primitives.
+[[./img/qisprimckt01.png]]
+
+*** Run Simulations
+
+#+begin_src python :results output :session qisprim :exports both
+  simulator = BasicSimulator()
+  sampler = StatevectorSampler()
+#+end_src
+
+#+RESULTS:
+
+**** Basic Simulation
+
+#+begin_src python :results output :session qisprim :exports both
+  # No transpilation is needed for this simple circuit
+  job_simulator = simulator.run( qc, shots=1024)
+#+end_src
+
+#+RESULTS:
+
+**** Simulation using a Sampler
+
+- The syntax for a sampler simulation is somewhat different than that of the
+  =BasicSimulator= class.
+  - Here, inputs are in the form of primitive-unified blocs (PUBS)
+#+begin_src python :results output :session qisprim :exports both
+  job_sampler = sampler.run( [qc], shots=1024)
+#+end_src
+
+#+RESULTS:
+
+*** Extracting Results
+
+- We extract results in the same way from both the simulator and the sampler:
+
+#+begin_src python :results output :session qisprim :exports both
+  result_simulator = job_simulator.result()
+  result_sampler = job_sampler.result()
+#+end_src
+
+#+RESULTS:
+
+***** Simulator Counts
+
+- We can retrieve counts from the simulator result as before, using the
+  ~get_counts()~ method:
+  #+begin_src python :results output :session qisprim :exports both
+    counts_simulator = result_simulator.get_counts()
+    print( counts_simulator )
+  #+end_src
+
+  #+RESULTS:
+  : {'00': 517, '11': 507}
+
+
+***** Sampler Counts
+- Getting counts from the sampler is a bit more involved. Let's eamine the
+  results we obtained:
+  #+begin_src python :results output :session qisprim :exports both
+    print(type(result_sampler))
+    print(result_sampler)
+  #+end_src
+
+  #+RESULTS:
+  : <class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'>
+  : PrimitiveResult([SamplerPubResult(data=DataBin(c=BitArray(<shape=(), num_shots=1024, num_bits=2>)), metadata={'shots': 1024, 'circuit_metadata': {}})], metadata={'version': 2})
+
+  - The results from the sampler come as an object of class ~PubResult~
+    object.
+    - This class has a ~get_counts()~ method.
+    - Since the input PUB for the sampler is a list, we must similarly index the
+      result to get the result(s)  for a specific PUB item.
+    - If we don't provide an index, get_counts() will
+      aggregate the results, which may not be what we want.
+- To get counts, we do the following:
+- index the PUB result. Here, we call for the zeroth element.
+- reference the data member data element, and reference the classical register name.
+- use the ~get_counts()~ method.
+  #+begin_src python :results output :session qisprim :exports both
+    counts_sampler = result_sampler[0].data.c.get_counts()
+    print(counts_sampler)
+  #+end_src
+
+  #+RESULTS:
+  : {'00': 498, '11': 526}
+** Example: A Parametrized Circuit
+
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit import transpile
+  from qiskit.circuit import Parameter
+  from math import pi
+
+  θ = Parameter('θ')
+
+  qc2 = QuantumCircuit(2)
+  qc2.rx(θ, 1) # assign a parameter for this rotation
+  qc2.cx(1, 0)
+  qc2.measure_all()
+  qc2.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join( 'html', 'img', 'prametrizedckt.png')
+  qc2.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/prametrizedckt.png]]
+
+#+name: fig:parametrizedCkt
+#+attr_html: :width 480px
+#+caption: This circuit has a parameter θ.
+[[./img/prametrizedckt.png]]
+
+
+*** =BasicSimulator= Usage
+Here, we make a list of circuits, each with a specific value of the parameter θ.
+#+begin_src python :results output :session qisprim :exports both
+  angles = [[pi/4], [pi/3], [pi/2]]
+
+  circuits = []
+  for angle in angles:
+      qc_temp = qc2.assign_parameters({θ:angle[0]})
+      circuits.append(qc_temp)
+#+end_src
+
+#+RESULTS:
+
+We can draw the different circuits by indexing the list:
+#+begin_src python :results output :session qisprim :exports both
+  circuits[1].draw(reverse_bits=True)
+#+end_src
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join( 'html', 'img', 'prametrizedckt_ex.png')
+  circuits[1].draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/prametrizedckt_ex.png]]
+
+#+name: fig:paramCktPrintFromList
+#+attr_html: :width 480px
+#+caption: We print a circuit from a list of circuits. Unlike the circuit of Fig. [[fig:parametrizedCkt]], this circuit has a specific value for θ.
+[[./img/prametrizedckt_ex.png]]
+
+
+**** Transpiling and Running
+
+- The entire list of circuits can be transpiled in a single call to ~transpile()~
+- The transpiled list can be called using one call to the =BasicSimulator.run()=
+  method.
+
+  #+begin_src python :results output :session qisprim :exports both
+    # transpile the circuit list
+    circuits_t = transpile( circuits, backend=simulator )
+
+    result_simulator = simulator.run( circuits_t, shots=1024 ).result()
+  #+end_src
+
+  #+RESULTS:
+- Let us inspect the results:
+  #+begin_src python :results output :session qisprim :exports both
+    print(result_simulator)
+    print(type(result_simulator))
+  #+end_src  
+
+  #+RESULTS:
+  : Result(backend_name='basic_simulator', backend_version='0.1', qobj_id='9c17273c-af8f-4d2b-a7e3-7d90eb58d151', job_id='606e8e8d-6bdf-4003-b99f-8686b7802c88', success=True, results=[ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 875, '0x3': 149}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-181', global_phase=0.0, metadata={}), status=DONE, name='circuit-181', seed_simulator=np.int32(784228274), time_taken=0.0013642311096191406), ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 780, '0x3': 244}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-182', global_phase=0.0, metadata={}), status=DONE, name='circuit-182', seed_simulator=np.int32(282119695), time_taken=0.0021491050720214844), ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x3': 465, '0x0': 559}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-183', global_phase=0.0, metadata={}), status=DONE, name='circuit-183', seed_simulator=np.int32(1213856026), time_taken=0.001672983169555664)], date=None, status=COMPLETED, header=QobjHeader(backend_name='basic_simulator', backend_version='0.1'), time_taken=0.0052187442779541016)
+  : <class 'qiskit.result.result.Result'>
+  - The result_simulator is a Result object with a method =get_counts()=.
+- We provide an index to =get_counts()= for the corresponding circuit in
+  =circuits_t=.
+  #+begin_src python :results output :session qisprim :exports both
+    counts_simulator = []
+
+    for i, _ in enumerate(angles):
+        result_temp = result_simulator.get_counts(i)
+        counts_simulator.append(result_temp)
+
+    print(counts_simulator)
+  #+end_src  
+
+  #+RESULTS:
+  : [{'00': 875, '11': 149}, {'00': 780, '11': 244}, {'11': 465, '00': 559}]
+*** =StatevectorSampler= Usage
+- For a sampler, we pass a list of PUBs. This contains
+  - the generic parametrized circuit, along with
+  - the list of parameters
+- This makes the =run()= command very simple.
+#+begin_src python :results output :session qisprim :exports none
+  result_sampler = sampler.run([(qc2, angles)], shots=1024).result()
+#+end_src
+
+#+RESULTS:
