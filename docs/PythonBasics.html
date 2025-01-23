@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-18 Sat 21:37 -->
+<!-- 2025-01-22 Wed 23:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Python Basics</title>
@@ -60,14 +60,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0923b17">1. Variables</a>
+<li><a href="#org5c8d430">1. Variables</a>
 <ul>
-<li><a href="#org1f29f31">1.1. Creating Variables</a></li>
-<li><a href="#orgaec3a1b">1.2. Displaying Variables</a></li>
-<li><a href="#orgcc04e75">1.3. Complex Numbers</a></li>
-<li><a href="#org16d2fbe">1.4. Assign Multiple Variables in a Single Line</a></li>
-<li><a href="#org33d6721">1.5. Variable Types</a></li>
-<li><a href="#org588d8d5">1.6. Boolean Variables</a></li>
+<li><a href="#org80cdbc9">1.1. Creating Variables</a></li>
+<li><a href="#orgba9199a">1.2. Displaying Variables</a></li>
+<li><a href="#orgcfbd58a">1.3. Complex Numbers</a></li>
+<li><a href="#org7e76de3">1.4. Assign Multiple Variables in a Single Line</a></li>
+<li><a href="#org1f1479f">1.5. Variable Types</a></li>
+<li><a href="#org34f1387">1.6. Boolean Variables</a></li>
 </ul>
 </li>
 <li><a href="#if-statements">2. <code>if</code> statements</a>
@@ -96,7 +96,7 @@
 </li>
 <li><a href="#a-for-loop-without-an-index">4.4. A FOR loop without an index</a>
 <ul>
-<li><a href="#org5a2b1a2">4.4.1. Coding Exercise</a></li>
+<li><a href="#org1fdbced">4.4.1. Coding Exercise</a></li>
 </ul>
 </li>
 <li><a href="#calculating-data-from-members-of-a-list">4.5. Calculating Data from Members of a List</a>
@@ -107,31 +107,43 @@
 </li>
 </ul>
 </li>
+<li><a href="#orgacbaa8b">5. Binary and Bitwise Operations</a>
+<ul>
+<li><a href="#orge5b2088">5.1. Convert Integers to Bit Strings</a></li>
+<li><a href="#orgbdd371a">5.2. The Left-Shift and Right-Shift Operations</a>
+<ul>
+<li><a href="#org415149e">5.2.1. Rightward Shifts</a></li>
+<li><a href="#orgd4bbc54">5.2.2. Leftward Shifts</a></li>
+</ul>
+</li>
+<li><a href="#orge3eb7f6">5.3. Bitwise AND, OR, and XOR (Exclusive OR)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
 
-<div id="outline-container-org0923b17" class="outline-2">
-<h2 id="org0923b17"><span class="section-number-2">1.</span> Variables</h2>
+<div id="outline-container-org5c8d430" class="outline-2">
+<h2 id="org5c8d430"><span class="section-number-2">1.</span> Variables</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
 </p>
 </div>
 
-<div id="outline-container-org1f29f31" class="outline-3">
-<h3 id="org1f29f31"><span class="section-number-3">1.1.</span> Creating Variables</h3>
+<div id="outline-container-org80cdbc9" class="outline-3">
+<h3 id="org80cdbc9"><span class="section-number-3">1.1.</span> Creating Variables</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Values are stored in memory and accessed using variable names. This
 is done using the assignment operator, <code>=</code>, using the syntax
 <code>&lt;variable_name&gt; = &lt;expression&gt;</code>. <code>&lt;expression&gt;</code> may be a value, such as <code>5</code>, or
 an expression, such as <code>2 + 3</code>. Some basic examples are shown in Listing
-<a href="#org2908f58">1</a>: 
+<a href="#orgccf4e3d">1</a>: 
 </p>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 1: </span>We assign avariable in Python by specifying a variable name, using the assignment operator (<code>=</code>), and then specifying a value or expression. Defined variables may be used in expressions.</label><pre class="src src-python" id="org8d530ab"><span style="color: #DFAF8F;">a</span> = 3 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign the value 3 to variable a</span>
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>We assign avariable in Python by specifying a variable name, using the assignment operator (<code>=</code>), and then specifying a value or expression. Defined variables may be used in expressions.</label><pre class="src src-python" id="orgce3e30f"><span style="color: #DFAF8F;">a</span> = 3 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign the value 3 to variable a</span>
 <span style="color: #DFAF8F;">b</span> = 5 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign 5 to variable b</span>
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'a+b = {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(a+b))
 
@@ -169,17 +181,17 @@ session, in which case they are stand-alone code blocks.
 </div>
 </div>
 
-<div id="outline-container-orgaec3a1b" class="outline-3">
-<h3 id="orgaec3a1b"><span class="section-number-3">1.2.</span> Displaying Variables</h3>
+<div id="outline-container-orgba9199a" class="outline-3">
+<h3 id="orgba9199a"><span class="section-number-3">1.2.</span> Displaying Variables</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-In Listing <a href="#orge59b84e">1</a>, we print variables from the previous
+In Listing <a href="#org7350ec7">1</a>, we print variables from the previous
 code block. To do this, we use the <code>print()</code> command, which prints
 strings. We either supply to the <code>print()</code> command only a variable (as in
 <code>print(a)</code>), or we form strings with variable values embedded in them.
 </p>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 2: </span>We can use the <code>print()</code> command to display strings or variables.</label><pre class="src src-python" id="org50e2d1f"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'hello world'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print a basic string</span>
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>We can use the <code>print()</code> command to display strings or variables.</label><pre class="src src-python" id="org1fbe3a3"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'hello world'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print a basic string</span>
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">"hello friend"</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print a basic string with alternate delimiters</span>
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(a) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the value of a variable</span>
 </pre>
@@ -194,7 +206,7 @@ hello friend
 
 
 <p>
-Basic usages of <code>print()</code> are shown above in Listing <a href="#orge59b84e">1</a>. A
+Basic usages of <code>print()</code> are shown above in Listing <a href="#org7350ec7">1</a>. A
 more advanced usage is to use f-strings (<a href="https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals">formatted string literals</a>).
 </p>
 <ul class="org-ul">
@@ -215,7 +227,7 @@ of the decimal</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 3: </span>We can use <code>fstrings</code> (formatted strings) to embed variable values in strings. Use <code>{</code> and <code>}</code> to define placeholders for a variable value.</label><pre class="src src-python" id="orgb4f581c"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Make an f-string (fstr) named myFirstfstr</span>
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>We can use <code>fstrings</code> (formatted strings) to embed variable values in strings. Use <code>{</code> and <code>}</code> to define placeholders for a variable value.</label><pre class="src src-python" id="orgd8fb6be"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Make an f-string (fstr) named myFirstfstr</span>
 <span style="color: #5F7F5F;">#    </span><span style="color: #7F9F7F;">This has variable values embedded within it</span>
 <span style="color: #DFAF8F;">myFirstfstr</span> = f<span style="color: #CC9393;">'c = </span>{c}<span style="color: #CC9393;">; d = </span>{d:5.3f}<span style="color: #CC9393;">'</span> 
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(myFirstfstr) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the f-string</span>
@@ -233,8 +245,8 @@ hello world
 </div>
 </div>
 
-<div id="outline-container-orgcc04e75" class="outline-3">
-<h3 id="orgcc04e75"><span class="section-number-3">1.3.</span> Complex Numbers</h3>
+<div id="outline-container-orgcfbd58a" class="outline-3">
+<h3 id="orgcfbd58a"><span class="section-number-3">1.3.</span> Complex Numbers</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 Here is an example of how Python handles complex numbers. In
@@ -263,8 +275,8 @@ We also used <code>abs(X)</code> to obtain the modulus of \(X\).
 </div>
 </div>
 
-<div id="outline-container-org16d2fbe" class="outline-3">
-<h3 id="org16d2fbe"><span class="section-number-3">1.4.</span> Assign Multiple Variables in a Single Line</h3>
+<div id="outline-container-org7e76de3" class="outline-3">
+<h3 id="org7e76de3"><span class="section-number-3">1.4.</span> Assign Multiple Variables in a Single Line</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 One neat trick in Python is that we can define several
@@ -282,8 +294,8 @@ x = 3; y = 6; z = 0.800
 </div>
 </div>
 
-<div id="outline-container-org33d6721" class="outline-3">
-<h3 id="org33d6721"><span class="section-number-3">1.5.</span> Variable Types</h3>
+<div id="outline-container-org1f1479f" class="outline-3">
+<h3 id="org1f1479f"><span class="section-number-3">1.5.</span> Variable Types</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Variables come in different types.
@@ -321,8 +333,8 @@ type of d: &lt;class 'bool'&gt;
 </div>
 </div>
 
-<div id="outline-container-org588d8d5" class="outline-3">
-<h3 id="org588d8d5"><span class="section-number-3">1.6.</span> Boolean Variables</h3>
+<div id="outline-container-org34f1387" class="outline-3">
+<h3 id="org34f1387"><span class="section-number-3">1.6.</span> Boolean Variables</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>We introdcued another data type: <code>bool</code>, short for <i>Boolean</i>
@@ -364,7 +376,7 @@ or not a block of code gets executed</li>
 </ul></li>
 </ul>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 5: </span>Comparisons may be used to generate variables of type <code>bool</code>.</label><pre class="src src-python" id="org9f142ba"><span style="color: #DFAF8F;">a</span> = 3 &lt; 5
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>Comparisons may be used to generate variables of type <code>bool</code>.</label><pre class="src src-python" id="orgf6e4327"><span style="color: #DFAF8F;">a</span> = 3 &lt; 5
 <span style="color: #DFAF8F;">b</span> = 5 &lt; 3
 <span style="color: #DFAF8F;">c</span>, <span style="color: #DFAF8F;">d</span>, <span style="color: #DFAF8F;">f</span> = 3 &gt; 5, 3 &lt; 5, 3==5
 
@@ -393,7 +405,7 @@ c = False; d = True; f = False
 <li><code>if</code> statements allow you to execute blocks of code depending on the
 value of a logical expression</li>
 
-<li>An example of this is shown in Listing <a href="#org3f1aaf4">6</a>.</li>
+<li>An example of this is shown in Listing <a href="#org6f5b1d5">6</a>.</li>
 
 <li>The basic if statement:
 
@@ -407,7 +419,7 @@ value of a logical expression</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 6: </span>A basic IF statement example.</label><pre class="src src-python" id="org3f1aaf4"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">True</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>A basic IF statement example.</label><pre class="src src-python" id="org6f5b1d5"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">True</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
 
 <span style="color: #F0DFAF; font-weight: bold;">if</span> x:
     <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This doesn't print if x is set to False</span>
@@ -428,8 +440,8 @@ This is independent of the IF statement.
 
 
 <ul class="org-ul">
-<li>We now repeat the code of Listing <a href="#org3f1aaf4">6</a>
-in Listing <a href="#org5a8dc3b">7</a>.
+<li>We now repeat the code of Listing <a href="#org6f5b1d5">6</a>
+in Listing <a href="#org2ff71cf">7</a>.
 
 <ul class="org-ul">
 <li>Here, the <code>if</code> statement is evaluated as <code>False</code> (we set it to <code>False</code>
@@ -439,7 +451,7 @@ never executed, so we don't see its output.</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 7: </span>A basic IF statement example with the condition set to FALSE.</label><pre class="src src-python" id="org5a8dc3b"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">False</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>A basic IF statement example with the condition set to FALSE.</label><pre class="src src-python" id="org2ff71cf"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">False</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a boolean (bool) variable</span>
 
 <span style="color: #F0DFAF; font-weight: bold;">if</span> x:
     <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This doesn't print if x is set to False</span>
@@ -473,12 +485,12 @@ provides code to be executed if the controlling logical expression
 <code>SomeExpression</code> is <code>False</code>
 
 <ul class="org-ul">
-<li>An example of this is given in Listing <a href="#org0f8f15e">8</a></li>
+<li>An example of this is given in Listing <a href="#org30e921b">8</a></li>
 </ul></li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 8: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org0f8f15e"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">False</span>
+<label class="org-src-name"><span class="listing-number">Listing 8: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org30e921b"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">False</span>
 
 <span style="color: #F0DFAF; font-weight: bold;">if</span> y:
     <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The condition y evaluates as True.'</span>)
@@ -507,11 +519,11 @@ This is independent of the IF-ELSE statement.
 <li>Python's <code>elif</code> is equivalent to else if or similar constructs in
 other languages.</li>
 
-<li>See Listing <a href="#org47d1dc0">9</a></li>
+<li>See Listing <a href="#org803b7ce">9</a></li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 9: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org47d1dc0"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">None</span>
+<label class="org-src-name"><span class="listing-number">Listing 9: </span>A basic IF-ELSE statement example.</label><pre class="src src-python" id="org803b7ce"><span style="color: #DFAF8F;">x</span> = <span style="color: #BFEBBF;">None</span>
 
 <span style="color: #F0DFAF; font-weight: bold;">if</span> x <span style="color: #F0DFAF; font-weight: bold;">is</span> <span style="color: #BFEBBF;">None</span>:
     <span style="color: #DFAF8F;">y</span> = 100
@@ -540,7 +552,7 @@ expression:</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 10: </span>A basic IF statement with an IS-NOT-NONE check.</label><pre class="src src-python" id="org9afd637"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">True</span>
+<label class="org-src-name"><span class="listing-number">Listing 10: </span>A basic IF statement with an IS-NOT-NONE check.</label><pre class="src src-python" id="org70b0697"><span style="color: #DFAF8F;">y</span> = <span style="color: #BFEBBF;">True</span>
 
 <span style="color: #F0DFAF; font-weight: bold;">if</span> y <span style="color: #F0DFAF; font-weight: bold;">is</span> <span style="color: #F0DFAF; font-weight: bold;">not</span> <span style="color: #BFEBBF;">None</span>:
     <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'y has a value.'</span>)
@@ -590,7 +602,7 @@ using brackets (<code>[</code> and <code>]</code>) and an integer index, <code>k
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 11: </span>We extract the individual characters of a string using an index inside brackets.</label><pre class="src src-python" id="orgb68e274"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'dog'</span>
+<label class="org-src-name"><span class="listing-number">Listing 11: </span>We extract the individual characters of a string using an index inside brackets.</label><pre class="src src-python" id="orga5b47d4"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'dog'</span>
 
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The first letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[0]))
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'The second letter of X is "{0}".'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(X[1]))
@@ -621,12 +633,12 @@ string <code>X</code>.</li>
 </ul></li>
 
 <li>Examples of additional string indexing are shown in Listing
-<a href="#orge6d5d7d">12</a></li>
+<a href="#org5fa4c0d">12</a></li>
 </ul></li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 12: </span>We perform additional analyses on a string.</label><pre class="src src-python" id="orge6d5d7d"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'hello world'</span>
+<label class="org-src-name"><span class="listing-number">Listing 12: </span>We perform additional analyses on a string.</label><pre class="src src-python" id="org5fa4c0d"><span style="color: #DFAF8F;">X</span> = <span style="color: #CC9393;">'hello world'</span>
 
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We can find the length of the string using len()</span>
 <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'X contains {0} characters.'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">len</span>(X) ))
@@ -696,7 +708,7 @@ integer or expression.</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 13: </span>We build a simple list and reference/print its values.</label><pre class="src src-python" id="org5ed2a53"><span style="color: #DFAF8F;">x</span> = 9
+<label class="org-src-name"><span class="listing-number">Listing 13: </span>We build a simple list and reference/print its values.</label><pre class="src src-python" id="org65dd6cf"><span style="color: #DFAF8F;">x</span> = 9
 
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">form a list</span>
 <span style="color: #DFAF8F;">myList</span> = [x, <span style="color: #CC9393;">'s'</span>, -3, <span style="color: #CC9393;">'cat'</span>, [1,2,3]]
@@ -743,7 +755,7 @@ not want them altered in any way.</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 14: </span>We build a simple tuple and reference/print its values.</label><pre class="src src-python" id="orgd06161a"><span style="color: #DFAF8F;">x</span> = 9
+<label class="org-src-name"><span class="listing-number">Listing 14: </span>We build a simple tuple and reference/print its values.</label><pre class="src src-python" id="orga706684"><span style="color: #DFAF8F;">x</span> = 9
 <span style="color: #DFAF8F;">myTup</span> = (x, <span style="color: #CC9393;">'s'</span>, -3, <span style="color: #CC9393;">'cat'</span>, [1,2,3]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">form a tuple</span>
 
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print the first element</span>
@@ -802,7 +814,7 @@ tuples</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 15: </span>We build a simple dict.</label><pre class="src src-python" id="org7804383"><span style="color: #DFAF8F;">someDict</span> = {<span style="color: #CC9393;">"a"</span>: 3,
+<label class="org-src-name"><span class="listing-number">Listing 15: </span>We build a simple dict.</label><pre class="src src-python" id="org84b356d"><span style="color: #DFAF8F;">someDict</span> = {<span style="color: #CC9393;">"a"</span>: 3,
             <span style="color: #CC9393;">"b"</span>: <span style="color: #CC9393;">'dog'</span>,
             <span style="color: #CC9393;">"f"</span>: 5.4}
 
@@ -882,12 +894,12 @@ are indented by a few spaces more than is the first line
 statement is recognized by Python to be outside of the <code>for</code> loop.</li>
 </ul></li>
 
-<li>As a first example, I define in Listing <a href="#org11dd435">16</a> a list and then use
+<li>As a first example, I define in Listing <a href="#org8ed3c19">16</a> a list and then use
 two statements to print the elements of the list.</li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 16: </span>We define a simple <code>FOR</code> loop.</label><pre class="src src-python" id="org11dd435"><span style="color: #DFAF8F;">X</span> = [1, <span style="color: #CC9393;">'a'</span>, (3,2,1), <span style="color: #CC9393;">'fish'</span>]
+<label class="org-src-name"><span class="listing-number">Listing 16: </span>We define a simple <code>FOR</code> loop.</label><pre class="src src-python" id="org8ed3c19"><span style="color: #DFAF8F;">X</span> = [1, <span style="color: #CC9393;">'a'</span>, (3,2,1), <span style="color: #CC9393;">'fish'</span>]
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define a list</span>
 
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use a FOR loop to print the elements of the list</span>
@@ -902,7 +914,7 @@ two statements to print the elements of the list.</li>
 </pre>
 </div>
 
-<pre class="example" id="org71c64fe">
+<pre class="example" id="org2b703f9">
 Element:
  1
 Element:
@@ -924,11 +936,11 @@ Program complete.
 <li>Sometimes we don't just want to loop over the elements, but we also
 want an integer index for each element.</li>
 
-<li>To do this, we can use <code>enumerate</code>, as shown in Listing <a href="#org6874f0f">1</a></li>
+<li>To do this, we can use <code>enumerate</code>, as shown in Listing <a href="#org02e728f">1</a></li>
 </ul>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 17: </span>We define a simple FOR loop.</label><pre class="src src-python" id="org0e88ac2"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<label class="org-src-name"><span class="listing-number">Listing 17: </span>We define a simple FOR loop.</label><pre class="src src-python" id="org99dc22e"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
 
 <span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
 <span style="color: #F0DFAF; font-weight: bold;">for</span> idx, x <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(X):
@@ -978,7 +990,7 @@ corresponding elements of another list, <code>Y</code>.
 corresponding elements of the various lists.</li>
 </ul></li>
 
-<li>I'll demonstrate the use of a range in Listing <a href="#orgce1ea3b">19</a>
+<li>I'll demonstrate the use of a range in Listing <a href="#org69fd9b7">19</a>
 
 <ul class="org-ul">
 <li>We make a range that starts at 0 and ends at a number just high
@@ -988,7 +1000,7 @@ enough to capture all the elements of <code>X</code>.</li>
 </ul></li>
 </ul>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 18: </span>We define a simple <code>FOR</code> loop that iterates over a range to process two lists.</label><pre class="src src-python" id="orgb35200d"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<label class="org-src-name"><span class="listing-number">Listing 18: </span>We define a simple <code>FOR</code> loop that iterates over a range to process two lists.</label><pre class="src src-python" id="orgd095d84"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
 <span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
 
 <span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
@@ -1025,10 +1037,10 @@ X[4] + Y[4] = 8 + 6 = 14
 </ul></li>
 
 <li>We could combine the first two instructions into one, as in Listing
-<a href="#orgce1ea3b">19</a>:</li>
+<a href="#org69fd9b7">19</a>:</li>
 </ul>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 19: </span>We define a simple FOR loop that iterates an index over a range to process two lists.</label><pre class="src src-python" id="orgce1ea3b"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<label class="org-src-name"><span class="listing-number">Listing 19: </span>We define a simple FOR loop that iterates an index over a range to process two lists.</label><pre class="src src-python" id="org69fd9b7"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
 <span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
 
 <span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
@@ -1060,10 +1072,10 @@ x + y = 0 + 1 = 2
 <li>We may work with two data lists without making a common index.</li>
 
 <li>In this technique, we iterate over two lists simultaneously using zip
-(see Listing <a href="#orgad1cf0d">20</a>):</li>
+(see Listing <a href="#orgc2fc24f">20</a>):</li>
 </ul>
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 20: </span>We define a simple FOR loop that process two lists without an index.</label><pre class="src src-python" id="orgad1cf0d"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
+<label class="org-src-name"><span class="listing-number">Listing 20: </span>We define a simple FOR loop that process two lists without an index.</label><pre class="src src-python" id="orgc2fc24f"><span style="color: #DFAF8F;">X</span> = [5, 3, 7, 9, 8]
 <span style="color: #DFAF8F;">Y</span> = [1, 4, 2, 11, 6]
 
 <span style="color: #DFAF8F;">Z</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">empty list</span>
@@ -1085,8 +1097,8 @@ x + y = 0 + 1 = 2
 </pre>
 </div>
 
-<div id="outline-container-org5a2b1a2" class="outline-4">
-<h4 id="org5a2b1a2"><span class="section-number-4">4.4.1.</span> Coding Exercise</h4>
+<div id="outline-container-org1fdbced" class="outline-4">
+<h4 id="org1fdbced"><span class="section-number-4">4.4.1.</span> Coding Exercise</h4>
 <div class="outline-text-4" id="text-4-4-1">
 <p>
 Use <code>zip</code> and a <code>for</code> loop to make Python print each first name and last
@@ -1095,7 +1107,7 @@ should contain <code>Sargon Akkad</code>.
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 21: </span>Coding Exercise. Copy this code block into a Jupyter cell and complet the task described for this exercise.</label><pre class="src src-python" id="orgac72950"><span style="color: #DFAF8F;">FirstName</span> = [<span style="color: #CC9393;">'Sargon'</span>, <span style="color: #CC9393;">'Ambrose'</span>, <span style="color: #CC9393;">'Joan'</span>, <span style="color: #CC9393;">'Augustine'</span>]
+<label class="org-src-name"><span class="listing-number">Listing 21: </span>Coding Exercise. Copy this code block into a Jupyter cell and complet the task described for this exercise.</label><pre class="src src-python" id="orgcc97b32"><span style="color: #DFAF8F;">FirstName</span> = [<span style="color: #CC9393;">'Sargon'</span>, <span style="color: #CC9393;">'Ambrose'</span>, <span style="color: #CC9393;">'Joan'</span>, <span style="color: #CC9393;">'Augustine'</span>]
 <span style="color: #DFAF8F;">LastName</span> = [<span style="color: #CC9393;">'Akkad'</span>, <span style="color: #CC9393;">'Milan'</span>, <span style="color: #CC9393;">'Arc'</span>, <span style="color: #CC9393;">'Hippo'</span>]
 </pre>
 </div>
@@ -1118,7 +1130,7 @@ elements in <code>X</code>:
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 22: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a <code>for</code> loop.</label><pre class="src src-python" id="org215586f"><span style="color: #DFAF8F;">X</span> = [1, 2, 3, 4]
+<label class="org-src-name"><span class="listing-number">Listing 22: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a <code>for</code> loop.</label><pre class="src src-python" id="org518865b"><span style="color: #DFAF8F;">X</span> = [1, 2, 3, 4]
 
 <span style="color: #DFAF8F;">Y</span> = [] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">define an empty storage list</span>
 
@@ -1163,7 +1175,7 @@ It looks like the following:
 </p>
 
 <div class="org-src-container">
-<label class="org-src-name"><span class="listing-number">Listing 23: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a list comprehension.</label><pre class="src src-python" id="orgd76bffe"><span style="color: #DFAF8F;">X</span> = <span style="color: #DCDCCC; font-weight: bold;">list</span>(<span style="color: #DCDCCC; font-weight: bold;">range</span>(1,13))
+<label class="org-src-name"><span class="listing-number">Listing 23: </span>A list <code>Y</code> is calculated from the values of another list, <code>X</code>, using a list comprehension.</label><pre class="src src-python" id="org5b5d613"><span style="color: #DFAF8F;">X</span> = <span style="color: #DCDCCC; font-weight: bold;">list</span>(<span style="color: #DCDCCC; font-weight: bold;">range</span>(1,13))
 
 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Form an array of squared values (list comprehension)</span>
 <span style="color: #DFAF8F;">Y</span> = [x**2 <span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> X]
@@ -1189,10 +1201,213 @@ squared) for each <code>x</code> in the list <code>X</code>.
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgacbaa8b" class="outline-2">
+<h2 id="orgacbaa8b"><span class="section-number-2">5.</span> Binary and Bitwise Operations</h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-orge5b2088" class="outline-3">
+<h3 id="orge5b2088"><span class="section-number-3">5.1.</span> Convert Integers to Bit Strings</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>Python can help us convert integers to bit strings and perform logical
+operations.</li>
+<li><p>
+Let's start by converting an integer to a bit string using the
+<code>bin()</code> function.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(5):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">bin</span>(x))
+</pre>
+</div>
+
+<pre class="example">
+0b0
+0b1
+0b10
+0b11
+0b100
+</pre></li>
+<li>The <code>0.b</code> prefix indicates a binary result.
+<ul class="org-ul">
+<li><p>
+We could remove the <code>0.b</code> using string slicing:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(5):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">bin</span>(x)[2:])
+</pre>
+</div>
+
+<pre class="example">
+0
+1
+10
+11
+100
+</pre></li>
+</ul></li>
+
+<li><p>
+We can also add zero padding if we want a fixed number of bits:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> x <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(5):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">bin</span>(x)[2:].zfill(4))
+</pre>
+</div>
+
+<pre class="example">
+0000
+0001
+0010
+0011
+0100
+</pre></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgbdd371a" class="outline-3">
+<h3 id="orgbdd371a"><span class="section-number-3">5.2.</span> The Left-Shift and Right-Shift Operations</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>We can shift a bit string left or right using the right-shift <code>&gt;&gt;</code> or
+left-shift <code>&lt;&lt;</code> operators.</li>
+</ul>
+</div>
+
+<div id="outline-container-org415149e" class="outline-4">
+<h4 id="org415149e"><span class="section-number-4">5.2.1.</span> Rightward Shifts</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<p>
+A right-shift basically removes the least significant bit (LSB).
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">a</span> = 13
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">bin</span>(a)[2:])
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Here are some right shifts.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Think of it as converting to binary and removing the least significant bit</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Right shifts:'</span>)
+<span style="color: #F0DFAF; font-weight: bold;">for</span> s <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(0,3):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Dec: {0} &gt;&gt; {1} = {2}; Bin: {0:04b} &gt;&gt; {1} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(a, s, a&gt;&gt;s))
+
+</pre>
+</div>
+
+<pre class="example">
+1101
+Right shifts:
+Dec: 13 &gt;&gt; 0 = 13; Bin: 1101 &gt;&gt; 0 = 1101
+Dec: 13 &gt;&gt; 1 = 6; Bin: 1101 &gt;&gt; 1 = 0110
+Dec: 13 &gt;&gt; 2 = 3; Bin: 1101 &gt;&gt; 2 = 0011
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgd4bbc54" class="outline-4">
+<h4 id="orgd4bbc54"><span class="section-number-4">5.2.2.</span> Leftward Shifts</h4>
+<div class="outline-text-4" id="text-5-2-2">
+<ul class="org-ul">
+<li>A left-shift operation adds a zero on the right end of the binary word,
+shifting all other bits to the left
+<ul class="org-ul">
+<li>This equivalent to a multiplication by 2</li>
+<li>The analogous to this in decimal is the fact that a multiplication by the
+base (10) means adding a zero on the right end of our decimal number</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Here are some left shifts.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Just like left shifting in base 10 is a multiplication by 10,</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">in binary (base 2), left-shifting is a multiplication by 2</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Left shifts:'</span>)
+<span style="color: #F0DFAF; font-weight: bold;">for</span> s <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(0,3):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Dec: {0} &lt;&lt; {1} = {2}; Bin: {0:04b} &lt;&lt; {1} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(a, s, a&lt;&lt;s))
+</pre>
+</div>
+
+<pre class="example">
+
+Left shifts:
+Dec: 13 &lt;&lt; 0 = 13; Bin: 1101 &lt;&lt; 0 = 1101
+Dec: 13 &lt;&lt; 1 = 26; Bin: 1101 &lt;&lt; 1 = 11010
+Dec: 13 &lt;&lt; 2 = 52; Bin: 1101 &lt;&lt; 2 = 110100
+</pre>
+
+
+<ul class="org-ul">
+<li>We show more left shifts:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Here are more shifts.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Think of it as converting to binary and removing the least significant bit</span>
+<span style="color: #DFAF8F;">b</span>=1
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">More left shifts:'</span>)
+<span style="color: #F0DFAF; font-weight: bold;">for</span> s <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(0,3):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Dec: {0} &lt;&lt; {1} = {2}; Bin: {0:04b} &lt;&lt; {1} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(b, s, b&lt;&lt;s))
+</pre>
+</div>
+
+<pre class="example">
+
+More left shifts:
+Dec: 1 &lt;&lt; 0 = 1; Bin: 0001 &lt;&lt; 0 = 0001
+Dec: 1 &lt;&lt; 1 = 2; Bin: 0001 &lt;&lt; 1 = 0010
+Dec: 1 &lt;&lt; 2 = 4; Bin: 0001 &lt;&lt; 2 = 0100
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orge3eb7f6" class="outline-3">
+<h3 id="orge3eb7f6"><span class="section-number-3">5.3.</span> Bitwise AND, OR, and XOR (Exclusive OR)</h3>
+<div class="outline-text-3" id="text-5-3">
+<ul class="org-ul">
+<li>We demonstrate the use of bitwise logical operations</li>
+<li>These work on a pair of integers
+<ul class="org-ul">
+<li>Consider the integers 2 and 3, which are 0b10 and 0b11 in binary</li>
+<li><code>2 &amp; 3</code> returns the bitwise AND of 0b10 and 0b11, which is 0b10 = 2</li>
+<li><code>2 | 3</code> returns the bitwise OR of 0b10 and 0b11, which is 0b11 = 3</li>
+<li><code>2 ^ 3</code> returns the bitwise XOR of 0b10 and 0b11, which is 0b01 = 1</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">f</span>, <span style="color: #DFAF8F;">g</span> = 9, 12
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Bitwise AND (&amp;)</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Dec: {0} &amp; {1} = {2};</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Bin: {0:04b} &amp; {1:04b} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(g, f, f &amp; g))
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Bitwise OR (|)</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Dec: {0} | {1} = {2};</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Bin: {0:04b} | {1:04b} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(g, f, f | g))
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Bitwise XOR (^)</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Dec: {0} ^ {1} = {2};</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">   Bin: {0:04b} | {1:04b} = {2:04b}'</span>\
+          .<span style="color: #DCDCCC; font-weight: bold;">format</span>(g, f, f ^ g))
+</pre>
+</div>
+
+<pre class="example">
+Bitwise AND (&amp;)
+   Dec: 12 &amp; 9 = 8;
+   Bin: 1100 &amp; 1001 = 1000
+Bitwise OR (|)
+   Dec: 12 | 9 = 13;
+   Bin: 1100 | 1001 = 1101
+Bitwise XOR (^)
+   Dec: 12 ^ 9 = 5;
+   Bin: 1100 | 1001 = 0101
+</pre>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-01-18 Sat 21:37</p>
+<p class="date">Created: 2025-01-22 Wed 23:11</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
