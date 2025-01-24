@@ -15,11 +15,11 @@ The following is helpful if we want to have =org-mode= sessions linking
 multiple code blocks /and/ we are using =direnv=.
 
 #+begin_src emacs-lisp :eval never-export
-(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+(setq-local org-babel-python-command (expand-file-name "~/anaconda3/envs/testQISreq/bin/python3"))
 #+end_src
 
 #+RESULTS:
-: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+: /Users/enrique_blair/anaconda3/envs/testQISreq/bin/python3
 
 #+begin_src python :results output :eval never-export
 import sys
@@ -28,11 +28,65 @@ print(sys.executable)
 #+end_src
 
 #+RESULTS:
-: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+: /Users/enrique_blair/anaconda3/envs/testQISreq/bin/python3
 
 
 
 * Introduction
+This file is designed to 
+
+* Python Environment
+In Spring 2025, I'm instructing the students to use Python 3.11 with packages as
+installed using a course =requirements=-type file.
+
+To get set up, I recommend the following:
+1. Creating a conda environment using
+   #+begin_src shell :eval never
+     conda crate -n <myEnvName> python=3.11
+   #+end_src
+2. Activate your environment using
+   #+begin_src shell :eval never
+     conda activate <myEnvName>
+   #+end_src
+3. Install required packages just as I have the students do it ([[https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/PythonSetup.html#outline-container-org941edc5][student
+   instructions]]) :
+   #+begin_src shell :eval never
+     pip install -r https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/python/requirementsQIS.txt
+   #+end_src
+4. Add the =nbgrader= package (not required for students, but required for
+   grading)
+   #+begin_src shell :eval never
+     pip install nbgrader
+   #+end_src
+   
+* File Structure
+This directory (=assignments/=) is the root directory where you should
+launch your Jupyter notebook.
+
+The directory =assignments= contains the files needed by =nbgrader=, as well as
+other files
+1. Required by =nbgrader=
+   1. =assignments/source/=. This is where we author assignments, complete with
+      embedded solutions.
+      1. =source= contains a folder for each assignment, =pylabXX=, where =XX=
+         is a placeholder for a number (01, 02, 03, ...)
+      2. Each folder =pylabXX= will contain the completed (reference) solution,
+         =pylabXX.ipynb=
+   2. =assignments/release/=. This is where =nbgrader= places the student
+      assignments (without solutions).
+   3. =assignments/submitted/=. This is where we stage for grading those
+      =*.ipynb= files completed by the students
+      1. =submitted= will contain a directory named using the student ID for each
+         student.
+      2. Within each student's directory, there will be a directory =pylabXX=,
+         and this will be a container for the student's submitted assignment,
+         =pylabXX.ipynb=.
+   4. =assignments/feedback/=. If not yet created, this is where =nbgrader= will
+      place =html= versions of the graded student work. This may include manual
+      feedback.
+      1. When created, the structure will be =feedback/<StudentID>/asgnXX/asgnXX.html=
+   5. 
+* 
 
 * Using =nbgrader=
 
@@ -72,7 +126,7 @@ To use =nbgrader=, you need:
    #+RESULTS:
    : nbgrader-start-formgrader.mov
 
-   
+
    #+begin_src python :results output :exports none
      import moviepy as mp
 
@@ -174,14 +228,55 @@ To use =nbgrader=, you need:
       : #+attr_html: :width 600px
       : [[./img/nbgrader-new-asgn.mov]]
    
-      This creates a new directory, =source=, within the
-      =assignment-dir=, and within =source=, we also get a directory =asgn01=.
+      1. This creates a new directory, =source=, within the
+         =assignment-dir=
+      2. Within =source=, we also get a directory, =asgn01=.
+      3. This also creates a database, =gradebook.db=, if this is the first
+         assignment we have created.
+
+
 2. Make a new notebook in your new =source/asgn01= folder:
    #+begin_src python :results output :exports none
      import moviepy as mp
 
-     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
-                            end_time=None, fps=10):
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0, end_time=None, 
+                            fps=8, speedup=1.0, scale=1.0):
+         """
+         Converts a MOV file to a GIF with optional time compression and image size reduction.
+
+         Parameters:
+             mov_file (str): Path to the input MOV file.
+             gif_file (str): Path to save the output GIF file.
+             start_time (float): Start time in seconds for the GIF. Default is 0.
+             end_time (float): End time in seconds for the GIF. Default is None (end of video).
+             fps (int): Frames per second for the GIF. Default is 8.
+             speed_factor (float): Factor by which to speed up the video. Default is 1.0 (no speed up).
+             scale (float): Factor by which to scale the video size. Default is 1.0 (no resizing).
+         """
+         clip = mp.VideoFileClip(mov_file)
+
+         # Trim the video
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+
+         # Apply speed up
+         if speedup != 1.0:
+             clip = clip.speedx(factor=speedup)
+
+         # Resize the video
+         if scale != 1.0:
+             clip = clip.resize(scale)
+
+         # Write the GIF
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage:
+     # convert_mov_to_gif("input.mov", "output.gif", start_time=0, end_time=10, 
+     #                    fps=10, speed_factor=2.0, scale=0.5)
+
+
+     def convert_mov_to_gif_old(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=8):
          """Converts a MOV file to GIF."""
 
          clip = mp.VideoFileClip(mov_file)
@@ -206,8 +301,8 @@ To use =nbgrader=, you need:
      print(src)
      print(dest)
 
-     if not os.path.isfile( dest ):
-         convert_mov_to_gif(src, dest, fps=15)
+     # if not os.path.isfile( dest ):
+     # convert_mov_to_gif(src, dest, fps=10, scale=0.5)
 
      os.path.exists(dest)
 
@@ -236,18 +331,337 @@ To use =nbgrader=, you need:
 
 ** Authoring an Assignment Notebook
 
-1. Make student solution cells
+1. Make student solution cells. This is where the student will add code to
+   provide their solution.
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-student-answer-cell.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-student-answer-cell.mov (exists: True)
+   /Users/enrique_blair
+   /Users/enrique_blair/Desktop/tempvideo/nbgrader-student-answer-cell.mov
+   html/img/nbgrader-student-answer-cell.gif
+   {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-22T02:11:35.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-21T20:09:23-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2634, 1490], 'bitrate': 2782, 'fps': 60.0, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-22T02:11:35.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 42.62, 'bitrate': 2791, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2634, 1490], 'video_bitrate': 2782, 'video_fps': 60.0, 'video_duration': 42.62, 'video_n_frames': 2557}
+   /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/nbgrader-student-answer-cell.mov -loglevel error -f image2pipe -vf scale=2634:1490 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   MoviePy - Building file html/img/nbgrader-student-answer-cell.gif with imageio.
+
+   ,#+attr_html: :width 600px
+   [[./img/nbgrader-student-answer-cell.gif]]
+   #+end_example
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-student-answer-cell.gif]]
+   
+   1. Write any starter code you will provide the student, along with the
+      instructor solution.
+   2. Mark the solution by writing ~### BEGIN SOLUTION~ and ~### END SOLUTION~
+      on lines by themselves before and after the instructor solution.
+   3. When your student solution cell is active (selected), click on the *Create
+      Assignment* tab on the right.
+      1. The active cell is indicated by a vertical
+         blue bar at the left side of the cell which is active.
+      2. The *Create Assignment* area allows you to specify properties for each
+         cell. 
+   4. Find in the property box corresponding to the active cell. The
+      property box for the active cell, is marked by a vertical blue bar, just
+      like the active cell.
+   5. Select *Autograded answer* as the /Type/ for the active cell.
+   6. Give the cell an ID as desired. A meaningful name may be helpful.
 2. Make autograded test cells
-3. Return to the FormGrader tab
-4. In the row for your assignment, click the hat under the *Generate* column to
-   generate an assignment version of the notebook.
-   1. This will create a directory =assignments/release/asgn01= as a home for a
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-make-test-cell.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-make-test-cell.mov (exists: True)
+   /Users/enrique_blair
+   /Users/enrique_blair/Desktop/tempvideo/nbgrader-make-test-cell.mov
+   html/img/nbgrader-make-test-cell.gif
+   {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-22T02:14:00.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-21T20:12:02-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2634, 1490], 'bitrate': 3749, 'fps': 59.83, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-22T02:14:00.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 47.54, 'bitrate': 3779, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2634, 1490], 'video_bitrate': 3749, 'video_fps': 59.83, 'video_duration': 47.54, 'video_n_frames': 2844}
+   /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/nbgrader-make-test-cell.mov -loglevel error -f image2pipe -vf scale=2634:1490 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   MoviePy - Building file html/img/nbgrader-make-test-cell.gif with imageio.
+
+   ,#+attr_html: :width 600px
+   [[./img/nbgrader-make-test-cell.gif]]
+   #+end_example
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-make-test-cell.gif]]
+   
+3. Generate the student version of the assignment. =nbgrader= will make a
+   version that strips the instructor solution and prevents the notebook from
+   running unless the student modifies the /Autograded solution/ cells and adds
+   their own function al solution.
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-generate-assignment.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-generate-assignment.mov (exists: True)
+   /Users/enrique_blair
+   /Users/enrique_blair/Desktop/tempvideo/nbgrader-generate-assignment.mov
+   html/img/nbgrader-generate-assignment.gif
+   {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-22T04:01:48.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-21T21:59:46-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2634, 1490], 'bitrate': 5709, 'fps': 59.59, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-22T04:01:48.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 16.78, 'bitrate': 5808, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2634, 1490], 'video_bitrate': 5709, 'video_fps': 59.59, 'video_duration': 16.78, 'video_n_frames': 999}
+   /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/nbgrader-generate-assignment.mov -loglevel error -f image2pipe -vf scale=2634:1490 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   MoviePy - Building file html/img/nbgrader-generate-assignment.gif with imageio.
+
+   ,#+attr_html: :width 600px
+   [[./img/nbgrader-generate-assignment.gif]]
+   #+end_example
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-generate-assignment.gif]]
+   
+   1. Return to the *FormGrader* tab
+   2. In the row for your assignment, click the hat under the *Generate* column to
+      generate an assignment version of the notebook.
+   3. If successful, a /Success/ message will be displayed, and the student
+      version will be generated.
+   4. Assignment generation creates a directory =assignments/release/asgn01= as a home for a
       new notebook, =asgn01.ipynb=
-   2. You will distribute this version to the students.
+   5. You will distribute this version to the students.
       1. =nbgrader= will have removed solution parts of the notebook
+
+4. (Optional) Preview your assignment
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'nbgrader-preview-assignment.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Source file: /Users/enrique_blair/Desktop/tempvideo/nbgrader-preview-assignment.mov (exists: True)
+   /Users/enrique_blair
+   /Users/enrique_blair/Desktop/tempvideo/nbgrader-preview-assignment.mov
+   html/img/nbgrader-preview-assignment.gif
+   {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-22T04:10:30.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-21T22:09:13-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2634, 1490], 'bitrate': 3746, 'fps': 59.81, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-22T04:10:30.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 21.3, 'bitrate': 3774, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2634, 1490], 'video_bitrate': 3746, 'video_fps': 59.81, 'video_duration': 21.3, 'video_n_frames': 1273}
+   /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/nbgrader-preview-assignment.mov -loglevel error -f image2pipe -vf scale=2634:1490 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   MoviePy - Building file html/img/nbgrader-preview-assignment.gif with imageio.
+
+   ,#+attr_html: :width 600px
+   [[./img/nbgrader-preview-assignment.gif]]
+   #+end_example
+
+   #+attr_html: :width 600px
+   [[./img/nbgrader-preview-assignment.gif]]
+   
+   1. In the *FormGrader* assigment list, find the row for the desired
+      assignment and click the *Preview* magnifying glass.
+      1. This makes =assignments/release/asgn01/= the active folder in jupyter,
+         and it opens the student version of your assignment
+      2. You should see solutions replaced by ~### YOUR CODE HERE~
 
 ** Collecting Assignments
 
+*** Assignment Downloads from Canvas
+
+1. We can download all student submissions from Canvas from the assignment page:
+
+   #+begin_src python :results output :exports none
+     import moviepy as mp
+
+     def convert_mov_to_gif(mov_file, gif_file, start_time=0,
+                            end_time=None, fps=10):
+         """Converts a MOV file to GIF."""
+
+         clip = mp.VideoFileClip(mov_file)
+         if end_time:
+             clip = clip.subclip(start_time, end_time)
+         clip.write_gif(gif_file, fps=fps)
+
+     # Example usage
+     import os
+
+     fname = 'canvas-batch-download.mov'
+     home = os.path.expanduser("~")
+     src = os.path.join( home, 'Desktop',
+                         'tempvideo', fname)
+     src_exists = os.path.isfile( src )
+
+
+     dest = os.path.join( 'html', 'img', fname[:-3] + 'gif' )
+
+     print(f'Source file: {src} (exists: {src_exists})')
+     print(home)
+     print(src)
+     print(dest)
+
+     if not os.path.isfile( dest ):
+         convert_mov_to_gif(src, dest, fps=15)
+
+     os.path.exists(dest)
+
+     print(f'\n#+attr_html: :width 600px\n[[./img/{fname[:-3] + "gif" }]]')
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Source file: /Users/enrique_blair/Desktop/tempvideo/canvas-batch-download.mov (exists: True)
+   /Users/enrique_blair
+   /Users/enrique_blair/Desktop/tempvideo/canvas-batch-download.mov
+   html/img/canvas-batch-download.gif
+   {'video_found': True, 'audio_found': False, 'metadata': {'major_brand': 'qt', 'minor_version': '0', 'compatible_brands': 'qt', 'creation_time': '2025-01-23T03:31:49.000000Z', 'com.apple.quicktime.make': 'Apple', 'com.apple.quicktime.model': 'Mac15,11', 'com.apple.quicktime.software': 'macOS 14.6.1 (23G93)', 'com.apple.quicktime.creationdate': '2025-01-22T21:29:33-0600'}, 'inputs': [{'streams': [{'input_number': 0, 'stream_number': 0, 'stream_type': 'video', 'language': None, 'default': True, 'size': [2620, 1406], 'bitrate': 5078, 'fps': 59.15, 'codec_name': 'h264', 'profile': '(Main)', 'metadata': {'Metadata': '', 'creation_time': '2025-01-23T03:31:49.000000Z', 'handler_name': 'Core Media Video', 'vendor_id': '[0][0][0][0]', 'encoder': 'H.264'}}], 'input_number': 0}], 'duration': 11.4, 'bitrate': 5250, 'start': 0.0, 'default_video_input_number': 0, 'default_video_stream_number': 0, 'video_codec_name': 'h264', 'video_profile': '(Main)', 'video_size': [2620, 1406], 'video_bitrate': 5078, 'video_fps': 59.15, 'video_duration': 11.4, 'video_n_frames': 674}
+   /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1 -i /Users/enrique_blair/Desktop/tempvideo/canvas-batch-download.mov -loglevel error -f image2pipe -vf scale=2620:1406 -sws_flags bicubic -pix_fmt rgb24 -vcodec rawvideo -
+   MoviePy - Building file html/img/canvas-batch-download.gif with imageio.
+
+   ,#+attr_html: :width 600px
+   [[./img/canvas-batch-download.gif]]
+   #+end_example
+
+   #+attr_html: :width 600px
+   [[./img/canvas-batch-download.gif]]
+
+   This download method gets us a =*.zip= archive named =submissions.zip=. When
+   unzipped, this directory contains all downloads of an assignment, say
+   =asgn01.ipynb=, with a file for each student. The files are given unique
+   names of the form =lastfirst_123456_12345678_asgn01.ipnb=.
+
+   It is not clear to me what the six-digit (sometimes five-digit) or the
+   eight-digit numbers are. Each student appears to have their own 5-6 digit
+   number, and then 
+
+   A spreadsheet of student names, student 
+   
 *** Local Grading
 
 1. When grading assignments locally on your machine, create a directory
