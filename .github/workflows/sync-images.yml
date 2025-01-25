@@ -23,8 +23,15 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add docs/img/
-        git commit -m "Sync images from org/html/img to docs/img"
-        git push
+        git commit -m "Sync images from org/html/img to docs/img" || echo "No changes to commit"
+        
+        # Fetch and rebase to integrate remote changes
+        git fetch origin main
+        git rebase origin/main
+
+        # Push changes to the repository
+        git push origin main
+
       env:
         # Provide access to push back to the repository
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
