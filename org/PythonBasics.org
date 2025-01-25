@@ -4,6 +4,7 @@
 #+startup: overview indent auto-fill
 #+export_file_name: ./html/PythonBasics.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+PROPERTY: header-args :eval never-export :results output
 
 #+title: Python Basics
 #+author: Dr. E.P. Blair
@@ -1074,6 +1075,7 @@ A right-shift basically removes the least significant bit (LSB).
 - =numpy= (short for /Numerical Python/) is a Python package that extends the capabilities of standard Python
   to support various numerical analyses including linear algebra
 - To use =numpy=, we must first import it.
+- It is customary to use the shortcut =np= for =numpy when importing it
   #+begin_src python :results output :session numpy :exports both
     import numpy as np
   #+end_src
@@ -1529,3 +1531,141 @@ np.dot( dag(Y), X ) = [[-9.+18.j]]
 
   Y @ X = [[17.-9.j]]
   #+end_example
+* Basic Plotting using =matplotlib=
+- For plotting capabilities, we may use the =matplotlib= library
+- It is customary to import =pyplot=, the plotting features of =matplotlib=, as
+  =plt=:
+#+begin_src python :session matplotlib :exports both
+  print('test')
+#+end_src
+
+#+RESULTS:
+: None
+
+
+** Helper Function: =orgfig=                                      :noexport:
+#+begin_src  python :results output :session matplotlib :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+** Basic Plots
+- Now, we may make some data vectors for plotting:
+#+begin_src python :session matplotlib :exports both :results output
+  π = np.pi
+
+  nx = 75
+  x = np.linspace(-1, 1, nx)
+  y1 = np.sin( 2*π*x )
+  y2 = np.cos( 2*π*x )
+#+end_src
+
+#+RESULTS:
+
+
+To plot these:
+1. First create a figure and axes object using the =subplots()= command
+2. Then, use =plt.plot(x, y)=
+   
+#+begin_src python :session matplotlib :exports code
+  fig, ax = plt.subplots()
+  plt.plot(x, y1)
+
+  # if using Jupyter, uncomment the following to show the plot
+  # plt.show()
+#+end_src
+
+#+RESULTS:
+| <matplotlib.lines.Line2D | object | at | 0x118894ad0> |
+
+To save the figure in a file, use =plt.savefig( filename )= to save the figure
+as an image
+#+begin_src python :session matplotlib :exports both :results output
+  import os
+  figname = os.path.join('html', 'img', 'sinePlot.png')
+  plt.savefig( figname )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session matplotlib :exports none :results output
+  orgfig( figname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/sinePlot.png]]
+
+#+name: fig:defaultName
+#+attr_html: :width 480px
+#+caption: A simple =matplotlib= plot.
+[[./img/sinePlot.png]]
+
+We may wish to conserve memory by closing any open plots using the
+=close("all")= command:
+#+begin_src python :session matplotlib :exports none :results output
+  plt.close("all")
+#+end_src
+
+#+RESULTS:
+
+This plot requires several improvements
+*** An Improved Plot
+Improvements we will make here:
+- Have multiple datasets, with a legend
+- Add an \(x\)-label
+  - To use LaTeX, we use a raw string with LaTeX syntax deliniated using the
+    dollar sign, ~$~
+#+begin_src python :session matplotlib :exports code :results output
+  fig, ax = plt.subplots()
+  plt.plot(x, y1, label='sine')
+  plt.plot(x, y2, label='cosine')
+
+  ax.set_xlabel(r'$x$', fontsize=16)
+
+  plt.grid( True )
+  plt.legend()
+
+  plt.tight_layout()
+  
+  # if using Jupyter, uncomment the following to show the plot
+  # plt.show()
+#+end_src
+
+#+RESULTS:
+
+- To save the figure in an image file:
+#+begin_src python :session matplotlib :exports both :results output
+  import os
+  figname = os.path.join('html', 'img', 'sincosPlot.png')
+  plt.savefig( figname )
+
+  plt.close("all")
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :session matplotlib :exports none :results output
+  orgfig( figname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/sincosPlot.png]]
+
+#+name: fig:sincosplot
+#+attr_html: :width 480px
+#+caption: Default caption.
+[[./img/sincosPlot.png]]
