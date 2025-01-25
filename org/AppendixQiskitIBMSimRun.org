@@ -4,6 +4,7 @@
 #+startup: overview indent auto-fill
 #+export_file_name: ./html/AppendixQiskitIBMSimRun.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+PROPERTY: header-args :eval never-export
 
 #+title: Qiskit + IBM: Simulation and Calculation
 #+author: Dr. E.P. Blair
@@ -1137,9 +1138,12 @@ hardware).
   from qiskit import QuantumCircuit
   from qiskit.primitives import StatevectorSampler, StatevectorEstimator
   from qiskit.providers.basic_provider import BasicSimulator
+
+  # print('imports complete') # it's sometimes desirable to check job completion
 #+end_src
 
 #+RESULTS:
+: imports complete
 
 *** Build a Circuit
 
@@ -1222,7 +1226,7 @@ hardware).
   #+end_src
 
   #+RESULTS:
-  : {'00': 517, '11': 507}
+  : {'11': 522, '00': 502}
 
 
 ***** Sampler Counts
@@ -1254,7 +1258,7 @@ hardware).
   #+end_src
 
   #+RESULTS:
-  : {'00': 498, '11': 526}
+  : {'11': 504, '00': 520}
 ** Example: A Parametrized Circuit
 
 #+begin_src python :results output :session qisprim :exports both
@@ -1310,6 +1314,8 @@ We can draw the different circuits by indexing the list:
   circuits[1].draw(reverse_bits=True)
 #+end_src
 
+#+RESULTS:
+
 #+begin_src python :results output :session qisprim :exports none
   fname = os.path.join( 'html', 'img', 'prametrizedckt_ex.png')
   circuits[1].draw(reverse_bits=True, filename=fname)
@@ -1317,11 +1323,6 @@ We can draw the different circuits by indexing the list:
 #+end_src
 
 #+RESULTS:
-: 
-: #+name: fig:defaultName
-: #+attr_html: :width 480px
-: #+caption: Default caption.
-: [[./img/prametrizedckt_ex.png]]
 
 #+name: fig:paramCktPrintFromList
 #+attr_html: :width 480px
@@ -1343,16 +1344,6 @@ We can draw the different circuits by indexing the list:
   #+end_src
 
   #+RESULTS:
-- Let us inspect the results:
-  #+begin_src python :results output :session qisprim :exports both
-    print(result_simulator)
-    print(type(result_simulator))
-  #+end_src  
-
-  #+RESULTS:
-  : Result(backend_name='basic_simulator', backend_version='0.1', qobj_id='9c17273c-af8f-4d2b-a7e3-7d90eb58d151', job_id='606e8e8d-6bdf-4003-b99f-8686b7802c88', success=True, results=[ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 875, '0x3': 149}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-181', global_phase=0.0, metadata={}), status=DONE, name='circuit-181', seed_simulator=np.int32(784228274), time_taken=0.0013642311096191406), ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x0': 780, '0x3': 244}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-182', global_phase=0.0, metadata={}), status=DONE, name='circuit-182', seed_simulator=np.int32(282119695), time_taken=0.0021491050720214844), ExperimentResult(shots=1024, success=True, meas_level=2, data=ExperimentResultData(counts={'0x3': 465, '0x0': 559}), header=QobjExperimentHeader(qubit_labels=[['q', 0], ['q', 1]], n_qubits=2, qreg_sizes=[['q', 2]], clbit_labels=[['meas', 0], ['meas', 1]], memory_slots=2, creg_sizes=[['meas', 2]], name='circuit-183', global_phase=0.0, metadata={}), status=DONE, name='circuit-183', seed_simulator=np.int32(1213856026), time_taken=0.001672983169555664)], date=None, status=COMPLETED, header=QobjHeader(backend_name='basic_simulator', backend_version='0.1'), time_taken=0.0052187442779541016)
-  : <class 'qiskit.result.result.Result'>
-  - The result_simulator is a Result object with a method =get_counts()=.
 - We provide an index to =get_counts()= for the corresponding circuit in
   =circuits_t=.
   #+begin_src python :results output :session qisprim :exports both
@@ -1377,3 +1368,1031 @@ We can draw the different circuits by indexing the list:
 #+end_src
 
 #+RESULTS:
+
+- To get the results, we index the =result_sampler=, i.e., =results_sampler[0]=
+  - This indexes the zeroth (and only) PUB, with the flexibility to support multiple PUBs
+- We iterate over the angles as before to get results for each angles
+#+begin_src python :results output :session qisprim :exports none
+  counts_sampler = []
+
+  for i, _ in enumerate( angles ):
+      result_temp = result_sampler[0].data.meas.get_counts(i)
+      counts_sampler.append(result_temp)
+
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: [{'00': 879, '11': 145}, {'00': 768, '11': 256}, {'00': 506, '11': 518}]
+
+#+begin_warning
+Caution: if we simply use =result.sampler[0].data.meas.get_counts()=, this aggregates the counts by summing them. Often, this is not what we want. 
+#+end_warning
+
+
+*** =StatevectorSampler= Usage with Multiple PUBs
+We now pass two PUBs, each with a different circuit:
+#+begin_src python :results output :session qisprim :exports both
+  qc = QuantumCircuit(2,2)
+  qc.h(1)
+  qc.cx(1,0)
+  qc.measure([1,0], [1,0])
+
+  qc.draw()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join('html', 'img', 'circuit_multiPUBex.png')
+  qc.draw( filename = fname )
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/circuit_multiPUBex.png]]
+
+#+name: fig:StateVectorMultiPubCkt
+#+attr_html: :width 480px
+#+caption: A circuit for use in an example with multiple PUBs.
+[[./img/circuit_multiPUBex.png]]
+
+**** Run the Multi-Pub Basic Sampler
+- Here, we run one job with two different PUBs, each with a different circuit.
+#+begin_src python :results output :session qisprim :exports both
+  result_sampler = sampler.run([(qc2, angles), (qc, None)], shots=1024).result()
+#+end_src
+
+#+RESULTS:
+
+**** Retrieve Data for the Zeroth Circuit
+#+begin_src python :results output :session qisprim :exports both
+  counts_sampler = [ result_sampler[0].data.meas.get_counts(k) for k in range(3) ]
+
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: [{'00': 857, '11': 167}, {'00': 774, '11': 250}, {'00': 501, '11': 523}]
+
+**** Retrieve Data for the First Circuit
+- Here, we have a non-parametrized circuit, so we don't need to provide an argument to =get_counts()=
+#+begin_src python :results output :session qisprim :exports both
+  counts_sampler = result_sampler[1].data.c.get_counts()
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: {'11': 521, '00': 503}
+
+** The Estimator Primitive
+- The =StatevectorEstimator= primitive takes a PUB, but with a slightly different format from =BasicSampler=.
+- The circuits cannot have any measurement gates
+#+begin_src python :results output :session qisprim :exports both
+  qc2 = QuantumCircuit(2)
+  qc2.rx(θ, 1)
+  qc2.cx(1, 0)
+
+  qc2.draw( reverse_bits = True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join('html', 'img', 'sample_ckt_for_Estimator.png')
+  qc2.draw( reverse_bits = True, filename=fname)
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/sample_ckt_for_Estimator.png]]
+
+#+name: fig:defaultName
+#+attr_html: :width 480px
+#+caption: This circuit was built for use with an =Estimator= simulation. For this reason, we do not include measurement blocks.
+[[./img/sample_ckt_for_Estimator.png]]
+
+*** Observables
+- Since an estimator estimates expectation values \(\left\langle \psi |
+  \mathbf{O} | \right\rangle\), we need an observable, \(\mathbf{O}\).
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit.quantum_info import SparsePauliOp
+
+  # This is a list of observables. I'm not sure why it's a list of lists.
+  obsv = [ [ SparsePauliOp( ["XX", "IY"], [0.5, 0.5] ) ],
+           [ SparsePauliOp( ["XX"], [1] ) ] ]
+
+  print(obsv)
+#+end_src
+
+#+RESULTS:
+: [[SparsePauliOp(['XX', 'IY'],
+:               coeffs=[0.5+0.j, 0.5+0.j])], [SparsePauliOp(['XX'],
+:               coeffs=[1.+0.j])]]
+
+*** Run the Estimator
+
+#+begin_src python :results output :session qisprim :exports both
+  estimator = StatevectorEstimator()
+  result_estimator = estimator.run( [(qc2, obsv, angles, 0.1)] ).result()
+#+end_src
+
+#+RESULTS:
+
+*** Extract Expectation Values
+- To extract the expectation values from the estimator result, we do the following:
+  - index the result
+  - use the =.data.evs= property
+  - (optional) we can see some metadata using the =.metadata= function
+#+begin_src python :results output :session qisprim :exports both
+  # Extract the expectation values (evs) from the result for PUB 0
+  print(result_estimator[0].data.evs)
+  print(result_estimator[0].metadata)
+#+end_src
+
+#+RESULTS:
+: [[ 0.05985877  0.14030793  0.18762585]
+:  [ 0.10722808 -0.04870472  0.15934201]]
+: {'target_precision': 0.1, 'circuit_metadata': {}}
+
+- This is a list of two observables, with one value for each of the input
+  parameters.
+** Qiskit Estimator Example
+- This provides another example from a Qiskit documentation [[https://docs.quantum.ibm.com/guides/simulate-with-qiskit-sdk-primitives][tutorial]]
+  #+begin_src python :results output :session IBMexample :exports both
+    from qiskit import QuantumCircuit
+    from qiskit.circuit import Parameter
+ 
+    # circuit for which you want to obtain the expected value
+    qc = QuantumCircuit(2)
+    qc.ry(Parameter('theta'), 0)
+    qc.h(0)
+    qc.cx(0,1)
+    qc.draw("mpl", style="iqp")
+  #+end_src
+
+  #+RESULTS:
+
+  #+begin_src python :results output :session IBMexample :exports none
+    def orgfig( fname, width=480 ):
+
+        print(f'\n#+name: fig:defaultName')
+        print(f'#+attr_html: :width {width}px')
+        print(f'#+caption: Default caption.')
+        print(f'[[./{fname}]]')
+
+    import os
+
+    fname = os.path.join('html', 'img', 'EstimatorIBMExCkt.png')
+    qc.draw("mpl", style="iqp", filename=fname)
+
+    orgfig( fname[5:] )
+
+  #+end_src
+
+  #+RESULTS:
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/EstimatorIBMExCkt.png]]
+  : Saved figure
+
+  #+name: fig:defaultName
+  #+attr_html: :width 480px
+  #+caption: This is a simple circuit built for an IBM Quantum tutorial on using the =StatevectorEstimator=.
+  [[./img/EstimatorIBMExCkt.png]]
+
+*** Build an Operator
+#+begin_src python :results output :session IBMexample :exports both
+  from qiskit.quantum_info import SparsePauliOp
+  import numpy as np
+
+  # observable(s) whose expected values you want to compute
+  from qiskit.quantum_info import SparsePauliOp
+  observable = SparsePauliOp(["II", "XX", "YY", "ZZ"], coeffs=[1, 1, -1, 1])
+
+  # value(s) for the circuit parameter(s)
+  parameter_values = [[0], [np.pi/6], [np.pi/2]]
+  print(parameter_values)
+#+end_src
+
+#+RESULTS:
+: [[0], [0.5235987755982988], [1.5707963267948966]]
+
+  
+*** Instantiate a =StatevectorEstimator=
+#+begin_src python :results output :session IBMexample :exports both
+  from qiskit.primitives import StatevectorEstimator
+  estimator = StatevectorEstimator()
+#+end_src
+
+#+RESULTS:
+
+  
+*** Transpile the Circuit
+#+begin_src python :results output :session IBMexample :exports both
+  # Generate a pass manager without providing a backend
+  from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+ 
+  pm = generate_preset_pass_manager(optimization_level=1)
+  isa_circuit = pm.run(qc)
+  isa_observable = observable.apply_layout(isa_circuit.layout)
+#+end_src
+
+#+RESULTS:
+
+*** Run the Estimator
+- We form a PUB as an argument to the =StatevectorEstimator=
+#+begin_src python :results output :session IBMexample :exports both
+  job = estimator.run([(isa_circuit, isa_observable, parameter_values)])
+  result = job.result()
+  print(f" > Result class: {type(result)}")
+#+end_src
+
+#+RESULTS:
+:  > Result class: <class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'>
+
+*** Extract Results
+- To extract the expectation values from the estimator result, we do the
+  following:
+  - index the result
+  - use the =.data.evs= property
+#+begin_src python :results output :session IBMexample :exports both
+  print(result)
+  print(len(result))
+  print(f" > Expectation value: {result[0].data.evs}")
+  print(f" > Metadata: {result[0].metadata}")
+#+end_src
+
+#+RESULTS:
+: PrimitiveResult([PubResult(data=DataBin(evs=np.ndarray(<shape=(3,), dtype=float64>), stds=np.ndarray(<shape=(3,), dtype=float64>), shape=(3,)), metadata={'target_precision': 0.0, 'circuit_metadata': {}})], metadata={'version': 2})
+: 1
+:  > Expectation value: [4.         3.73205081 2.        ]
+:  > Metadata: {'target_precision': 0.0, 'circuit_metadata': {}}
+    
+
+* Qiskit IBM Runtime Primitives
+
+** Helper Function: =orgfig=                                      :noexport:
+#+begin_src python :results output :session IBMrun :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+
+** Imports
+
+#+begin_src python :results output :session IBMrun :exports both
+  from math import pi as π
+
+  from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
+  from qiskit.circuit import Parameter
+  from qiskit.quantum_info import SparsePauliOp
+  from qiskit.visualization import plot_distribution
+  from qiskit_aer import AerSimulator
+  from qiskit_ibm_runtime import SamplerV2, EstimatorV2, QiskitRuntimeService
+#+end_src
+
+** Load a Personal IBM Token
+- You need a personal IBM token to access the hardware.
+- There are several ways to do this.
+- The first thing, however, is to get a personal IBM Quantum token
+*** Getting Your IBM Quantum Token
+1. If you don't already have one, use your university e-mail account
+   (prefferable) to register for an account.
+2. Once logged in, you can get your IBM token in one of two ways:
+   1. Visit your [[https://quantum.ibm.com][IBM Quantum Platform dashboard]]
+      1. In the upper right, you'll see a box where you can view or copy your
+         IBM Quantum API token
+         #+attr_html: :width 360px
+         [[./img/IBMQuantumDashboard.png]]
+   2. Click the "Account" button (it looks like an anonymized profile pic). This
+      brings up your /Profile Settings/
+      #+attr_html: :width 360px
+      [[./img/IBMQuantumAccountIcon.png]]
+      1. Below the /Profile Details/ is an /API Token/. Click the icon that allows
+         you to copy you IBM Quantum API token. You will paste this information
+         elsewhere later.
+         
+
+      
+*** The [[https://docs.python.org/3/library/getpass.html][getpass]] Package
+- This is a nice Python package that is useful in Jupyter notebooks
+- It allows you to prompt the user for a password that can be used later in the file.
+- The basic usage is:
+  #+begin_src python :eval never
+    import getpass # this comes with standard Python
+
+    # This interactively prompts the user for their password
+    token = getpass.getpass('Enter your password: ')
+  #+end_src
+- You can then use =token= in an API call
+- This allows you to share Jupyter notebooks /without/ also sharing your
+  password/token/API key.
+
+*** Acessing IBM Quantum Harware Using Your Token
+- Once you have a variable =token= that contains your API key, you can
+  leverage the =QiskitRuntimeService.save_account()= to save the token your
+  computer for future use:
+  #+begin_src python :eval never
+    QiskitRuntimeService.save_account(
+        channel="ibm_quantum",
+        token=token,
+        overwrite=True,
+        set_as_default=True)
+  #+end_src
+We can then put it all together in the following way:
+1. Check your computer to see if there's a saved IBM quantum token.
+   1. If yes, use it
+   2. If not, prompt the user for the token
+      1. In this case, we replace the variable =token= with a call to
+         =getpass.getpass()=, which effectively supplies the token to
+         =QiskitRuntimeService()=
+#+begin_src python :results output :session IBMrun :exports both
+  try:
+      # Load any previously-saved IBM Quantum tokens
+      QiskitRuntimeService.saved_accounts()
+      print("Found and loaded a previously-saved IBM Quantum API token.")
+  except:
+      # Otherwise, prompt user for token
+      QiskitRuntimeService.save_account(
+      channel="ibm_quantum",
+      token=getpass.getpass("No token found. Enter your IBM Quantum API token: "),
+      overwrite=True,
+      set_as_default=True)
+
+      print("Account saved successfully!")
+#+end_src
+
+#+RESULTS:
+: Found and loaded a previously-saved IBM Quantum API token.
+
+
+*** My Approach (not recommended)
+- I use this approach because I sometimes run Python code /outside/ of a Jupyter
+  notebook, so I don't have an opportunity to dynamically input my password
+  using =getpass=
+- My approach was to save a file on my computer, say, =~/.IBMQpass=
+  - This is a text file containing only my IBM Quantum token
+- Then, I can load the token in a variable called =token= using code like this:
+  #+begin_src python :results output :session IBMrun :exports both
+    import os
+    from datetime import datetime
+
+    # Read the token from a secure file
+    # Expand the '~' to the full path
+    file_path = os.path.expanduser("~/.IBMQpass")
+    with open(file_path, "r") as file:
+        token = file.read().strip()
+
+    print('\nLoaded IBM Quantum token: {0}'.format(datetime.now()))
+  #+end_src
+
+** Establish a Connection
+- To interface with the IBM cloud resources, we establish as
+  =QiskitRuntimeService= object, =service=
+  #+begin_src python :results output :session IBMrun :exports both
+    service = QiskitRuntimeService(channel='ibm_quantum')
+  #+end_src
+
+  #+RESULTS:
+
+- We can then use the =service= object to query available QPUs
+  #+begin_src python :results output :session IBMrun :exports both
+    print(service.backends())
+    # in Jupyter notebook, you don't need print() ... just use
+    # service.backends() as the last command in your cell.
+  #+end_src
+
+  #+RESULTS:
+  : [<IBMBackend('ibm_brisbane')>, <IBMBackend('ibm_kyiv')>, <IBMBackend('ibm_sherbrooke')>]
+
+- This is a list of objects of the [[https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/qiskit_ibm_runtime.IBMBackend][IBMBackend]] class
+  - We can ask for the least-busy backend using the =.least_busy()= method:
+    #+begin_src python :results output :session IBMrun :exports both
+      # save the least-busy backend as backend
+      backend = service.least_busy()
+
+      print(backend)
+    #+end_src
+
+    #+RESULTS:
+    : <IBMBackend('ibm_brisbane')>
+
+- We can get information about a backend using properties such as =.name=,
+  =.version=, and =.num_qubits=:
+  #+begin_src python :results output :session IBMrun :exports both
+    print(
+        f"Name: {backend.name}\n"
+        f"Version: {backend.version}\n"
+        f"No. of qubits: {backend.num_qubits}\n"
+    )
+  #+end_src
+
+  #+RESULTS:
+  : Name: ibm_brisbane
+  : Version: 2
+  : No. of qubits: 127
+- A backend has more attributes, which we can uncover if we use the ~.__dict__~
+  property:
+  #+begin_src python :results output :session IBMrun :exports both
+    print(backend.__dict__)
+  #+end_src
+
+  #+RESULTS:
+  : {'_options': Options(shots=4000, memory=False, meas_level=<MeasLevel.CLASSIFIED: 2>, meas_return=<MeasReturnType.AVERAGE: 'avg'>, memory_slots=None, memory_slot_size=100, rep_time=None, rep_delay=None, init_qubits=True, use_measure_esp=None, use_fractional_gates=False, noise_model=None, seed_simulator=None), '_provider': None, 'name': 'ibm_brisbane', 'description': None, 'online_date': datetime.datetime(2023, 1, 23, 5, 0, tzinfo=tzutc()), 'backend_version': '1.1.66', '_coupling_map': None, '_instance': 'ibm-q/open/main', '_service': <QiskitRuntimeService>, '_api_client': <qiskit_ibm_runtime.api.clients.runtime.RuntimeClient object at 0x122bed850>, '_configuration': <qiskit_ibm_runtime.models.backend_configuration.PulseBackendConfiguration object at 0x122915f90>, '_properties': <qiskit_ibm_runtime.models.backend_properties.BackendProperties object at 0x126f1a9d0>, '_defaults': <qiskit_ibm_runtime.models.pulse_defaults.PulseDefaults object at 0x126ccbdd0>, '_target': <qiskit.transpiler.target.Target object at 0x1206080a0>, '_max_circuits': 300, '_session': None}
+** Define Sampler Instances
+- We will create backends so we can compare a simulation using =AerSimulator()=
+  against a calculation on actual quantum hardware
+  #+begin_src python :results output :session IBMrun :exports both
+    backend_aer = AerSimulator() # simulator backend
+    backend_qpu = backend # hardware backend
+
+    print(type(backend_aer))
+    print(type(backend_qpu))
+  #+end_src
+
+  #+RESULTS:
+  : <class 'qiskit_aer.backends.aer_simulator.AerSimulator'>
+  : <class 'qiskit_ibm_runtime.ibm_backend.IBMBackend'>
+
+- We now use the backends to define samplers
+  #+begin_src python :results output :session IBMrun :exports both
+    sampler_aer = SamplerV2(backend_aer) # sampler for simulator
+    sampler_qpu = SamplerV2(backend_qpu) # sampler for QPU
+
+    print(type(sampler_aer))
+    print(type(sampler_qpu))
+  #+end_src
+
+  #+RESULTS:
+  : <class 'qiskit_ibm_runtime.sampler.SamplerV2'>
+  : <class 'qiskit_ibm_runtime.sampler.SamplerV2'>
+
+** Create Some Circuits
+#+begin_src python :results output :session IBMrun :exports both
+  qc1 = QuantumCircuit(1)
+  qc1.h(0)
+  qc1.measure_all()
+  qc1.draw()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt1.png')
+  qc1.draw(filename=fname)
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/simQPUckt1.png]]
+
+#+name: fig:simQPUckt1
+#+attr_html: :width 480px
+#+caption: This circuit is designed for simulation and implementation on actual IBM quantum hardware.
+[[./img/simQPUckt.png]]
+
+- A parametrized circuit is create as a second circuit to test
+#+begin_src python :results output :session IBMrun :exports both
+  θ = Parameter('θ')
+  ϕ = Parameter('ϕ')
+
+  qr = QuantumRegister(2, name='q')
+
+  cr = ClassicalRegister(2, name='SomeName')
+
+  qc2 = QuantumCircuit( qr, cr )
+  qc2.rx(θ,1)
+  qc2.cry(ϕ,1,0)
+  qc2.measure(qr, cr)
+  qc2.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt2.png')
+  qc2.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/simQPUckt2.png]]
+
+#+name: fig:simQPUckt2
+#+attr_html: :width 480px
+#+caption: This parameterized circuit provides a second circuit to compare in simulation and on actual hardware.
+[[./img/simQPUckt2.png]]
+
+- Next, we define angles for use with circuit 2:
+  #+begin_src python :results output :session IBMrun :exports both
+    angles = [[π/4, π/2], [π/3, π], [π/2, π]]
+  #+end_src
+
+  #+RESULTS:
+  - The there are three sets of parameters
+  - Each set has two angles, one for each parameter
+
+** Transpile the Circuits
+
+*** Circuit 1 (Aer)
+- We transpile the circuit of Figure [[fig:simQPUckt1]] for the =AerSimulator=
+#+begin_src python :results output :session IBMrun :exports both
+  qc1_aer = transpile( qc1, backend=backend_aer)
+  qc1_aer.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt1trans_aer.png')
+  qc1_aer.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: The circuit of Figure [[fig:simQPUckt1]] is transpiled for the =AerSimulator=.
+: [[./img/simQPUckt1trans_aer.png]]
+
+#+attr_html: :width 480px
+#+caption: The circuit of Figure [[fig:simQPUckt1]] is transpiled for the =AerSimulator=.
+[[./img/simQPUckt1trans_aer.png]]
+
+*** Circuit 2 (Aer)
+- We transpile the circuit of Figure [[fig:simQPUckt2]] for the =AerSimulator=
+#+begin_src python :results output :session IBMrun :exports both
+  qc2_aer = transpile( qc2, backend=backend_aer)
+  qc2_aer.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt2trans_aer.png')
+  qc2_aer.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/qiskit/visualization/circuit/matplotlib.py:278: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+:   mpl_figure = plt.figure()
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/simQPUckt2trans_aer.png]]
+
+#+name: fig:ckt2_trans_aer
+#+attr_html: :width 480px
+#+caption: The circuit of Figure [[fig:simQPUckt2]] is transpiled for the =AerSimulator=.
+[[./img/simQPUckt2trans_aer.png]]
+
+
+- We also transpile and optimize the circuit =qc2=
+  - To do this, we use the =generate_preset_pass_manager= function
+    #+begin_src python :results output :session IBMrun :exports both
+      from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+
+      target = backend_aer.target
+      pm = generate_preset_pass_manager(target=target, optimization_level=1)
+      qc2_aer = pm.run(qc2)
+      qc2_aer.draw( reverse_bits=True )
+    #+end_src
+
+    #+RESULTS:
+
+    #+begin_src python :results output :session IBMrun :exports none
+      fname = os.path.join('html', 'img', 'simQPUckt2trans_aer_pm.png')
+      qc2_aer.draw(reverse_bits=True, filename=fname)
+      orgfig( fname[5:] )
+    #+end_src
+
+    #+RESULTS:
+    : 
+    : #+name: fig:defaultName
+    : #+attr_html: :width 480px
+    : #+caption: Default caption.
+    : [[./img/simQPUckt2trans_aer_pm.png]]
+
+    #+name: fig:ckt2_trans_aer_pm
+    #+attr_html: :width 480px
+    #+caption: Here, the circuit of Figure [[fig:simQPUckt2]] is transpiled using a pass manager. It is the same as the result in Figure [[fig:ckt2_trans_aer]].
+    [[./img/simQPUckt2trans_aer_pm.png]]
+
+*** Circuit 1 (QPU)
+- We transpile the circuit of Figure [[fig:simQPUckt1]] for the quantum hardware
+- Since the hardware has many more qubits than the circuit, we use
+  ~idle_wires=False~ to suppress the display of idle qubits when we use the
+  =.draw()= method
+#+begin_src python :results output :session IBMrun :exports both
+  qc1_qpu = transpile( qc1, backend=backend_qpu)
+  qc1_qpu.draw(reverse_bits=True, idle_wires=False )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt1trans_qpu.png')
+  qc1_qpu.draw(reverse_bits=True, idle_wires=False, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/simQPUckt1trans_qpu.png]]
+
+#+name: fig:simQPUckt1_trans_qpu
+#+attr_html: :width 480px
+#+caption: The circuit of Figure [[fig:simQPUckt1]] is transpiled for the quantum hardware.
+[[./img/simQPUckt1trans_qpu.png]]
+*** Circuit 2 (QPU)
+- We transpile the circuit of Figure [[fig:simQPUckt2]] for the quantum hardware
+#+begin_src python :results output :session IBMrun :exports both
+  target = backend_qpu.target
+  pm = generate_preset_pass_manager(target=target, optimization_level=1)
+  qc2_qpu = pm.run(qc2)
+  qc2_qpu.draw(reverse_bits=True, idle_wires=False )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'simQPUckt2trans_qpu.png')
+  qc2_qpu.draw(reverse_bits=True, idle_wires=False, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/simQPUckt2trans_qpu.png]]
+
+#+name: fig:ckt2_trans_qpu
+#+attr_html: :width 480px
+#+caption: The circuit of Figure [[fig:simQPUckt2]] is transpiled for the quantum hardware.
+[[./img/simQPUckt2trans_qpu.png]]
+** Simulate the Circuits
+- The sampler =.run()= method triggers the simulation
+*** Simulate on the Aer Sampler
+#+begin_src python :results output :session IBMrun :exports both
+  job_aer = sampler_aer.run( [ (qc1_aer, None, 100), (qc2_aer, angles, 1000) ] )
+
+  # Print is not needed in Jupyter Lab
+  print(job_aer.__dict__)
+#+end_src
+
+#+RESULTS:
+: {'_job_id': '9288fdc7-7e26-40d7-b919-d32ca46a577a', 'metadata': {}, '_future': <Future at 0x145e6e6d0 state=running>, '_function': <bound method BackendSamplerV2._run of <qiskit.primitives.backend_sampler_v2.BackendSamplerV2 object at 0x14581b4d0>>, '_args': ([SamplerPub(<()>), SamplerPub(<(3,)>)],), '_kwargs': {}}
+
+*** Run on Quantum Hardware
+#+begin_src python :results output :session IBMrun :exports both
+  job_qpu = sampler_qpu.run( [ (qc1_qpu, None, 100), (qc2_qpu, angles, 1000) ] )
+
+  # Print is not needed in Jupyter Lab
+  print(job_qpu)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/qiskit_ibm_runtime/qiskit_runtime_service.py:849: UserWarning: Your current pending jobs are estimated to consume 625.82641167829 quantum seconds, but you only have 565 quantum seconds left in your monthly quota; therefore, it is likely this job will be canceled
+:   warnings.warn(warning_message)
+: <RuntimeJobV2('cya60g201rbg008jq0v0', 'sampler')>
+
+- Once your job is sumbitted, it IBM Quantum will assign it a unique job
+  ID.
+- Let's see what information is embedded in the job_qpu object:
+#+begin_src python :results output :session IBMrun :exports both
+  print(job_qpu.__dict__)
+#+end_src
+
+#+RESULTS:
+: {'_job_id': 'cya60g201rbg008jq0v0', 'metadata': {}, '_backend': <IBMBackend('ibm_brisbane')>, '_api_client': <qiskit_ibm_runtime.api.clients.runtime.RuntimeClient object at 0x14533be50>, '_interim_results': None, '_creation_date': None, '_program_id': 'sampler', '_reason': None, '_reason_code': None, '_error_message': None, '_image': None, '_final_interim_results': False, '_service': <QiskitRuntimeService>, '_session_id': None, '_tags': None, '_usage_estimation': {}, '_version': 2, '_queue_info': None, '_user_callback': None, '_status': 'INITIALIZING', '_interim_result_decoder': <class 'qiskit_ibm_runtime.utils.result_decoder.ResultDecoder'>, '_final_result_decoder': <class 'qiskit_ibm_runtime.utils.sampler_result_decoder.SamplerResultDecoder'>, '_ws_client_future': None, '_result_queue': <queue.Queue object at 0x1401a57d0>, '_ws_client': <qiskit_ibm_runtime.api.clients.runtime_ws.RuntimeWebsocketClient object at 0x1404550d0>}
+- We can obtain using the .job_id() method.
+#+begin_src python :results output :session IBMrun :exports both
+  job_id = job_qpu.job_id()
+  print(f"Your job's identifier is: {job_id}")
+#+end_src
+
+#+RESULTS:
+: Your job's identifier is: cya60g201rbg008jq0v0
+
+- As long as our Juptyer Lab notebook is open, we can access our job through the
+  ~job_id~ object using the =result()= method:
+  #+begin_src python :results output :session IBMrun :exports both
+    result_qpu = job_qpu.result()
+    print(result_qpu)
+  #+end_src
+
+  #+RESULTS:
+  : PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=100, num_bits=1>)), metadata={'circuit_metadata': {}}), SamplerPubResult(data=DataBin(SomeName=BitArray(<shape=(3,), num_shots=1000, num_bits=2>), shape=(3,)), metadata={'circuit_metadata': {}})], metadata={'execution': {'execution_spans': ExecutionSpans([SliceSpan(<start='2025-01-25 03:53:39', stop='2025-01-25 03:53:54', size=100>), SliceSpan(<start='2025-01-25 03:53:39', stop='2025-01-25 03:53:52', size=3000>)])}, 'version': 2})
+  
+- If we shut down our Jupyter Lab notebook, we clear the memory, and the information stored in job_id is lost.
+- The job ID is important because we can retrieve the results from IBM using
+  this ID.
+- Thus, it may be helpful to record the job ID somewhere. As a fallback, we can
+  always go to the IBM Quantum portal and then find the job.  
+*** Get Results from the =AerSampler=
+- View results:
+  #+begin_src python :results output :session IBMrun :exports both
+    result_aer = job_aer.result()
+    print(result_aer)
+  #+end_src  
+
+  #+RESULTS:
+  : PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=100, num_bits=1>)), metadata={'shots': 100, 'circuit_metadata': {}}), SamplerPubResult(data=DataBin(SomeName=BitArray(<shape=(3,), num_shots=1000, num_bits=2>), shape=(3,)), metadata={'shots': 1000, 'circuit_metadata': {}})], metadata={'version': 2})
+
+- We retrieve the counts from the Aer sampler results:
+  #+begin_src python :results output :session IBMrun :exports both
+    counts_qc1_aer = result_aer[0].data.meas.get_counts()
+    print(counts_qc1_aer)
+  #+end_src    
+
+  #+RESULTS:
+  : {'0': 56, '1': 44}
+  
+*** Comparing Simulation and QPU Results
+
+- When comparing results, it's usually a great idea to make a visualization
+  #+begin_src python :results output :session IBMrun :exports both
+    fig = plot_distribution([counts_qc1_aer, counts_qc1_qpu],
+                            legend=['Simulator', 'QPU'])
+  #+end_src
+
+  #+RESULTS:
+  : Saved figure
+
+  #+begin_src python :results output :session IBMrun :exports none
+    import matplotlib.pyplot as plt
+    fname = os.path.join( 'html', 'img', 'compareCountsAerQPU.png')
+    plt.tight_layout()
+    fig.savefig(fname)
+    orgfig(fname[5:])
+  #+end_src
+
+  #+RESULTS:
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/compareCountsAerQPU.png]]
+
+  #+name: fig:compareAerQPUcounts
+  #+attr_html: :width 620px
+  #+caption: Counts from the QPU are compared against those from the Aer simulator for circuit 1.
+  [[./img/compareCountsAerQPU.png]]
+
+** Simulation vs QPU: Estimator
+- Estimators get us not counts, but expectation values for observables.
+*** Defining Estimator Objects
+- Define Aer and QPU estimators:
+  #+begin_src python :results output :session IBMrun :exports both
+    estimator_aer = EstimatorV2( backend_aer )
+    estimator_qpu = EstimatorV2( backend_qpu )
+  #+end_src
+
+  #+RESULTS:
+*** Defining Observable Operators
+- We also need observable(s) to supply for the estimators:
+  #+begin_src python :results output :session IBMrun :exports both
+    obsv_list = [[SparsePauliOp(["XX", "IY"], [0.5, 0.5])],
+                 [SparsePauliOp(["XX"], [1])],
+                 [SparsePauliOp(["IY"], [1])]]
+  #+end_src
+
+  #+RESULTS:
+
+*** Layout Mapping
+- This observable must be mapped to the circuit of interest.
+  - This is important because the hardware may have many more (idle) qubits than
+    our circuit does.
+  #+begin_src python :results output :session IBMrun :exports both
+    layout = qc2_qpu.layout 
+
+    print(type(layout))
+
+    obsv_qpu = []
+
+    for obsv in obsv_list:
+        obsv_temp = obsv[0].apply_layout(layout)
+        print(obsv_temp)
+        obsv_qpu.append([obsv_temp])
+  #+end_src    
+
+  #+RESULTS:
+  : <class 'qiskit.transpiler.layout.TranspileLayout'>
+  : SparsePauliOp(['IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIXX', 'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIY'],
+  :               coeffs=[0.5+0.j, 0.5+0.j])
+  : SparsePauliOp(['IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIXX'],
+  :               coeffs=[1.+0.j])
+  : SparsePauliOp(['IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIY'],
+  :               coeffs=[1.+0.j])
+- The simulated estimator does *not* need the modified observables, and we will run
+  only one circuit
+  
+*** Simulation
+#+begin_src python :results output :session IBMrun :exports both
+  job2_aer = estimator_aer.run([(qc2_aer, obsv_list, angles, 0.01)])
+#+end_src    
+
+#+RESULTS:
+
+*** QPU Submission
+
+#+name: lst:QPUEstimator
+#+begin_src python :results output :session IBMrun :exports both
+  # If you've never submitted the job before, set job2_id to None
+  # job2_id = None
+  job2_id = 'cya6t20nrmz000862cs0'
+
+  if job2_id is None:
+      job2_qpu = estimator_qpu.run([(qc2_qpu, obsv_qpu, angles, 0.01)])
+      print( 'Submitted new job with id: {0}'.format(job2_qpu.job_id()) )
+  else:
+      # Loads by ID a pre-existing job from IBM Quantum 
+      job2_gpu = QiskitRuntimeService().job(job2_id)
+      print( 'Loaded old job with id: {0}'.format(job2_qpu.job_id()) )
+#+end_src    
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/lib/python3.11/site-packages/qiskit_ibm_runtime/qiskit_runtime_service.py:849: UserWarning: Your current pending jobs are estimated to consume 647.0957899365619 quantum seconds, but you only have 546 quantum seconds left in your monthly quota; therefore, it is likely this job will be canceled
+:   warnings.warn(warning_message)
+: Submitted new job with id: cya6t20nrmz000862cs0
+
+
+#+begin_src python :results output :session IBMrun :exports both
+  print(job2_qpu)
+  print( 'Job id: {0}'.format(job2_qpu.job_id()) )
+  print( 'Status: {0}'.format(job2_qpu.status()) )
+
+  if job2_qpu.status() == 'DONE':
+      print(job2_qpu.metrics())
+#+end_src    
+
+#+RESULTS:
+: <RuntimeJobV2('cya6t20nrmz000862cs0', 'estimator')>
+: Job id: cya6t20nrmz000862cs0
+: Status: DONE
+: {'bss': {'seconds': 18}, 'usage': {'quantum_seconds': 18, 'seconds': 18}, 'timestamps': {'created': '2025-01-25T04:48:08.442Z', 'finished': '2025-01-25T04:48:43.251Z', 'running': '2025-01-25T04:48:11.227Z'}, 'executions': 62144, 'num_circuits': 224, 'num_qubits': [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127], 'circuit_depths': [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23], 'qiskit_version': 'qiskit_ibm_runtime-0.33.2,qiskit-1.3.1*,qiskit_aer-0.16.0*', 'estimated_start_time': '2025-01-25T04:48:09.875Z', 'estimated_completion_time': '2025-01-25T04:48:27.875Z', 'position_in_queue': None, 'position_in_provider': None}
+
+- My job submission showed a job ID of =cya6t20nrmz000862cs0=
+  - If we want to shut down or Jupyter notebook, we need to record this job number
+  - Additionally, we want to go back to Listing [[lst:QPUEstimator]] and comment out
+    ~job2_id = None~, and uncomment ~job2_id = 'cya6t20nrmz000862cs0'~
+    - This will prevent us from running a redundant job, and rather let us use
+      the results already calculated
+*** Retrieve Estimator Results
+- We get the expectation values by indexing the result and using the =.data.evs=
+  member data
+#+begin_src python :results output :session IBMrun :exports both
+  exp_vals_aer = job2_aer.result()[0].data.evs
+  print(exp_vals_aer)
+  print(angles)
+#+end_src    
+
+#+RESULTS:
+: [[-0.0055 -0.0028  0.0034]
+:  [-0.0104 -0.0038  0.0082]
+:  [-0.0006 -0.0018 -0.0014]]
+: [[0.7853981633974483, 1.5707963267948966], [1.0471975511965976, 3.141592653589793], [1.5707963267948966, 3.141592653589793]]
+
+The above list of list contains the expectation values.
+- There are three sublists, each corresponding to one of the three different
+  parameter sets.
+- Each sublist is a set of three expectation values corresponding to the three
+  observables in =obs_qpu=.
+** Three Runtime Execution Methods
+1. Job. Send a list of Pubs, receive PUB results
+2. Session. This is good for hybrid algorithms, such VQE and VAOA. Iterations of
+   these algorithms depend on one another. Classical processing is done in the
+   cloud. 
+3. Batch. A series of independent jobs may be executed in parallel.
+*** Sessions
+We use context managers, soemthing like this:
+#+begin_src python :exports both :eval never
+  from qiskit_ibm_runtime import Session
+  from qiskit_ibm_runtime.fake_provider import Fake
+
+  obsv_qpu = [[obsv[0].apply_laout(qc2_qpu.layout) for obsv in obsv_list]
+  print(obsv_qpu)
+
+  with Session(backend=backend_man) as session
+      # Submit a request to the Sampler primitive within the session
+      sampler = SamplerV2(session=session)
+      job = sampler.run([(qc2_qpu, angles, 1000)])
+      pub_result = job.result()[0]
+      print(f'1st Circuit Counts: \n {pub_result.data.SomeName.get_counts(0)} \n')
+
+      # Submit a request to the Estimator primitive within the session
+      estimator = EstimatorV2(session=session)
+      job = estimator.run([(qc2_qpu, obsv_qpu, angles, 0.01)])
+      pub_result = job.result()[0]
+      print(f'Expectation values: \n {pub_result.data.evs}')        
+#+end_src    
+**** Session on a Fake Backend
+#+begin_src python :results output :session IBMrun :exports both
+  from qiskit_ibm_runtime import Session
+  from qiskit_ibm_runtime.fake_provider import FakeManilaV2
+#+end_src    
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports both
+  backend_fake = FakeManilaV2()
+  sampler_fake = SamplerV2( backend_fake )
+#+end_src    
+
+#+RESULTS:
+
+**** Transpile Circuit for =FakeManilaV2=
+#+begin_src python :results output :session IBMrun :exports both
+  qc2_fake = transpile(qc2, backend=backend_fake)
+  qc2_fake.draw()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session IBMrun :exports none
+  fname = os.path.join('html', 'img', 'fakeManillaCkt.png')
+  qc2_fake.draw( filename=fname )
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/fakeManillaCkt.png]]
+
+#+name: fig:qc2_fake_ManillaV2_draw
+#+attr_html: :width 680px
+#+caption: A circuit is transpiled for simulation on the =FakeManilaV2= backend.
+[[./img/fakeManillaCkt.png]]
+
+**** Layout Mapping for Observable
+#+begin_src python :results output :session IBMrun :exports both
+  obsv_fake = [[obsv[0].apply_layout(qc2_fake.layout) for obsv in obsv_list]]
+  print(obsv_fake)
+#+end_src    
+
+#+RESULTS:
+: [[SparsePauliOp(['XXIII', 'YIIII'],
+:               coeffs=[0.5+0.j, 0.5+0.j]), SparsePauliOp(['XXIII'],
+:               coeffs=[1.+0.j]), SparsePauliOp(['YIIII'],
+:               coeffs=[1.+0.j])]]
+
+
+**** Run a Session
+#+begin_src python :results output :session IBMrun :exports both
+  with Session(backend=backend_fake) as session:
+      # Submit a request to the Sampler primitive within the session
+      sampler = SamplerV2(session)
+      job = sampler.run([(qc2_fake, angles, 1000)])
+      pub_result = job.result()[0]
+      print(f'1st Circuit Counts: \n {pub_result.data.SomeName.get_counts(0)} \n')
+
+      # Submit a request to the Estimator primitive within the session
+      estimator = EstimatorV2(session)
+      job = estimator.run([(qc2_fake, obsv_fake, angles, 0.01)])
+      pub_result = job.result()[0]
+      print(f'Expectation values: \n {pub_result.data.evs}')
+#+end_src    
+
+#+RESULTS:
+: 1st Circuit Counts: 
+:  {'10': 72, '00': 854, '11': 62, '01': 12} 
+: 
+: Expectation values: 
+:  [[ 0.0097 -0.0074  0.022 ]]
