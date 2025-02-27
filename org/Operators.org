@@ -40,6 +40,8 @@ print(sys.executable)
 :CUSTOM_ID: operators
 :END:
 #+include: "./back-to-index.org"
+
+** Introduction
 - To process information, we need a way to transform quantum states
 
   - To do this, we introduce operators
