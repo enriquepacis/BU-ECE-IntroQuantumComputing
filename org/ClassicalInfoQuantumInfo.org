@@ -1,0 +1,543 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ./html/ClassicalInfoQuantumInfo.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+PROPERTY: header-args :eval never-export
+
+#+title: Classical and Quantum Information
+#+author: Dr. E.P. Blair
+
+
+* Notebook Setup                                                   :noexport:
+
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+#+begin_src python :results output :eval never-export
+import sys
+
+print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
+
+
+
+
+* Classical Information and Quantum Information
+:PROPERTIES:
+:CUSTOM_ID: classical-information-and-quantum-information
+:END:
+** Classical Information
+:PROPERTIES:
+:CUSTOM_ID: classical-information
+:END:
+*** Single Bits
+:PROPERTIES:
+:CUSTOM_ID: single-bits
+:END:
+- A bit (short for *b*inary dig*it*) is the informational element in
+  computing.
+
+  - A bit can have a value of either 0 or 1: \(b\in\{0,1\}\)
+
+- Usually, we need a physical system to encode the bit
+
+  - Examples:
+
+    - a switch might be open for "0" and closed for "1"
+
+    - A ray of light might have a vertical polarization
+      (\(\updownarrow\)) or a horizontal polarization
+      (\(\leftrightarrow\)).
+
+    - An electron might have an upward spin (\(\uparrow\), spin up) or a
+      downward spin (\(\downarrow\), spin down)
+
+  - We call these basic binary states the *classical states* of a system
+
+  - In the context of quantum mechanics, we call them the *classical
+    basis* states or the *computational basis* states.
+
+*** Multiple Bits
+:PROPERTIES:
+:CUSTOM_ID: multiple-bits
+:END:
+- We can combine several bits, \((b_{0},b_{1},\ldots,b_{n-1})\) into an
+  \(n\)-bit word, which we give the symbol \(\mathbf{b}\):
+  \begin{equation}
+  \mathbf{b}=b_{n-1}b_{n-2}\cdots b_{1}b_{0}=b_{0}2^{0}+b_{1}2^{1}+\cdots=\sum_{k=0}^{n-1}b_{k}2^{k}=x
+  \end{equation}
+
+  - Here, we're thinking of \(\mathbf{b}\) as a binary vector, and we
+    are associating it with an integer \(x\)
+
+** Classical States - Revisited
+:PROPERTIES:
+:CUSTOM_ID: classical-states---revisited
+:END:
+- Previously, we used 0 and 1 to representing two states of a physical
+  system.
+
+- Now, we must expand mathematical notation to support quantum
+  information.
+
+  - To do this, we first transition to a quantum notation for the two
+    *classical* states, \(\left|0\right>\) and \(\left|1\right>\)
+
+    - The \(\left|\right>\) denotes the state of a quantum system and is
+      called a *ket*.
+
+    - The symbol inside the ket denotes the state.
+
+- Thus, \(\left|0\right>\) and \(\left|1\right>\), indicate states of
+  the quantum system that map to the classical device states.
+
+  - Now, however, we assign these states not a bit, but rather a two
+    dimensional vector:
+    \begin{equation}
+    \left|0\right>\leftrightarrow\begin{bmatrix}1\\
+    0
+    \end{bmatrix}\qquad\text{and}\qquad\left|1\right>\leftrightarrow\begin{bmatrix}0\\
+    1
+    \end{bmatrix}\label{eq:ElementaryBasisKets}
+    \end{equation}
+
+  - Thus, we have two realms here:
+
+    - one is the physical world, in which we have states of a quantum
+      system denoted by a ket; and
+
+    - the other world is a mathematical one, where each ket is
+      represented by a vector
+
+      - Vectors and their transformations are within the realm of linear
+        algebra
+
+      - For some basic linear algebra notes, please see Appendix
+        ref:sec:Linear-Algebra
+
+    - Since these vectors are associated with a physical state, we call
+      them *state vectors*, or just *states*.
+
+- There is nothing quantum yet about the classical states,
+  \(\left|0\right>\) and \(\left|1\right>\)
+
+- We will use them to make something quantum next.
+
+** Something New: a quantum state
+:PROPERTIES:
+:CUSTOM_ID: something-new-a-quantum-state
+:END:
+- Now, we can form an arbitrary quantum state, \(\left|\psi\right>\), by
+  making a weighted sum of the classical basis states:
+  \begin{equation}
+  \left|\psi\right>=c_{0}\left|0\right>+c_{1}\left|1\right>\label{eq:defineQubit}
+  \end{equation}
+
+  - This is called a *quantum superposition* of basis states
+
+    - In quantum realm, we have a quantum superposition of basis states.
+      In linear algebra, a weighted sum of basis vectors is called a
+      *linear combination*.
+
+  - In the field of quantum computing, this arbitrary state
+    \(\left|\psi\right>\) is called a *qubit*, short for *quantum bit*
+
+  - This is a quantum state, not possible in the classical world.
+
+  - The coefficients, \(c_{0}\) and \(c_{1}\), are complex numbers, and
+    in quantum mechanics, we call them *probability amplitudes*, or
+    simply *amplitudes* for short.
+
+    - If you need help with complex numbers, please see Appendix
+      ref:sec:Complex-Numbers
+
+    - The probability amplitudes allow us to calculate the probability
+      of measuring "0" or "1" on a qubit prepared in state
+      \(\ket{\psi}\)
+
+      - The probability for measuring "0" is
+        \begin{equation}
+        p\left(0\right)=\left|c_{0}\right|^{2}=c_{0}^{\ast}c_{0}
+        \end{equation}
+
+      - The probability for measuring "1" is
+        \begin{equation}
+        p\left(1\right)=\left|c_{1}\right|^{2}=c_{1}^{\ast}c_{1}
+        \end{equation}
+
+    - A measurement of a qubit can only produce "0" or "1", so the
+      probabilities \(p\left(0\right)\) and \(p\left(1\right)\) must sum
+      to unity:
+      \begin{equation}
+      \left|c_{0}\right|^{2}+\left|c_{1}\right|^{2}=1\label{eq:NormalizationCondition}
+      \end{equation}
+
+      - This condition is called *normalization*, and meaningful quantum
+        states require normalization
+
+- We now pair the qubit with its linear algebraic (matrix)
+  representation, \(\vec{\psi}\) (sometimes, I also use
+  \(\tilde{\psi}\)):
+  \begin{equation}
+  \left|\psi\right>=c_{0}\left|0\right>+c_{1}\left|1\right>\qquad\leftrightarrow\qquad\vec{\psi}=c_{0}\begin{bmatrix}1\\
+  0
+  \end{bmatrix}+c_{1}\begin{bmatrix}0\\
+  1
+  \end{bmatrix}=\begin{bmatrix}c_{0}\\
+  c_{1}
+  \end{bmatrix}\label{eq:QubitAndMatrixRep}
+  \end{equation}
+
+  - Notice that we have expanded \(\ket{\psi}\) over the computational
+    basis
+
+  - Thus, the vector \(\left[\begin{array}{cc}
+    c_{0} & c_{1}\end{array}\right]^{T}\) is the *matrix representation*
+    of \(\ket{\psi}\) *in the computational basis*
+
+    - We could choose another basis over which to expand the same
+      \(\ket{\psi}\), say, \(\left\{ \ket{x_{0}},\ket{x_{1}}\right\}\)
+      but then we would generally have a new matrix representation
+      \begin{equation}
+      \left|\psi\right>=d_{0}\left|x_{0}\right>+d_{1}\left|x_{1}\right>\qquad\leftrightarrow\qquad\vec{\psi}=\begin{bmatrix}d_{0}\\
+      d_{1}
+      \end{bmatrix}
+      \end{equation}
+
+- We call the collection of all valid states
+  \(\left\{ \ket{\psi}\right\}\) a *Hilbert space*, \(\mathcal{H}\)
+
+  - The states \(\left\{ \ket{0},\ket{1}\right\}\) are a basis for
+    \(\mathcal{H}\), because any member state \(\ket{\psi}\) of the
+    Hilbert space can be made from a quantum superposition of
+    \(\ket{0}\) and \(\ket{1}\)
+
+  - Another way to say this is that \(\ket{0}\) and \(\ket{1}\) span the
+    Hilbert space
+
+  - Since at least two basis states are required to span
+    \(\mathcal{H}\), we call \(\mathcal{H}\) a two-dimensional Hilbert
+    space
+
+- We can scale a state \(\ket{\psi}\) by a non-zero and non-infinite
+  scalar \(\alpha\) and still have another member of the Hilbert space:
+  \begin{equation}
+  \ket{\psi^{\prime}}=\alpha\ket{\psi}=\alpha c_{0}\ket{0}+\alpha c_{1}\ket{1}\quad\leftrightarrow\quad\alpha\left[\begin{array}{c}
+  c_{0}\\
+  c_{1}
+  \end{array}\right]=\left[\begin{array}{c}
+  \alpha c_{0}\\
+  \alpha c_{1}
+  \end{array}\right]
+  \end{equation}
+
+  - Scalar multiplication commutes, so
+    \(\alpha\ket{\psi}=\ket{\psi}\alpha\)
+
+** Inner Products
+:PROPERTIES:
+:CUSTOM_ID: inner-products
+:END:
+- For every ket \(\ket{\psi}\), there is a dual object, \(\bra{\psi}\),
+  which is called a "bra"
+
+  - The dual relationship may be note by the dagger operator:
+    \begin{equation}
+    \ket{\psi}^{\dagger}=\bra{\psi}
+    \end{equation}
+
+    - The dagger operator is the Hermitian conjugate
+
+    - If we apply the dagger operator to \(\bra{\psi},\)we get
+      \(\ket{\psi}\): \begin{equation}
+      \bra{\psi}^{\dagger}=\ket{\psi}
+      \end{equation}
+
+  - When we dagger a scalar \(\alpha\), we get the complex conjugate:
+    \begin{equation}
+    \alpha^{\dagger}=\alpha^{\ast}
+    \end{equation}
+
+  - When we dagger a product, we apply the dagger to each factor and
+    reverse the order
+    \begin{equation}
+    \left(\alpha\ket{\psi}\right)^{\dagger}=\bra{\psi}\alpha^{\ast}=\alpha^{\ast}\bra{\psi}
+    \end{equation}
+
+  - When we dagger a quanutm superposition, we dagger each term:
+    \begin{equation}
+    \ket{\psi}^{\dagger}=\left(c_{0}\ket{0}+c_{1}\ket{1}\right)^{\dagger}=c_{0}^{\ast}\bra{0}+c_{1}^{\ast}\bra{1}
+    \end{equation}
+
+- A bra and a ket form a product called a bra-ket (from the term
+  "bracket")
+
+- Let \(\ket{\psi}\) and \(\ket{\chi}\) be quantum states so that they
+  can form a braket, \(\braket{\psi|\chi}\)
+
+  - \(\braket{\psi|\chi}\) is called the inner product of \(\ket{\chi}\)
+    with \(\ket{\psi}\)
+
+    - This is a scalar indicating how similar \(\ket{\chi}\) is to
+      \(\ket{\psi}\)
+
+      - Thus, \(\braket{\psi|\chi}\) is also called a *scalar product*,
+        and it is equivalent to the *dot product* from geometry in 2D or
+        3D
+
+      - If \(\braket{\psi|\chi}=0\), the states are completely
+        dissimilar and are said to be *orthogonal*
+
+- What is a bra, and what is the \(\dagger\) operator? Let us turn to
+  linear algebra to understand this better
+
+  - In linear algebra, to take the Hermitian conjugate of a matrix is to
+    take the conjugate and transpose:
+    \begin{equation}
+    \ket{\psi}^{\dagger}\qquad\leftrightarrow\qquad\left[\begin{array}{cc}
+    x_{0}^{\ast} & x_{1}^{\ast}\end{array}\right]
+    \end{equation}
+
+- What is an inner product? Let \(\ket{\chi}\) be
+  \begin{equation}
+  \ket{\chi}=x_{0}\ket{0}+x_{1}\ket{1}\qquad\leftrightarrow\qquad\left[\begin{array}{c}
+  x_{0}\\
+  x_{1}
+  \end{array}\right]
+  \end{equation}
+
+  - Then, we can evaluate the inner product \(\braket{\chi|\psi}\) using
+    the
+    \begin{align}
+    \braket{\chi|\psi} & =\left(\ket{\chi}\right)^{\dagger}\ket{\psi}=\left[\begin{array}{cc}
+    x_{0}^{\ast} & x_{1}^{\ast}\end{array}\right]\left[\begin{array}{c}
+    c_{0}\\
+    c_{1}
+    \end{array}\right]\nonumber \\
+     & =x_{0}^{\ast}c_{0}+x_{1}^{\ast}c_{1}\label{eq:InnerProductTwoStateGeneral}
+    \end{align}
+
+    - We can see that that \(\braket{\chi|\psi}\) evaluates to a complex
+      number, and we can show that
+      \(\braket{\chi|\psi}\neq\braket{\psi|\chi}\) when \(\vec{\chi}\)
+      and \(\vec{\psi}\) are complex vectors
+
+    - This is just like the inner product we're used to in 2D or 3D
+      real-space (i.e., \(x_{0},x_{1},c_{0},c_{1}\in\mathbb{R}\)):
+      \begin{align}
+      \braket{\chi|\psi} & =\left[\begin{array}{cc}
+      x_{0}^{\ast} & x_{1}^{\ast}\end{array}\right]\left[\begin{array}{c}
+      c_{0}\\
+      c_{1}
+      \end{array}\right]=\left[\begin{array}{cc}
+      x_{0} & x_{1}\end{array}\right]\left[\begin{array}{c}
+      c_{0}\\
+      c_{1}
+      \end{array}\right]=x_{0}c_{0}+x_{1}c_{1}\\
+       & =\braket{\psi|\chi}\qquad\left(\text{when }\ket{\psi},\ket{\chi}\in\mathbb{R}^{2}\right)
+      \end{align}
+
+- When we take an inner product of a state \(\ket{\psi}\) with itself,
+  we have
+  \begin{equation}
+  \braket{\psi|\psi}=\left[\begin{array}{cc}
+  c_{0}^{\ast} & c_{1}^{\ast}\end{array}\right]\left[\begin{array}{c}
+  c_{0}\\
+  c_{1}
+  \end{array}\right]=c_{0}^{\ast}c_{0}+c_{1}^{\ast}c_{1}=\left|c_{0}\right|^{2}+\left|c_{1}\right|^{2}
+  \end{equation}
+
+  - Notice that we get the sum of probabilities,
+    \(\left|c_{0}\right|^{2}+\left|c_{1}\right|^{2}\), so another way to
+    write the normalization condition is
+    \begin{equation}
+    \braket{\psi|\psi}=1\label{eq:NormalizationCondition-v01}
+    \end{equation}
+
+  - Again, when \(\ket{\psi}\in\mathbb{R}^{2}\), we have
+    \begin{equation}
+    \braket{\psi|\psi}=\left[\begin{array}{cc}
+    c_{0} & c_{1}\end{array}\right]\left[\begin{array}{c}
+    c_{0}\\
+    c_{1}
+    \end{array}\right]=c_{0}^{2}+c_{1}^{2}
+    \end{equation}
+
+    - If we take the square root of \(\braket{\psi|\psi}\), then we have
+      something that looks like the Pythagorean theorem:
+      \begin{equation}
+      \sqrt{\braket{\psi|\psi}}=\sqrt{c_{0}^{2}+c_{1}^{2}}
+      \end{equation}
+
+    - Indeed for vectors \(\ket{\psi}\) in \(\mathbb{R}^{2}\) or
+      \(\mathbb{R}^{3}\), \(\sqrt{\braket{\psi|\psi}}\) is the length of
+      \(\ket{\psi}\)
+
+  - More generally (i.e., if \(\ket{\psi}\) has a dimension \(d>3\) or
+    \(\ket{\psi}\) is a complex vector), we say that
+    \(\sqrt{\braket{\psi|\psi}}\) is the *norm* of \(\ket{\psi}\)
+
+*** Normalization
+:PROPERTIES:
+:CUSTOM_ID: normalization
+:END:
+
+**** Example: Find \(\braket{0|0}\) and \(\braket{1|1}\).
+
+\begin{equation}
+\braket{0|0}=\left[\begin{array}{cc}
+1 & 0\end{array}\right]\left[\begin{array}{c}
+1\\
+0
+\end{array}\right]=1\cdot1+0\cdot0=1
+\end{equation}
+\begin{equation}
+\braket{1|1}=\left[\begin{array}{cc}
+0 & 1\end{array}\right]\left[\begin{array}{c}
+0\\
+1
+\end{array}\right]=0\cdot0+1\cdot1=1
+\end{equation}
+
+Thus, the computational basis
+states are normalized.\\
+
+
+We also can do this numerically in Python:
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  # Enable the use of the numpy package
+  import numpy as np
+
+  '''
+       In Python:
+       np.array([[a, b, c], [d, e, f]]) makes
+       a 2x3 matrix. It's better to use array instead of matrix
+       as the support for the matrix function is being removed in the future.
+  '''
+  ket0 = np.array([[1], [0]])
+  ket1 = np.array([[0], [1]])
+
+  # To get the Hermitian conjugate, use .conj().T
+  # use @ for matrix multiplication of the arrays
+  braket0_0 = ket0.conj().T @ ket0
+  braket1_1 = ket1.conj().T @ ket1
+
+  #in python we need to use print to see the results
+
+  print(f'braket0_0 = {braket0_0}')
+  print(f'braket1_1 = {braket1_1}')
+
+  print(braket0_0[0, 0])
+#+end_src
+
+#+RESULTS:
+: braket0_0 = [[1]]
+: braket1_1 = [[1]]
+: 1
+
+We used the [[https://numpy.org][numpy]] package because it gives us
+access to numerical linear algebra functionality in Python. In Python,
+the result of this calculation is a \(1\times1\) matrix (a scalar)
+(i.e., =[[1]]=. If we wanted to treat it as a scalar, we would need to
+extract the scalar value: =braket0_0[0,0]=. Python is zero-indexed, so
+=braket0_0[0,0]= returns the element in the first column of the first
+row of =braket0_0=. MATLAB, on the other hand, is one-indexed, so that
+=M(1,1)= refers to the element in the first column of the first row of
+matrix =M=.
+
+- When a state has unit length (norm), it is said to be *normalized*.,
+  and it satisfies the following:
+  \begin{equation}
+  \braket{\psi|\psi}=\sqrt{\braket{\psi|\psi}}=1\qquad(\text{normalization})\label{eq:DefineNormalization}
+  \end{equation}
+  Thus, we have seen above that the computational basis states
+  \(\left\{ \ket{0},\ket{1}\right\}\) are normalized
+
+- *We need quantum states to be normalized in order to have a
+  probabilistic interpretation of their amplitudes*
+
+- Any wave function \(\ket{\psi}\) with \(0<\braket{\psi|\psi}<\infty\)
+  may be normalized to \(\braket{\psi^{\prime}|\psi^{\prime}}\) such
+  that \(\braket{\psi^{\prime}|\psi^{\prime}}=1\)
+
+  - To do this, simply divide \(\ket{\psi}\) by its length,
+    \(\sqrt{\braket{\psi^{\prime}|\psi^{\prime}}}\):
+    \begin{equation}
+    \ket{\psi^{\prime}}=\frac{\ket{\psi}}{\sqrt{\braket{\psi^{\prime}|\psi^{\prime}}}}\label{eq:NormalizePsi}
+    \end{equation}
+
+*** Orthogonality
+:PROPERTIES:
+:CUSTOM_ID: orthogonality
+:END:
+
+**** Example: Find \(\braket{0|1}\) and \(\braket{1|0}\).
+
+
+\begin{equation}
+\braket{0|1}=\left[\begin{array}{cc}
+1 & 0\end{array}\right]\left[\begin{array}{c}
+0\\
+1
+\end{array}\right]=1\cdot0+0\cdot1=0
+\end{equation}
+\begin{equation}
+\braket{1|0}=\left[\begin{array}{cc}
+0 & 1\end{array}\right]\left[\begin{array}{c}
+1\\
+0
+\end{array}\right]=0\cdot1+1\cdot0=0
+\end{equation}
+In this case,
+\(\braket{0|1}=\braket{1|0}\).\\
+
+In Python, this becomes:
+
+#+attr_latex: :options numbers=left
+#+begin_src python :results output :eval never-export :exports both
+  # Enable the use of the numpy package
+  import numpy as np
+
+  ket0 = np.array([[1], [0]])
+  ket1 = np.array([[0], [1]])
+
+  # In Python:
+  # (1) To get the Hermitian conjugate, use .conj().T
+  # (2) use @ for matrix mulitply
+  braket0_1 = ket0.conj().T @ ket1
+  braket1_0 = ket1.conj().T @ ket0
+
+  # In Python, we must use print() to see results
+  print(f'braket0_1 = {braket0_1}')
+  print(f'braket1_0 = {braket1_0}')
+
+#+end_src
+
+#+RESULTS:
+: braket0_1 = [[0]]
+: braket1_0 = [[0]]
+
+
+- When a pair of states \(\ket{\chi}\) and \(\ket{\psi}\) have zero
+  inner product, they are said to be orthogonal, and they satisfy
+  \begin{equation}
+  \braket{\psi|\chi}=\braket{\chi|\psi}=0\qquad(\text{orthogonality})\label{eq:Orthogonal}
+  \end{equation}
+
+  - This is just like perpendicular (orthogonal) vectors in 2D or 3D
+    when they have zero inner (dot) product
+

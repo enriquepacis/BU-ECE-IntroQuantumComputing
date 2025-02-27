@@ -5,7 +5,7 @@
 #+export_file_name: ./html/index.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 
-#+title: Python for Qiskit Programming
+#+title: Quantum Mechanics and Quantum Information: a Pythonic Introduction
 #+author: Dr. E.P. Blair
 
 
@@ -55,6 +55,10 @@ export ZSH_ENV_VAR="SomeValue"
 [[./PythonBasics.html][Basic Python Programming]]
 
 [[./PythonIntermediateSkills.html][Intermediate Python Programming]]
+
+** Quantum Information and Quantum Mechanics
+
+[[./ClassicalInfoQuantumInfo.html][Classical Information and Quantum Information]]
 
 ** Appendix
 
