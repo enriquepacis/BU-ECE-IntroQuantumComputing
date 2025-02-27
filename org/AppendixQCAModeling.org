@@ -6,15 +6,12 @@
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 #+PROPERTY: header-args :eval never-export
 
-#+title: Qiskit + IBM: Simulation and Calculation
+#+title: QCA Modeling
 #+author: Dr. E.P. Blair
 
 
 * Notebook Setup                                                   :noexport:
 
-** Python Sessions
-
-*** Set Python Environment
 The following is helpful if we want to have =org-mode= sessions linking
 multiple code blocks /and/ we are using =direnv=.
 
@@ -27,61 +24,16 @@ multiple code blocks /and/ we are using =direnv=.
 
 
 #+begin_src python :results output :eval never-export
-  import sys, qiskit
+import sys
 
-  print(sys.executable)
-  print(f'Python version: {sys.version}')
-
-
-  print(f'Qiskit version: {qiskit.__version__}')
+print(sys.executable)
 #+end_src
 
 #+RESULTS:
 : /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
-: Python version: 3.11.7 (main, Dec 15 2023, 12:09:56) [Clang 14.0.6 ]
-: Qiskit version: 1.3.1
 
 
-*** Show Session Errors(?)
 
-#+begin_src emacs-lisp
-  (advice-add #'org-babel-python-send-string 
-              :override
-              #'my/org-babel-python-send-string)
-
-  (defun my/org-babel-python-send-string (session body)
-    "Pass BODY to the Python process in SESSION.
-  Return output."
-    (with-current-buffer session
-      (let* ((string-buffer "")
-         (comint-output-filter-functions
-          (cons (lambda (text) (setq string-buffer
-                         (concat string-buffer text)))
-            comint-output-filter-functions))
-         (body (format "\
-  try:
-  %s
-  except Exception as e:
-      # These are the relevant lines to change. 
-      print(e)
-  finally:
-      print('%s')"
-               (org-babel-python--shift-right body 4)
-               org-babel-python-eoe-indicator)))
-        (let ((python-shell-buffer-name
-           (org-babel-python-without-earmuffs session)))
-      (python-shell-send-string body))
-        ;; same as `python-shell-comint-end-of-output-p' in emacs-25.1+
-        (while (not (and (python-shell-comint-end-of-output-p string-buffer)
-                         (string-match
-                  org-babel-python-eoe-indicator
-                  string-buffer)))
-      (accept-process-output (get-buffer-process (current-buffer))))
-        (org-babel-chomp (substring string-buffer 0 (match-beginning 0))))))
-#+end_src
-
-#+RESULTS:
-: my/org-babel-python-send-string
 
 * Overview
 :PROPERTIES:
@@ -89,11 +41,8 @@ multiple code blocks /and/ we are using =direnv=.
 :END:
 #+include: "./back-to-index.org"
 
-- This page focuses on quantum computing simulations or job submissions on IBM
-  hardware
-  - There are several ways to simulate quantum computations
-    - Statevector simulations
-    - Using SamplerV2 or EstimatorV2
+- This page focuses on modeling QCA using quantum computers.
+
 
 The general work-flow is to:
 1. Create a quantum circuit 
@@ -101,7 +50,6 @@ The general work-flow is to:
    1. Typically, we simulate it first
    2. We want our simulation syntax to match as closely as possible to the
       syntax of job submission.
-
 * The =quantum_info= Module
 :PROPERTIES:
 :CUSTOM_ID: qinfoModule
@@ -130,12 +78,9 @@ In a Jupyter notebook we could make a cell like this:
   # In a Jupyter notebook, you can uncomment "qc.draw()"
   # to see your circuit
   # qc.draw()
-  from datetime import datetime
-  print(f'Calculation complete at {datetime.now()}')
 #+end_src
 
 #+RESULTS: qinfoCircuit
-: Calculation complete at 2025-02-26 13:32:20.618530
 
 #+begin_src python :results output :session qinfo :exports none
   import os
@@ -147,13 +92,10 @@ In a Jupyter notebook we could make a cell like this:
   qc.draw('mpl', filename=fname)
 
   print( f'[[./{fname[5:]}]]' )
-
-  print(f'Calculation complete at {datetime.now()}')
 #+end_src
 
 #+RESULTS:
 : [[./img/xh2.png]]
-: Calculation complete at 2025-02-26 13:32:26.009727
 
 In Jupyter Lab, your result may be displayed automatically and look like Figure
 [[fig:basicQuantumCircuit]].
@@ -188,14 +130,11 @@ to  see a result that's nicer than the one shown here. It may look like this:
 
 #+begin_src python :results output :session qinfo :exports none
   print( ψ.draw( output='latex_source' ) )
-
-  print(f'\nCalculation complete at {datetime.now()}')
 #+end_src
 
 #+RESULTS:
 : \frac{1}{2} |00\rangle- \frac{1}{2} |01\rangle+\frac{1}{2} |10\rangle- \frac{1}{2} |11\rangle
-: 
-: Calculation complete at 2025-02-26 13:39:31.445217
+: test
 
 ** Measurement Probabilities
 
@@ -203,7 +142,7 @@ Once we have a ~Statevector~ object, we can use it to see the probabilities of
 measurement, which are the modulii squared of the coefficients:
 
 #+begin_src python :results output :session qinfo :exports both
-  print( ψ.probabilities() )
+  print( psi.probabilities() )
 #+end_src
 
 #+RESULTS:
@@ -228,14 +167,10 @@ samples, that is, the number of times each outcome was measured.
 
   # This lists the outcomes measured for each of the 10 shots
   print(samples)
-
-  print(f'\nCalculation complete at {datetime.now()}')
 #+end_src
 
 #+RESULTS:
-: ['01' '01' '11' '01' '00' '00' '11' '01' '01' '00']
-: 
-: Calculation complete at 2025-02-26 13:41:02.891472
+: ['11' '01' '10' '10' '01' '11' '01' '11' '01' '11']
 
 *** Cumulative Results over an Ensemble
 - If we don't care about each shot, but rather, we care more about aggregate
@@ -245,14 +180,10 @@ samples, that is, the number of times each outcome was measured.
 #+begin_src python :results output :session qinfo :exports both
   counts = ψ.sample_counts( shots = 1024 )
   print(counts)
-
-  print(f'\nCalculation complete at {datetime.now()}')
 #+end_src
 
 #+RESULTS:
-: {np.str_('00'): np.int64(247), np.str_('01'): np.int64(253), np.str_('10'): np.int64(261), np.str_('11'): np.int64(263)}
-: 
-: Calculation complete at 2025-02-26 13:41:11.727536
+: {np.str_('00'): np.int64(266), np.str_('01'): np.int64(256), np.str_('10'): np.int64(244), np.str_('11'): np.int64(258)}
 
 The counts can be visualized in a histogram. In a Jupyter notebook, use the
 following, but uncomment the ~plot_histogram()~ command:
@@ -269,14 +200,10 @@ following, but uncomment the ~plot_histogram()~ command:
   plot_histogram( counts, filename=fname )
 
   print(f'[[./{fname[5:]}]]')
-
-  print(f'\nCalculation complete at {datetime.now()}')
 #+end_src
 
-#+RESULTS
+#+RESULTS:
 : [[./img/basic_hist.png]]
-: 
-: Calculation complete at 2025-02-26 13:41:38.404511
 
 #+name: fig:basicStatevectorCountsHist
 #+attr_html: :width 480px
@@ -435,7 +362,7 @@ In Jupyter, you may see output like this from the =display()= command:
 \end{equation}
 
 
-
+In Jupyter, we can plot the elements of the density matrix:
 #+begin_src python :results output :session qinfo :exports none :eval never
   # Draw the "cityscape" plot
   ρ.draw('city')
@@ -443,7 +370,6 @@ In Jupyter, you may see output like this from the =display()= command:
 
 **** The City Plot
 
-In Jupyter, we can plot the elements of the density matrix:
 #+begin_src python :results output :session qinfo :exports none
   # Draw the "cityscape" plot
   fig = ρ.draw('city')
@@ -745,7 +671,7 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
   - large circuits with many qubits or many gates
   - circuits where a coherent state is desired (state vector or density matrix)
   - noisy simulations
-* The ~qiskit_aer.AerSimulator~ Class
+* The Qiskit =AerSimulator=
 :PROPERTIES:
 :CUSTOM_ID: sec:QiskitAerSimulator
 :END:
@@ -755,27 +681,6 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 
 - The Qiskit Aer AerSimulator class can be used to simulate complex circuits with mid-circuit measurements
 - We can obtain unitary results from these simulations.
-- Qiskit Aer supports both noise-free and noisy simulations
-- The Qiskit ~AerSimulator~ class has a ~run()~ method that is simple and
-  straightforward to use; however, its syntax is notably different from the
-  tools used to launch calculations on actual quantum hardware (quantum
-  processing units).
-- The ~qiskit_ibm_runtime~ package provides interfaces called *primitives* to
-  run jobs on QPUs. These primitives include:
-  - ~SamplerV2~ for obtaining counts for an ensemble of measurements on a circuit
-  - ~EstimatorV2~ for obtaining expectation values from the output of a circuit
-- To simulate circuits in a way as closely as possible to the
-  ~qiskit_ibm_runtime~ primitives, ~qiskit_aer~ also provides ~SamplerV2~ and
-  ~EstimatorV2~ primitives
-  - The ~qiskit_aer~ primitives are designed for similarity with
-    the ~qiskit_ibm_runtime~ primitives
-- In summary:
-  - ~qiskit_aer.AerSimulator~ has a ~run()~ method for simulating quantum circuits
-    - This is notably different from primitives used to run jobs on quantum hardware
-  - ~qiskit_aer.primitives~ has ~SamplerV2~ and ~EstimatorV2~ classes, which may
-    be used to simulate circuits in a way very similar to the primitives used
-    for running jobs on QPUs using ~qiskit_ibm_runtime~
-    
 ** Helper Function: =orgfig=                                      :noexport:
 #+begin_src  python :results output :session aersim :exports both
   def orgfig( fname, width=480 ):
@@ -793,18 +698,16 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 - We begin by importing the required packages
   - This introduces the =qiskit_aer= package and the =AerSimulator= class
 #+begin_src  python :results output :session aersim :exports both
-  from qiskit import QuantumCircuit #, transpile
-  # from qiskit.quantum_info import Statevector
-  # from qiskit.providers.basic_provider import BasicSimulator
-  # from qiskit_aer import AerSimulator
+  from qiskit import QuantumCircuit, transpile
+  from qiskit.quantum_info import Statevector
+  from qiskit.providers.basic_provider import BasicSimulator
+  from qiskit_aer import AerSimulator
 
-  # simulator_basic = BasicSimulator()
-  # simulator_aer = AerSimulator()
-  print('test')
+  simulator_basic = BasicSimulator()
+  simulator_aer = AerSimulator()
 #+end_src
 
 #+RESULTS:
-: test
 
 
 ** Build a Circuit
@@ -812,7 +715,6 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 - We define a circuit in Listing [[lst:AerSimCkt]]
   #+name: lst:AerSimCkt
   #+begin_src python :results output :session aersim :exports both
-    import qiskit
     qc = QuantumCircuit(2,2) # two qubits, and two classical bits
 
     qc.h(1) # apply a H gate to qubit 1
@@ -821,20 +723,10 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
     qc.save_statevector()
 
     qc.draw(reverse_bits=True)
-
-    print(qiskit.__version__)
   #+end_src
 
   #+RESULTS: lst:AerSimCkt
-  : 1.3.1
-
-
-
-  #+name: lst:AerSimCktOrgExport
-  #+begin_src python :results output :session aersim :exports none
-    print(qc.save_statevector)
-  #+end_src
-
+    
   #+name: lst:AerSimCktOrgExport
   #+begin_src python :results output :session aersim :exports none
     import os
@@ -845,7 +737,11 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
   #+end_src
 
   #+RESULTS: lst:AerSimCktOrgExport
-  : <bound method save_statevector of <qiskit.circuit.quantumcircuit.QuantumCircuit object at 0x132c46dd0>>
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/CktAerSim.png]]
 
   #+name: fig:defaultName
   #+attr_html: :width 480px
@@ -891,8 +787,6 @@ Jupyter output for Listing will resemble Figure [[fig:QFTtranspiled]]
 
     qc.draw(reverse_bits=True)
   #+end_src
-
-  #+RESULTS:
 
   #+begin_src python :results output :session aersim :exports none
     fname = os.path.join( 'html', 'img', 'AerSimMultiStatevectCkt.png')
@@ -1208,12 +1102,10 @@ in Qiskit IBM runtime.
 - Qiskit
   - StatevectorSampler
   - StatevectorEstimator
-- ~qiskit_aer~
-  - ~primitives.SamplerV2~
-  - ~primitives.EstimatorV2~
-- ~qiskit_ibm_runtime~
-  - ~SamplerV2~
-  - ~EstimatorV2~
+- Qiskit Aer (none or being deprecated)
+- Qiskit IBM Runtime
+  - SamplerV2
+  - EstimatorV2
 
 ** Primitives
 Qiskit primitives are computational building blocks used in larger applications that require quantum resources to efficiently produce outputs. The inputs to a primitive consists of primitive unified blocs (PUBs).
@@ -1243,7 +1135,7 @@ hardware).
   from qiskit.primitives import StatevectorSampler, StatevectorEstimator
   from qiskit.providers.basic_provider import BasicSimulator
 
-  print('imports complete') # it's sometimes desirable to check job completion
+  # print('imports complete') # it's sometimes desirable to check job completion
 #+end_src
 
 #+RESULTS:
@@ -1291,7 +1183,6 @@ hardware).
 
 **** Basic Simulation
 
-This simulates the circuit using ~qiskit.
 #+begin_src python :results output :session qisprim :exports both
   # No transpilation is needed for this simple circuit
   job_simulator = simulator.run( qc, shots=1024)
@@ -1746,82 +1637,6 @@ We now pass two PUBs, each with a different circuit:
 :  > Expectation value: [4.         3.73205081 2.        ]
 :  > Metadata: {'target_precision': 0.0, 'circuit_metadata': {}}
     
-
-* ~qiskit_aer~ Primitives
-
-** ~qiskit_aer.primitives.SamplerV2~
-
-*** Example: Bell Circuits
-
-Bell circuits are used to create entangled pairs of qubits
-
-**** Helper function                                            :noexport:
-#+begin_src  python :results output :session bellcirc :exports both
-  from datetime  import datetime
-
-  def orgfig( fname, width=480 ):
-
-      print(f'\n#+name: fig:defaultName')
-      print(f'#+attr_html: :width {width}px')
-      print(f'#+caption: Default caption.')
-      print(f'[[./{fname}]]')
-
-  print(f'Defined function orgfig() at {datetime.now()}')
-#+end_src
-
-#+RESULTS:
-: Defined function orgfig() at 2025-02-26 22:17:17.207759
-
-**** Imports
-#+begin_src python :session bellcirc :results output :exports both
-  from qiskit import QuantumCircuit
-  from qiskit_aer.primitives import SamplerV2
-
-  from datetime import datetime
-
-  # Optional
-  print(f'Imports complete at {datetime.now()}')
-#+end_src
-
-#+RESULTS:
-: Imports complete at 2025-02-26 22:00:10.084471
-
-**** Bell Circuits
-
-#+begin_src python :session bellcirc :results output :exports both
-  Bell00 = QuantumCircuit(2)
-  Bell00.h(0)
-  Bell00.cx(0,1)
-
-  # print(Bell00)
-#+end_src
-
-#+RESULTS:
-
-
-#+begin_src python :session bellcirc :results output :exports none
-  import os
-
-  fname = os.path.join( 'img', 'Bell00ckt.png' )
-  Bell00.draw( filename = fname )
-
-  # print(fname)
-  orgfig( fname )
-
-#+end_src
-
-#+RESULTS:
-: 
-: #+name: fig:defaultName
-: #+attr_html: :width 480px
-: #+caption: Default caption.
-: [[./img/Bell00ckt.png]]
-
-#+name: fig:defaultName
-#+attr_html: :width 380px
-#+caption: This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).
-[[./img/Bell00ckt.png]]
-
 
 * Qiskit IBM Runtime Primitives
 
