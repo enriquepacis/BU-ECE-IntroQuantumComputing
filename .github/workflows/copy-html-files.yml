@@ -18,6 +18,7 @@ jobs:
         # Define the list of HTML files to copy
         files_to_copy=(
           "org/html/index.html"
+          "org/html/ClassicalInfoQuantumInfo.html"
           "org/html/PythonSetup.html"
           "org/html/PythonBasics.html"
           "org/html/PythonIntermediateSkills.html"
