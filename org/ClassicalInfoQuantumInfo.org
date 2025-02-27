@@ -39,6 +39,8 @@ print(sys.executable)
 :PROPERTIES:
 :CUSTOM_ID: classical-information-and-quantum-information
 :END:
+#+include: "./back-to-index.org"
+
 ** Classical Information
 :PROPERTIES:
 :CUSTOM_ID: classical-information
@@ -47,7 +49,7 @@ print(sys.executable)
 :PROPERTIES:
 :CUSTOM_ID: single-bits
 :END:
-- A bit (short for *b*inary dig*it*) is the informational element in
+- A bit (short for binary digit) is the informational element in
   computing.
 
   - A bit can have a value of either 0 or 1: \(b\in\{0,1\}\)
@@ -55,18 +57,13 @@ print(sys.executable)
 - Usually, we need a physical system to encode the bit
 
   - Examples:
-
     - a switch might be open for "0" and closed for "1"
-
     - A ray of light might have a vertical polarization
       (\(\updownarrow\)) or a horizontal polarization
       (\(\leftrightarrow\)).
-
     - An electron might have an upward spin (\(\uparrow\), spin up) or a
       downward spin (\(\downarrow\), spin down)
-
   - We call these basic binary states the *classical states* of a system
-
   - In the context of quantum mechanics, we call them the *classical
     basis* states or the *computational basis* states.
 
