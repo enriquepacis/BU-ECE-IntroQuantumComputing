@@ -1,0 +1,3556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-02-27 Thu 13:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Operators</title>
+<meta name="author" content="Dr. E.P. Blair" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Operators</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#operators">1. Operators</a>
+<ul>
+<li><a href="#the-not-operator">1.1. The NOT operator</a></li>
+<li><a href="#finding-the-matrix-representation-in-a-given-basis">1.2. Finding the Matrix Representation in a given Basis</a>
+<ul>
+<li><a href="#matrix-columns">1.2.1. Matrix Columns</a></li>
+<li><a href="#matrix-elements">1.2.2. Matrix Elements</a></li>
+<li><a href="#a-basic-quantum-circuit">1.2.3. A Basic Quantum Circuit</a></li>
+</ul>
+</li>
+<li><a href="#the-pauli-operators">1.3. The Pauli Operators</a></li>
+<li><a href="#complex-phase-and-interference">1.4. Complex Phase and Interference</a>
+<ul>
+<li><a href="#interference">1.4.1. Interference</a></li>
+</ul>
+</li>
+<li><a href="#the-hamiltonian---a-very-important-operator">1.5. The Hamiltonian - a very important operator</a>
+<ul>
+<li><a href="#electron-volts-a-unit-of-energy">1.5.1. Electron-volts: a Unit of Energy</a></li>
+<li><a href="#the-matrix-elements-of-hath">1.5.2. The Matrix Elements of \(\hat{H}\)</a></li>
+<li><a href="#the-ground-state">1.5.3. The Ground State</a></li>
+<li><a href="#expectation-values">1.5.4. Expectation Values</a></li>
+</ul>
+</li>
+<li><a href="#quantum-information-processing">1.6. Quantum Information Processing</a>
+<ul>
+<li><a href="#the-density-operator">1.6.1. The Density Operator</a></li>
+</ul>
+</li>
+<li><a href="#the-time-dependent-schrödinger-equation">1.7. The Time-dependent Schrödinger Equation</a></li>
+<li><a href="#additional-resources">1.8. Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-operators" class="outline-2">
+<h2 id="operators"><span class="section-number-2">1.</span> Operators</h2>
+<div class="outline-text-2" id="text-operators">
+<p>
+<i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
+</p>
+<ul class="org-ul">
+<li>To process information, we need a way to transform quantum states
+
+<ul class="org-ul">
+<li>To do this, we introduce operators</li>
+</ul></li>
+
+<li><p>
+The general operator \(\mathbf{O}\) transforms a quantum state
+\(\ket{\psi}\) into another state \(\ket{\chi}\):
+</p>
+\begin{equation}
+\mathbf{O}\ket{\psi}=\ket{\chi}
+\end{equation}
+
+<ul class="org-ul">
+<li>Here, operator \(\mathbf{O}\) is said to <b>act</b> on \(\ket{\psi}\)</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-the-not-operator" class="outline-3">
+<h3 id="the-not-operator"><span class="section-number-3">1.1.</span> The NOT operator</h3>
+<div class="outline-text-3" id="text-the-not-operator">
+<ul class="org-ul">
+<li>Consider a bit flip operator, \(\mathbf{X}\), that transforms a bit
+\(\ket{x}\) into its complement, \(\ket{\bar{x}}\)
+
+<ul class="org-ul">
+<li><p>
+Explicitly, this is
+</p>
+\begin{equation}
+\mathbf{X}\ket{0}=\ket{1}\qquad\text{and}\qquad\mathbf{X}\ket{1}=\ket{0}\label{eq:NOTaction}
+\end{equation}</li>
+</ul></li>
+
+<li>In the linear algebraic world, a matrix is used to transform vectors,
+just as operators transform kets</li>
+
+<li>If we continue to use the state-to-vector assignments of Equation
+(<a href="eq:ElementaryBasisKets">eq:ElementaryBasisKets</a>), we have
+chosen to work in the computational basis</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-finding-the-matrix-representation-in-a-given-basis" class="outline-3">
+<h3 id="finding-the-matrix-representation-in-a-given-basis"><span class="section-number-3">1.2.</span> Finding the Matrix Representation in a given Basis</h3>
+<div class="outline-text-3" id="text-finding-the-matrix-representation-in-a-given-basis">
+</div>
+<div id="outline-container-matrix-columns" class="outline-4">
+<h4 id="matrix-columns"><span class="section-number-4">1.2.1.</span> Matrix Columns</h4>
+<div class="outline-text-4" id="text-matrix-columns">
+<ul class="org-ul">
+<li>Since we've made the state-to-vector assignments as in Equation
+(<a href="eq:ElementaryBasisKets">eq:ElementaryBasisKets</a>), we can find
+the matrix representation of an operator in the basis
+\(\left\{ \ket{0},\ket{1}\right\}\)</li>
+
+<li>We may use a fact from linear algebra to find the matrix
+representation of some operator:
+
+<ul class="org-ul">
+<li>Let \(\vec{e_{k}}\) be the elementary vector of all zeros, except
+for \(k\)-th element, which is 1
+
+<ul class="org-ul">
+<li><p>
+Example: in three dimensions, we can define three elementary
+vectors:
+</p>
+\begin{equation}
+\vec{e}_{1}=\left[\begin{array}{c}
+1\\
+0\\
+0
+\end{array}\right],\qquad\vec{e}_{2}=\left[\begin{array}{c}
+0\\
+1\\
+0
+\end{array}\right],\qquad\text{and}\qquad\vec{e}_{3}=\left[\begin{array}{c}
+0\\
+0\\
+1
+\end{array}\right]
+\end{equation}</li>
+</ul></li>
+
+<li><p>
+We can use \(\vec{e}_{k}\) to pick out the \(k\)-th column of a
+matrix \(M\)
+</p>
+\begin{equation}
+M\vec{e}_{k}=k\text{-th colum of }M\label{eq:FindMatrixColumn}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+Example: let
+</p>
+\begin{equation}
+M=\left[\begin{array}{ccc}
+a & b & c\\
+d & e & f\\
+g & h & i
+\end{array}\right]\label{eq:M3x3}
+\end{equation} Then:
+\begin{equation}
+M\vec{e}_{1}=\left[\begin{array}{ccc}
+a & b & c\\
+d & e & f\\
+g & h & i
+\end{array}\right]\left[\begin{array}{c}
+1\\
+0\\
+0
+\end{array}\right]=\left[\begin{array}{c}
+a\\
+d\\
+g
+\end{array}\right]\quad\left(\text{first column of }M\right),
+\end{equation}
+<p>
+and we could also show that
+</p>
+\begin{equation}
+M\vec{e}_{2}=\left[\begin{array}{c}
+b\\
+e\\
+h
+\end{array}\right]\quad\left(\text{second col. of }M\right),\quad\text{and}\quad M\vec{e}_{3}=\left[\begin{array}{c}
+c\\
+f\\
+i
+\end{array}\right]\quad\left(\text{third col. of }M\right)
+\end{equation}</li>
+</ul></li>
+</ul></li>
+</ul>
+
+\begin{xca}
+Find \(X\), the matrix representation of \(\mathbf{X}\) in the
+computational basis.
+\begin{xca}
+
+To do this, we can build the matrix column by column:
+\begin{equation}
+X=\left[\begin{array}{cc}
+\mathbf{X}\ket{0} & \mathbf{X}\ket{1}\end{array}\right]=\left[\begin{array}{cc}
+\ket{1} & \ket{0}\end{array}\right]=\left[\begin{array}{cc}
+0 & 1\\
+1 & 0
+\end{array}\right]
+\end{equation}
+
+\begin{xca}
+Verify that \(X\) transforms the basis states consistent with Equation
+(ref:eq:NOTaction)\\
+\end{xca}
+
+\begin{align}
+\mathbf{X}\ket{0} & =\left[\begin{array}{cc}
+0 & 1\\
+1 & 0
+\end{array}\right]\begin{bmatrix}1\\
+0
+\end{bmatrix}=\begin{bmatrix}0\\
+1
+\end{bmatrix}=\ket{1}\\
+\mathbf{X}\ket{1} & =\left[\begin{array}{cc}
+0 & 1\\
+1 & 0
+\end{array}\right]\begin{bmatrix}0\\
+1
+\end{bmatrix}=\begin{bmatrix}1\\
+0
+\end{bmatrix}=\ket{0}
+\end{align}
+</div>
+</div>
+
+<div id="outline-container-matrix-elements" class="outline-4">
+<h4 id="matrix-elements"><span class="section-number-4">1.2.2.</span> Matrix Elements</h4>
+<div class="outline-text-4" id="text-matrix-elements">
+<ul class="org-ul">
+<li>Since \(\mathbf{M}\ket{\psi}\) is a state \(\ket{\chi}\), then we can
+take an inner product of \(\mathbf{M}\ket{\psi}\) with another state,
+\(\ket{\phi}\), \(\braket{\phi|\mathbf{M}|\psi}\)
+
+<ul class="org-ul">
+<li>Since \(\braket{\phi|\mathbf{M}|\psi}\) is a scalar, we call
+\(\braket{\phi|\mathbf{M}|\psi}\) the \(\left(\phi,\psi\right)\)
+matrix element of \(\mathbf{M}\)</li>
+</ul></li>
+</ul>
+<div class="xca" id="orgd00dfcc">
+<p>
+Find the following matrix elements of the \(\mathbf{X}\) operator.
+</p>
+
+</div>
+<ol class="org-ol">
+<li><p>
+\(\Braket{0|\mathbf{X}|0}\)
+</p>
+
+<p>
+We can do this using all we know about bras and kets:
+</p>
+
+\begin{align}
+\braket{0|\mathbf{X}|0} & =\bra{0}\left(\mathbf{X}\ket{0}\right)=\bra{0}\left(\ket{1}\right)\\
+ & =\braket{0|1}=0
+\end{align}</li>
+
+<li>\(\Braket{0|\mathbf{X}|1}\)</li>
+</ol>
+
+
+\begin{align}
+\braket{0|\mathbf{X}|1} & =\bra{0}\left(\mathbf{X}\ket{1}\right)=\bra{0}\left(\ket{0}\right)\\
+ & =\braket{0|0}=1
+\end{align}
+
+<ol class="org-ol">
+<li><p>
+\(\Braket{1|\mathbf{X}|0}\)
+</p>
+
+\begin{align}
+\braket{1|\mathbf{X}|0} & =\bra{1}\left(\mathbf{X}\ket{0}\right)=\bra{1}\left(\ket{1}\right)\\
+ & =\braket{1|1}=1
+\end{align}</li>
+
+<li>\(\Braket{1|\mathbf{X}|1}\)</li>
+</ol>
+
+
+\begin{align}
+\braket{1|\mathbf{X}|1} & =\bra{1}\left(\mathbf{X}\ket{1}\right)=\bra{1}\left(\ket{0}\right)\\
+ & =\braket{1|0}=0
+\end{align}
+
+<div class="xca" id="org5bb6f68">
+<p>
+Calculate the inner products \(\vec{e}_{2}^{T}M\vec{e}_{3}\) and
+\(\vec{e}_{3}^{T}M\vec{e}_{2}\)
+</p>
+
+</div>
+
+\begin{equation}
+\vec{e}_{2}^{T}M\vec{e}_{3}=\left[\begin{array}{ccc}
+0 & 1 & 0\end{array}\right]\left[\begin{array}{ccc}
+a & b & c\\
+d & e & f\\
+g & h & i
+\end{array}\right]\left[\begin{array}{c}
+0\\
+0\\
+1
+\end{array}\right]=\left[\begin{array}{ccc}
+0 & 1 & 0\end{array}\right]\left[\begin{array}{c}
+c\\
+f\\
+i
+\end{array}\right]=f=M_{2,3}
+\end{equation}
+
+\begin{equation}
+\vec{e}_{3}^{T}M\vec{e}_{2}
+=\left[\begin{array}{ccc} 0 & 0 & 1\end{array}\right]
+\left[\begin{array}{ccc}
+a & b & c\\
+d & e & f\\
+g & h & i
+\end{array}\right]\left[\begin{array}{c}
+0\\
+1\\
+0
+\end{array}\right]=\left[\begin{array}{ccc}
+0 & 0 & 1\end{array}\right]\left[\begin{array}{c}
+b\\
+e\\
+h
+\end{array}\right]=h=M_{3,2}
+\end{equation}
+<p>
+We can see that \(\vec{e}_{2}^{T}M\vec{e}_{3}\) and \(\vec{e}_{3}^{T}M\vec{e}_{2}\) are
+\(M_{2,3}\) and \(M_{3,2}\), respectively, the \(\left(2,3\right)\) and
+\(\left(3,2\right)\) <b>matrix elements</b> of \(M\). This is in direct
+analogy to \(\braket{\chi|\mathbf{M}|\psi}\) being the
+\(\left(\chi,\psi\right)\) matrix element of \(\mathbf{M}\)
+</p>
+</div>
+</div>
+
+<div id="outline-container-a-basic-quantum-circuit" class="outline-4">
+<h4 id="a-basic-quantum-circuit"><span class="section-number-4">1.2.3.</span> A Basic Quantum Circuit</h4>
+<div class="outline-text-4" id="text-a-basic-quantum-circuit">
+<ul class="org-ul">
+<li>Let's learn about quantum circuints and see what a circuit with a NOT
+gate looks like</li>
+
+<li>In quantum circuits, each qubit gets its own timeline that we read
+from left to right</li>
+
+<li>By convention, it is assumed that the inital state of the qubit is
+\(\ket{0}\)</li>
+
+<li>Basic single-qubit quantum circuits are shown in Figure
+<a href="fig:BasicSingleQubitCircuits">fig:BasicSingleQubitCircuits</a>
+
+<ul class="org-ul">
+<li>Figure <a href="fig:SingleQbitTimeline">fig:SingleQbitTimeline</a>: A
+straight line indicates a single-qubit timeline without any
+transformations</li>
+
+<li>Figure <a href="fig:SingleQbitNotCircuit">fig:SingleQbitNotCircuit</a>: A
+single qubit transformed from \(\ket{0}\) to \(\ket{1}\) using a NOT
+operator is drawn as a straight line connecting to boxed
+\(\mathbf{X}\) (NOT gate)
+
+<ul class="org-ul">
+<li>The gate input is on the left and is the conventional \(\ket{0}\)</li>
+
+<li>The gate oputput is on the right (final state) and is
+\(\mathbf{X}\ket{0}=\ket{1}\)</li>
+</ul></li>
+
+<li>Figure <a href="fig:SingleQbitBA">fig:SingleQbitBA</a>: two operations,
+\(\mathbf{A}\) and \(\mathbf{B}\), transform the initial state
+\(\ket{0}\) in sequence
+
+<ul class="org-ul">
+<li>Since \(\mathbf{A}\) is on the left, it is applied first to
+\(\ket{0}\), leading to an intermediate state
+\(\mathbf{A}\ket{0}\)</li>
+
+<li>The intermediate state is transformed by \(\mathbf{B}\) to the
+final state, \(\mathbf{B}\mathbf{A}\ket{0}\)</li>
+
+<li>Note that the the ordering for the mathematical expression
+\(\mathbf{B}\mathbf{A}\ket{0}\) is consistent with the linear
+algebraic representation by a transformation by \(\mathbf{A}\)
+first and then \(\mathbf{B}\)</li>
+
+<li>In other words, the linear algebraic expression is written in
+sequence from right to left, but the circuit transformations are
+drawn in sequence from left to right</li>
+</ul></li>
+</ul></li>
+</ul>
+
+\begin{figure}[H]
+\centering
+\subfloat[A single-Qbit timeline.\label{fig:SingleQbitTimeline}]{\centering
+\newcommand{\dx}{1.5}
+\begin{tikzpicture}[thick]
+\tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+\tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+\centering
+% single-qubit timeline
+\draw (0,0) coordinate (q1) -- (2*\dx,0) coordinate (end1);
+\node [anchor=east, align=right] at (q1) {{\color{blue}Initial state:}\\{\color{blue}$\ket{0}$}};
+\node [anchor=west, align=left] at (end1) {{\color{blue}Final state:}\\ {\color{blue}$\ket{0}$}};
+\end{tikzpicture}
+} \\
+\subfloat[A single Qbit timeline with a NOT operation.\label{fig:SingleQbitNotCircuit}]{\centering
+\newcommand{\dx}{0.75}
+\begin{tikzpicture}[thick]
+\tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+\tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+% Initial state
+\node [anchor=east,align=right] at (0,0) (q1) {{\color{blue}Initial state:}\\{\color{blue} $\ket{0}$}};
+% Single-Qbit operator
+\node[operator] (op1) at (\dx,0) {$\mathbf{X}$} edge [-] (q1);
+% Final state
+\node (end1) at (2*\dx,0) {} edge [-] (op1);
+\node [anchor=west,align=left] at (end1) (q1f) {{\color{blue}Final state:}\\{\color{blue} $\mathbf{X} \ket{0}=\ket{1}$}};
+\end{tikzpicture}
+}\\
+\subfloat[A single Qbit timeline with a series of operations.\label{fig:SingleQbitBA}]{\centering
+\newcommand{\dx}{1.5}
+\begin{tikzpicture}[thick]
+\tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+\tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+% Initial state
+\node [anchor=east,align=right] at (0,0) (q1) {{\color{blue}Initial state:}\\{\color{blue} $\ket{0}$}};
+% Single-Qbit operator
+\node[operator] (op1) at (\dx,0) {$\mathbf{A}$} edge [-] (q1);
+\node[operator] (op2) at (2*\dx,0) {$\mathbf{B}$} edge [-] (op1);
+% Final state
+\node (end1) at (3*\dx,0) {} edge [-] (op2);
+\node [anchor=west,align=left] at (end1) (q1f) {{\color{blue}Final state:}\\{\color{blue} $\mathbf{B} \mathbf{A} \ket{0} $}};
+\node [anchor=south] at (1.5*\dx,0) {\small {\color{blue} $\mathbf{A} \ket{0} $}};
+\end{tikzpicture}
+}
+\caption{Quantum circuits are represented as timelines that are read from left
+to right. By convention, it is assumed that each qubit starts at the
+left in state $\ket{0}$. Blocks or symbols along the timeline indicate
+qubit operations (quantum gates). Typically, each qubit gets its own
+timeline. (a) A straight line indicates a single-qubit timeline with
+no transformations, such that an initial $\ket{0}$ is untransformed,
+leading to a final state $\ket{0}$. (b) A single-qubit timeline has
+a NOT gate ($\mathbf{X}$) that turns the initial state $\ket{0}$
+into the final state $\ket{1}$ . \label{fig:BasicSingleQubitCircuits}}
+\end{figure}
+</div>
+</div>
+</div>
+
+<div id="outline-container-the-pauli-operators" class="outline-3">
+<h3 id="the-pauli-operators"><span class="section-number-3">1.3.</span> The Pauli Operators</h3>
+<div class="outline-text-3" id="text-the-pauli-operators">
+<ul class="org-ul">
+<li><p>
+The NOT operator \(\mathbf{X}\) is equivalent to the Pauli operator,
+</p>
+\begin{equation}
+\mathbf{X}=\sigma_{x}=\left[\begin{array}{cc}
+0 & 1\\
+1 & 0
+\end{array}\right]\label{eq:sigmax}
+\end{equation}</li>
+
+<li><p>
+In addition to \(\sigma_{x}\), there are two other Pauli operators,
+</p>
+\begin{equation}
+\mathbf{Y}=\sigma_{y}=\left[\begin{array}{cc}
+0 & i\\
+-i & 0
+\end{array}\right],\qquad\text{and}\qquad\mathbf{Z}=\sigma_{z}=\left[\begin{array}{cc}
+-1 & 0\\
+0 & 1
+\end{array}\right]\label{eq:sigmayz}
+\end{equation}
+
+<ul class="org-ul">
+<li>Note: most often, \(\mathbf{Y}\) and \(\mathbf{Z}\) will be written
+as \begin{equation}
+\mathbf{Y}=&sigma;<sub>y</sub>=
+\left[\begin{array}{cc} 0 &amp; -i\\ i &amp; 0 \end{array}\right],
+\qquad\text{and}\qquad
+\mathbf{Z}=&sigma;<sub>z</sub>=
+\left[\begin{array}{cc} 1 &amp; 0\\ 0 &amp; -1 \end{array}\right]
+\label{eq:sigma_y_z_more_common}
+\end{equation}</li>
+
+<li>There are two conventions here
+
+<ul class="org-ul">
+<li>The least popular convention orders the eigenvalues of
+\(\mathbf{Z}\) from least to greatest going down the diagonal</li>
+
+<li>It is more common in quantum computing literature to use the
+definitions of Equation
+(<a href="eq:sigma_y_z_more_common">eq:sigma_y_z_more_common</a>)</li>
+
+<li>Thus, we will prefer the convention of Equation
+(<a href="eq:sigma_y_z_more_common">eq:sigma_y_z_more_common</a>) for
+quantum computing applications, and we may use the convention of
+Equation (<a href="eq:sigmayz">eq:sigmayz</a>) when doing quantum
+mechanics</li>
+</ul></li>
+</ul></li>
+
+<li>While \(\mathbf{X}\) can be understood classically, \(\mathbf{Y}\) and
+\(\mathbf{Z}\) do not have a classical meaning
+
+<ul class="org-ul">
+<li>These gates introduce a complex phase</li>
+
+<li>Complex phase is important because it allows for constructive and
+destructive interference of quantum wave functions</li>
+
+<li>In generally, we can think of quantum computations as interference
+experiments:
+
+<ul class="org-ul">
+<li>We set up a quantum circuit to cancel probabilities of unwanted
+answers</li>
+
+<li>After measurement, we achieve the desired answer, or some
+combination of desirable answers</li>
+</ul></li>
+</ul></li>
+</ul>
+<div class="xca" id="org085d1c2">
+<p>
+How does \(\mathbf{Z}\) transform the states \(\ket{0}\) and
+\(\ket{1}\)?<br />
+</p>
+
+</div>
+
+\begin{align}
+\mathbf{Z}\ket{0} & =
+\left[\begin{array}{cc} 1 & 0\\ 0 & -1 \end{array}\right]
+\begin{bmatrix}1\\
+0
+\end{bmatrix}=\begin{bmatrix}1\\
+0
+\end{bmatrix}=\ket{0}\label{eq:Zket0}\\
+\mathbf{Z}\ket{1} & =\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]\begin{bmatrix}0\\
+1
+\end{bmatrix}=\begin{bmatrix}0\\
+-1
+\end{bmatrix}=-\begin{bmatrix}0\\
+1
+\end{bmatrix}=-\ket{1}\label{eq:Zket1}
+\end{align}
+</div>
+</div>
+
+<div id="outline-container-complex-phase-and-interference" class="outline-3">
+<h3 id="complex-phase-and-interference"><span class="section-number-3">1.4.</span> Complex Phase and Interference</h3>
+<div class="outline-text-3" id="text-complex-phase-and-interference">
+<ul class="org-ul">
+<li>What does it mean for \(\mathbf{Z}\) to transform \(\ket{1}\) into
+\(-\ket{1}\)?
+
+<ul class="org-ul">
+<li>The NOT operation (\(\mathbf{X}\)) has classical significance, but
+\(\mathbf{Z}\) cannot be understood in a way that is classical</li>
+</ul></li>
+
+<li>The negative sign, that is, a factor of \(-1=e^{i\pi}\), is said to be
+a <b>complex phase factor</b> (also: <b>complex phase</b> or <b>phase factor</b> or
+<b>phase</b>).
+
+<ul class="org-ul">
+<li>This has no classical meaning, but phase allows for constructive or
+destrucive interference</li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-interference" class="outline-4">
+<h4 id="interference"><span class="section-number-4">1.4.1.</span> Interference</h4>
+<div class="outline-text-4" id="text-interference">
+<ul class="org-ul">
+<li><p>
+To understand interference, let's introduce another operator, the
+Hadamard transformation, \(\mathbf{H}\):
+</p>
+\begin{equation}
+\mathbf{H}=\frac{1}{\sqrt{2}}\left(\mathbf{X}+\mathbf{Z}\right)\label{eq:defHadamard}
+\end{equation}</li>
+
+<li>The next exercise will prepare us to discover interference in quantum
+states.</li>
+</ul>
+
+<div class="xca" id="org743c1ed">
+<p>
+Consider \(\mathbf{H}\) from Equation
+(<a href="eq:defHadamard">eq:defHadamard</a>).
+</p>
+
+</div>
+
+<ol class="org-ol">
+<li><p>
+Determine how \(\mathbf{H}\) transforms the classical states
+\(\ket{0}\) and \(\ket{1}\).<br />
+</p>
+
+<p>
+Start with \(\ket{0}\): 
+</p>
+\begin{align}
+\mathbf{H}\ket{0} & \stackrel{\left(\ref{eq:defHadamard}\right)}{=}\left(\frac{1}{\sqrt{2}}\left(\mathbf{X}+\mathbf{Z}\right)\right)\ket{0}\nonumber \\
+& =\frac{1}{\sqrt{2}}\left(\mathbf{X}\ket{0}+\mathbf{Z}\ket{0}\right)\nonumber \\
+& \stackrel{\left(\ref{eq:Zket0}\right),\left(\ref{eq:Zket1}\right)}{=}\frac{1}{\sqrt{2}}\left(\ket{1}+\ket{0}\right)=\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)\equiv\ket{+}\label{eq:Hket0}
+\end{align} 
+\begin{align}
+\mathbf{H}\ket{1} & \stackrel{\left(\ref{eq:defHadamard}\right)}{=}\left(\frac{1}{\sqrt{2}}\left(\mathbf{X}+\mathbf{Z}\right)\right)\ket{1}\nonumber \\
+ & =\frac{1}{\sqrt{2}}\left(\mathbf{X}\ket{1}+\mathbf{Z}\ket{1}\right)\nonumber \\
+ & \stackrel{\left(\ref{eq:Zket0}\right),\left(\ref{eq:Zket1}\right)}{=}\frac{1}{\sqrt{2}}\left(\ket{0}-\ket{1}\right)\equiv\ket{-}\label{eq:Hket1}
+\end{align}
+<p>
+Here, we have defined the kets \(\ket{\pm}\) as a
+compact shorthand for writing
+\(\left(1/\sqrt{2}\right)\left(\ket{0}\pm\ket{1}\right)\). We can
+then write these states as column vectors:
+</p>
+\begin{equation}
+\ket{\pm}=\frac{1}{\sqrt{2}}\left(\ket{0}\pm\ket{1}\right)\qquad\leftrightarrow\qquad\frac{1}{\sqrt{2}}\left[\begin{array}{c}
+1\\
+\pm1
+\end{array}\right]
+\end{equation}</li>
+
+<li><p>
+Find the matrix representation of \(\mathbf{H}\) in the computational
+basis.<br />
+</p>
+
+<p>
+We can construct the matrix representation of \(\mathbf{H}\) in a
+column-wise manner: \begin{equation}
+\mathbf{H}=\left[\begin{array}{cc}
+\mathbf{H}\ket{0} &amp; \mathbf{H}\ket{1}\end{array}\right]=\frac{1}{\sqrt{2}}\left[\begin{array}{cc}
+1 &amp; 1<br />
+1 &amp; -1
+\end{array}\right]
+\end{equation}
+Alternately, we could use Equations
+(<a href="eq:sigmax">eq:sigmax</a>) and
+(<a href="eq:sigma_y_z_more_common">eq:sigma_y_z_more_common</a>)
+</p></li>
+
+<li><p>
+Sketch a single-qubit circuit to transform \(\ket{0}\) using the
+Hadamard operation. Calculate the probabilities of measuring
+\(\ket{0}\) and \(\ket{1}\) for both the initial and final states.<br />
+</p>
+
+<p>
+The circuit is shown in Figure <a href="fig:SingleQbitH0Circuit">fig:SingleQbitH0Circuit</a>. For
+the initial state, we have a 100% probability for measuring "0" and a
+0% probability of measuring state "1":
+</p>
+\begin{equation}
+p\left(0\right)=1,\qquad p\left(1\right)=0
+\end{equation}
+<p>
+For the final state, we have
+</p>
+\begin{equation}
+\ket{+}=\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)=\frac{1}{\sqrt{2}}\ket{0}+\frac{1}{\sqrt{2}}\ket{1},
+\end{equation}
+<p>
+so we can calculate an equal probability for measuring ``0'' or ``1'':
+</p>
+\begin{equation}
+p\left(0\right)=p\left(1\right)=\left(\frac{1}{\sqrt{2}}\right)^{2}=\frac{1}{2}
+\end{equation}
+
+\begin{figure}[htbp]
+\centering
+\newcommand{\dx}{1.5}
+\begin{tikzpicture}[thick]
+    \tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+    \tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+    % Initial state
+    \node [anchor=east,align=right] at (0,0) (q1) {{\color{blue} $\ket{0}$}};
+    % Single-Qbit operator
+    \node[operator] (op1) at (\dx,0) {$\mathbf{H}$} edge [-] (q1);
+    % Final state
+    \node (end1) at (2*\dx,0) {} edge [-] (op1);
+    \node [anchor=west,align=left] at (end1) (q1f) {{\color{blue} $\mathbf{H} \ket{0}=\ket{+}$}};
+\end{tikzpicture}
+\caption{A single qubit timeline with a \(\mathbf{H}\) operation on \(\ket{0}\). \label{fig:SingleQbitH0Circuit}}
+\end{figure}</li>
+
+<li><p>
+Sketch a single-qubit circuit to transform \(\ket{1}\) using the
+Hadamard operation. Calculate the probabilities of measuring
+\(\ket{0}\) and \(\ket{1}\) for both the initial and final states.<br />
+</p>
+
+<p>
+To achieve \(\ket{1}\), we must first transform the conventional
+inital \(\ket{0}\) using the \(\mathbf{X}\) operator. Then, we can
+apply a \(\mathbf{H}\) operation. The circuit is shown in Figure
+<a href="fig:SingleQbitH1Circuit">fig:SingleQbitH1Circuit</a>. For the initial state, we have a
+100% probability for measuring "1" and a 0% probability of measuring
+state "0":
+</p>
+\begin{equation}
+p\left(0\right)=0,\qquad p\left(1\right)=1
+\end{equation}
+<p>
+For the final state, we have
+</p>
+\begin{equation}
+\ket{-}=\frac{1}{\sqrt{2}}\left(\ket{0}-\ket{1}\right)=\frac{1}{\sqrt{2}}\ket{0}-\frac{1}{\sqrt{2}}\ket{1},
+\end{equation}
+<p>
+so we can calculate an equal probability for measuring "0" or "1":
+</p>
+\begin{equation}
+p\left(0\right)=\left(\frac{1}{\sqrt{2}}\right)^{2}=\frac{1}{2},\qquad p\left(1\right)=\left(-\frac{1}{\sqrt{2}}\right)^{2}=\frac{1}{2}.
+\end{equation}
+<p>
+From the standpoint of measurement probabilities, we cannot tell the
+difference between the kets \(\ket{\pm}\).
+</p>
+
+\begin{figure}
+\centering
+\newcommand{\dx}{1.5}
+\begin{tikzpicture}[thick]
+    \tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+    \tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+     % Initial state
+    \node [anchor=east,align=right] at (0,0) (q1) {{\color{blue} $\ket{0}$}};
+     % Single-Qbit operator
+    \node[operator] (op1) at (\dx,0) {$\mathbf{X}$} edge [-] (q1);
+    \node[operator] (op2) at (2*\dx,0) {$\mathbf{H}$} edge [-] (op1);
+     % Final state
+    \node (end1) at (3*\dx,0) {} edge [-] (op2);
+    \node [anchor=west,align=left] at (end1) (q1f) {{\color{blue} $\ket{-} $}};
+    \node [anchor=south] at (1.5*\dx,0) {\small {\color{blue} $ \ket{1} $}};
+\end{tikzpicture}
+\caption{A single qubit timeline with a \(\mathbf{H}\) operation on \(\ket{1}\). \label{fig:SingleQbitH1Circuit}}
+\end{figure}</li>
+
+<li>We have seen that a \(\mathbf{H}\) transformation turns a state with a
+full probability of measuring "0" or "1" into something that has an
+equal probability of measuring "0" or "1"</li>
+
+<li>What happens when we add a second Hadamard operation?</li>
+</ol>
+
+<div class="xca" id="orgd80ebb6">
+
+</div>
+<p>
+Consider the circuit of Figure <a href="fig:SingleQbitHsq0">fig:SingleQbitHsq0</a>
+</p>
+\begin{figure}[htbp]
+   \centering
+   \newcommand{\dx}{1.5}
+   \begin{tikzpicture}[thick]
+       \tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+       \tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+        % Initial state
+       \node [anchor=east,align=right] at (0,0) (q1) {{\color{blue} $\ket{0}$}};
+        % Single-Qbit operator
+       \node[operator] (op1) at (\dx,0) {$\mathbf{X}$} edge [-] (q1);
+       \node[operator] (op2) at (2*\dx,0) {$\mathbf{H}$} edge [-] (op1);
+        % Final state
+       \node (end1) at (3*\dx,0) {} edge [-] (op2);
+       \node [anchor=west,align=left] at (end1) (q1f) {{\color{blue} $\ket{-} $}};
+       \node [anchor=south] at (1.5*\dx,0) {\small {\color{blue} $ \ket{1} $}};
+   \end{tikzpicture}
+   \caption{A single Qbit timeline with an \(\mathbf{H}^{2}\) operation on \(\ket{0}\). \label{fig:SingleQbitHsq0}}
+\end{figure}
+
+
+<ol class="org-ol">
+<li><p>
+Find the final state \(\ket{\psi_{0}}\).<br />
+</p>
+
+\begin{align}
+\ket{\psi_{0}} & =\mathbf{H}\ket{+}=\frac{1}{\sqrt{2}}\mathbf{H}\left(\ket{0}+\ket{1}\right)\nonumber \\
+ & =\frac{1}{\sqrt{2}}\left(\mathbf{H}\ket{0}+\mathbf{H}\ket{1}\right)\nonumber \\
+ & =\frac{1}{\sqrt{2}}\left(\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)+\frac{1}{\sqrt{2}}\left(\ket{0}-\ket{1}\right)\right)\nonumber \\
+ & =\frac{1}{2}\left(\ket{0}+\ket{1}+\ket{0}-\ket{1}\right)\nonumber \\
+ & =\frac{1}{2}\left(\left(1+1\right)\ket{0}+\left(1-1\right)\right)\\
+ & =\ket{0}\label{eq:Hsq0}
+\end{align}</li>
+
+<li><p>
+Find the final probabilities for measuring "0" and "1".<br />
+</p>
+
+<p>
+We see here that we have full probability of measuring "0" and zero
+probability of measuring "1":
+</p>
+\begin{equation}
+p\left(0\right)=1,\qquad p\left(1\right)=0
+\end{equation}</li>
+</ol>
+
+<div class="xca" id="orgddfd7a8">
+<p>
+Consider the circuit of Figure <a href="fig:SingleQbitHsq1">fig:SingleQbitHsq1</a>.
+</p>
+
+</div>
+\begin{figure}[htbp]
+\centering
+\newcommand{\dx}{1.5}
+\begin{tikzpicture}[thick]
+    \tikzstyle{operator} = [draw,fill=white,minimum size=1.5em]
+    \tikzstyle{phase} = [fill,shape=circle,minimum size=5pt,inner sep=0pt]
+     % Initial state
+    \node [anchor=east,align=right] at (0,0) (q1) {{\color{blue} $\ket{0}$}};
+     % Single-Qbit operator
+    \node[operator] (op1) at (\dx,0) {$\mathbf{X}$} edge [-] (q1);
+    \node[operator] (op2) at (2*\dx,0) {$\mathbf{H}$} edge [-] (op1);
+     % Final state
+    \node (end1) at (3*\dx,0) {} edge [-] (op2);
+    \node [anchor=west,align=left] at (end1) (q1f) {{\color{blue} $\ket{-} $}};
+    \node [anchor=south] at (1.5*\dx,0) {\small {\color{blue} $ \ket{1} $}};
+\end{tikzpicture}
+\caption{A single Qbit timeline with an \(\mathbf{H}^{2}\) operation on \(\ket{1}\). \label{fig:SingleQbitHsq1}}
+\end{figure}
+
+
+<ol class="org-ol">
+<li><p>
+Find the final state \(\ket{\psi_{1}}\).<br />
+</p>
+
+\begin{align}
+\ket{\psi_{1}} & =\mathbf{H}\ket{-}=\frac{1}{\sqrt{2}}\mathbf{H}\left(\ket{0}-\ket{1}\right)\nonumber \\
+ & =\frac{1}{\sqrt{2}}\left(\mathbf{H}\ket{0}-\mathbf{H}\ket{1}\right)\nonumber \\
+ & =\frac{1}{\sqrt{2}}\left(\frac{1}{\sqrt{2}}\left(\ket{0}+\ket{1}\right)-\frac{1}{\sqrt{2}}\left(\ket{0}-\ket{1}\right)\right)\nonumber \\
+ & =\frac{1}{2}\left(\ket{0}+\ket{1}-\ket{0}+\ket{1}\right)\nonumber \\
+ & =\frac{1}{2}\left(\left(1-1\right)\ket{0}+\left(1+1\right)\ket{1}\right)\\
+ & =\ket{1}\label{eq:Hsq1}
+\end{align}</li>
+
+<li><p>
+Find the final probabilities for measuring "0" and "1".<br />
+</p>
+
+<p>
+We see here that we have full probability of measuring "1" and zero
+probability of measuring "0":
+</p>
+\begin{equation}
+p\left(0\right)=0,\qquad p\left(1\right)=1
+\end{equation}</li>
+
+<li>In the previous two exercises, we have probability amplitudes
+\(c_{k}\) canceling in the lines prior to Equations
+(<a href="eq:Hsq0">eq:Hsq0</a>) and (<a href="eq:Hsq1">eq:Hsq1</a>)
+
+<ul class="org-ul">
+<li>This is a destructive interference, which leads to zero probability
+\(c_{k}^{\ast}c_{k}=\left|c_{k}\right|^{2}\) of measuring certain
+outcomes</li>
+</ul></li>
+
+<li>Similarly, we have the constructive interference of certain other
+probability amplitudes \(c_{k^{\prime}}\) which enhances the
+probability
+\(c_{k^{\prime}}^{\ast}c_{k^{\prime}}=\left|c_{k^{\prime}}\right|^{2}\)
+of measuring these outcomes</li>
+
+<li>We have now seen constructive and destructive interference at work in
+a very simple case with quantum information</li>
+
+<li>It turns out that interference is one of the key principles in quantum
+computing
+
+<ul class="org-ul">
+<li>quantum circuits use destructive interference to suppress the
+probability of measuring certain unwanted outcomes</li>
+
+<li>other more-desirable outcomes have enhanced measurement
+probabilities via constructive interference</li>
+
+<li>measurement is a probabilistic process that returns one of the
+outcomes with a non-zero probability of measurement</li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-the-hamiltonian---a-very-important-operator" class="outline-3">
+<h3 id="the-hamiltonian---a-very-important-operator"><span class="section-number-3">1.5.</span> The Hamiltonian - a very important operator</h3>
+<div class="outline-text-3" id="text-the-hamiltonian---a-very-important-operator">
+<ul class="org-ul">
+<li>The Hamiltonian, \(\hat{H}\), is an important operator because it
+appears in two essentially important equations from quantum mechanics:
+
+<ul class="org-ul">
+<li><p>
+The time-dependent Schrödinger equation (TDSE),
+</p>
+\begin{equation}
+\frac{d}{dt}\ket{\psi}=-\frac{i}{\hbar}\hat{H}\ket{\psi}\label{eq:TDSE}
+\end{equation}
+
+<ul class="org-ul">
+<li>\(i\) is an imaginary number and \(\hbar\) is the reduced Planck
+constant</li>
+
+<li><p>
+If \(\hat{H}\) is constant in time, i.e., \(d\hat{H}/dt=0\), then,
+given an initial state \(\ket{\psi\left(0\right)}\), it can be
+shown that the state at some later time \(t\) is
+</p>
+\begin{equation}
+\ket{\psi\left(t\right)}=\exp\left(-\frac{i}{\hbar}\hat{H}t\right)\ket{\psi\left(0\right)}.\label{eq:TDSE-Solution-Const-H}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+This may often be written as
+</p>
+\begin{equation}
+\ket{\psi\left(t\right)}=\hat{U}\left(t\right)\ket{\psi\left(0\right)},\label{eq:TDSE-Solution-Const-H-compact}
+\end{equation}
+<p>
+where
+</p>
+\begin{equation}
+\hat{U}\left(t\right)=\exp\left(-\frac{i}{\hbar}\hat{H}t\right)\label{eq:TimeEvolutionOperator}
+\end{equation}</li>
+</ul></li>
+
+<li>If \(\hat{H}\) is not constant, we need other methods to calculate
+\(\ket{\psi\left(t\right)}\)</li>
+</ul></li>
+
+<li><p>
+The time-independent Schrödinger equation,
+</p>
+\begin{equation}
+\hat{H}\ket{\psi_{n}}=E_{n}\ket{\psi_{n}} \label{eq:TISE}
+\end{equation}
+<p>
+is a very important equation in quantum mechanics
+</p>
+
+<ul class="org-ul">
+<li>Solutions to the time-independent Schrödinger equation (TISE)
+involve finding the eigenenergies \(\left\{ E_{n}\right\}\) and
+their associated eigenstates, \(\left\{ \ket{\psi_{n}}\right\} .\)</li>
+
+<li>This is a direct application of linear algebra
+
+<ul class="org-ul">
+<li>We often write the Hamiltonian as a matrix</li>
+
+<li>Then, finding \(\ket{\psi_{n}}\) and the corresponding \(E_{n}\)
+is a matter of finding the eigenvalues and eigenvectors of the
+matrix \(\hat{H}\)</li>
+</ul></li>
+
+<li>The quantum state \(\ket{\psi_{n}}\) is said to be the eigenstate
+associated with eigenenergy \(E_{n}\)
+
+<ul class="org-ul">
+<li>These have a VERY important role to play in all of physics and
+chemistry</li>
+
+<li>The eigenstates and eigenenergies are the reason electrons do
+not simply collapse to a point and rest against the nucleus of
+an atom: this state does not have an energy equal to an allowed
+energy, and thus, this state is forbidden!</li>
+
+<li>The eigenstates of electrons in atoms determine how atoms
+interact with one another</li>
+
+<li>Without the eigenstates and eigenenergies from quantum mechanics
+and linear algebra, chemistry would be VERY boring, and
+biological life as we know it would be impossible, and the
+universe would be very uninteresting</li>
+</ul></li>
+</ul></li>
+
+<li>Warning: the Hamiltonian \(\hat{H}\) is not the same as the Hadamard
+transformation, \(\mathbf{H}\)
+
+<ul class="org-ul">
+<li>The Hamiltonian \(\hat{H}\) is used to describe the energetics of
+a quantum system</li>
+
+<li>The Hadamard \(\mathbf{H}\) is used in quantum information
+processing applications</li>
+
+<li>Pay close attention so you can distinguish when we are talking
+about a Hamiltonian or a Hadamard operation</li>
+
+<li>For clarity, I will attempt to use two different symbols,
+\(\hat{H}\) and \(\mathbf{H}\), to help us distinguish between the
+Hadamard operation and the Hamiltonian</li>
+</ul></li>
+</ul></li>
+
+<li>We will focus on the simpler of the two equations, the
+time-independent Schrödinger equation of Equation
+(<a href="eq:TISE">eq:TISE</a>)
+
+<ul class="org-ul">
+<li>Notice that Equation (<a href="eq:TISE">eq:TISE</a>) is nothing more than
+an eigenvalue problem, with eigenvalues \(\left\{ E_{n}\right\}\)
+and eigenstates \(\left\{ \ket{\psi_{n}}\right\}\)</li>
+
+<li>In the context of quantum mechanics, the eigenvalues
+\(\left\{ E_{n}\right\}\) are given the name <b>eigenenergies</b>, since
+they are energies in fact
+
+<ul class="org-ul">
+<li>Thus, the eigenenergies have units of energy</li>
+
+<li>The eigenenergies of \(\hat{H}\) specify the only values that can
+be obtained on a measurement of the total system energy
+
+<ul class="org-ul">
+<li>Because of this, the eigenenergies may be thought of as "allowed
+energies"</li>
+
+<li>Other energies can never be measured and are said to be
+"forbidden energies"</li>
+</ul></li>
+</ul></li>
+</ul></li>
+
+<li>Quantum states \(\left\{ \ket{\psi_{n}}\right\}\) are unitless, and
+\(E_{n}\) has units of energy</li>
+
+<li>Thus, \(\hat{H}\) must also have units of energy</li>
+</ul>
+</div>
+
+<div id="outline-container-electron-volts-a-unit-of-energy" class="outline-4">
+<h4 id="electron-volts-a-unit-of-energy"><span class="section-number-4">1.5.1.</span> Electron-volts: a Unit of Energy</h4>
+<div class="outline-text-4" id="text-electron-volts-a-unit-of-energy">
+<ul class="org-ul">
+<li>Electron-volts are more appropriate for quantum systems than Joules
+
+<ul class="org-ul">
+<li><p>
+Recall the Volt is an energy per unit charge:
+</p>
+\begin{equation}
+1\;\text{V}=\frac{1\;\text{J}}{1\;\text{C}}\label{eq:defineVolt}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+The electron-volt (eV) is an energy per unit charge times a chage,
+which is an energy:
+</p>
+\begin{equation}
+1\;\text{eV}=\frac{1\;\text{J}}{1\;\text{C}}q_{e},
+\end{equation} where
+\(q_{e}\) is the fundamental charge:
+\begin{equation}
+q_{e}=1.602\times10^{-19}\;\text{C}\label{eq:FundamentalCharge}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+Thus, we can covert eV to J:
+</p>
+\begin{equation}
+1\;\text{eV}=\frac{1\;\text{J}}{1\;\text{C}}\left(1.602\times10^{-19}\;\text{C}\right)=1.602\times10^{-19}\;\text{J}\label{eq:eV2J}
+\end{equation}</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-the-matrix-elements-of-hath" class="outline-4">
+<h4 id="the-matrix-elements-of-hath"><span class="section-number-4">1.5.2.</span> The Matrix Elements of \(\hat{H}\)</h4>
+<div class="outline-text-4" id="text-the-matrix-elements-of-hath">
+<ul class="org-ul">
+<li>The matrix elements of \(\hat{H}\) have certain meanings</li>
+
+<li>The diagonal elements of \(\hat{H}\) are denoted
+\(\braket{n|\hat{H}|n}\)
+
+<ul class="org-ul">
+<li>These are called <b>occupation energies</b> because they are the
+potential energy of the system when it occupies state \(\ket{n}\)</li>
+</ul></li>
+
+<li>The off-diagonal elements of \(\hat{H}\) are denoted
+\(\braket{m|\hat{H}|n}\)
+
+<ul class="org-ul">
+<li>These are called <b>transition energies</b> because they are kinetic
+eneriges for a transition of the system from state \(\ket{m}\) to
+state \(\ket{n}\)</li>
+</ul></li>
+</ul>
+
+<div class="xca" id="orgd878139">
+<p>
+Consider the computational molecule of Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a>.
+</p>
+
+<p>
+Write the Hamiltonian for this two-state molecule given that state
+\(\ket{1}\) is an energy \(\Delta\) higher than state \(\ket{0}\), and
+the transition energy for \(\ket{0}\rightarrow\ket{1}\) or
+\(\ket{1}\rightarrow\ket{0}\) is \(-\gamma\).
+</p>
+
+</div>
+
+\begin{figure}[htbp]
+   \centering
+   \newcommand{\ra}{1.5}
+   \newcommand{\dx}{4}
+   \begin{tikzpicture}[scale=0.825]
+
+   \coordinate (dot00ctr) at (-1.5*\ra, 0.5*\ra);
+   \coordinate (dot01ctr) at (-1.5*\ra, -0.5*\ra);
+   \coordinate (dot10ctr) at (1.5*\ra, 0.5*\ra);
+   \coordinate (dot11ctr) at (1.5*\ra, -0.5*\ra);
+   \coordinate (fncAnchor) at (2.5*\ra, 0*\ra);
+   \coordinate (mcAnchor) at (0*\ra, 1*\ra);
+
+   \node (dot00) at (dot00ctr) [schemdotstyle, fill=black!20!green] {};
+   \node [anchor=west] at (-1.25*\ra, -0.5*\ra) {\small dot 1};
+   \node (dot01) at (dot01ctr) [schemdotstyle, fill=black!20!green] {};
+   \node [anchor=west] at (-1.25*\ra, 0.5*\ra) {\small dot 0};
+
+   \node (q0) at (dot00ctr) [chargestyle, fill=red] {};
+   \draw [very thick] (dot00) -- (dot01);
+   \node [anchor=north] at (-1.5*\ra, -1*\ra) {\large $\ket{0}$};
+   \node [anchor=north] at (-1.5*\ra, -1.625*\ra) {\large $P = -1$};
+
+   \node (dot10) at (dot10ctr) [schemdotstyle, fill=black!20!green] {};
+   % \node [anchor=west] at (-0.5*\\ra, -0.5*\\ra) {\small dot 1};
+   \node (dot11) at (dot11ctr) [schemdotstyle, fill=black!20!green] {};
+   % \\node [anchor=west] at (-0.5*\ra, -0.5*\ra) {\small dot 1};
+
+   \node (q1) at (dot11ctr) [chargestyle, fill=red] {};
+   \draw [very thick] (dot10) -- (dot11);
+   \node [anchor=north] at (1.5*\ra, -1*\ra) {\large $\ket{1}$};
+   \node [anchor=north] at (1.5*\ra, -1.625*\ra) {\large $P = 1$};
+
+   \draw [very thick, |<->|] (-2*\ra, 0.5*\ra) -- ++(0, -1*\ra);
+   \node [anchor=east] at (-2*\ra, 0) {$a$};
+
+   \node at (fncAnchor) [anchor=west,
+       text width=3cm, color=black!30!green] {Neutralizing charge: $+q_e/2$};
+
+   \node at (mcAnchor) [anchor=south,
+       text width=4cm, color=red] {Mobile charge: $-q_e$};
+
+   \draw [very thick, ->, color=black!30!green] (fncAnchor) -- (dot11);
+   \draw [very thick, ->, color=black!30!green] (fncAnchor) -- (dot10);
+   \draw [very thick, ->, color=black!30!green] (fncAnchor) -- (dot01);
+   \draw [very thick, ->, color=black!30!green] (fncAnchor) -- (dot00);
+
+   \draw [very thick, ->, color=red] (mcAnchor) -- (q0);
+   \draw [very thick, ->, color=red] (mcAnchor) -- (q1);
+
+   \end{tikzpicture}
+   \caption{The two states of a computational molecule. Black circles
+represent quantum dots, which trap a mobile charge. Two dots are
+separated by length \(a\), and the connecting bar denotes a tunneling
+path between the dots. A red disc represents a mobile electron. The
+system has two classical states, which encode a bit. Fixed neutralizing
+charge present on each dot is represented as green filling in the dot.
+This indicates the presence of \(+q_{e}/2\) on each dot. This keeps the
+molecules overall neutral, and we will not explicitly illustrate the
+neutralizing charge henceforth. Thus, when a mobile electron occupies a
+dot, the net charge on the dot is \(-q_{e}/2\). The other (unoccupied)
+dot has the fixed neutralizing charge uncovered, so its net charge is
+\(+q_{e}/2\). \label{fig:TwoDotStates}}
+\end{figure}
+
+<p>
+We first write the Hamiltonian in terms of its four matrix elements:
+</p>
+\begin{equation}
+\hat{H}=\left[\begin{array}{cc} H_{00} & H_{01}\\ H_{10} & H_{11} \end{array}\right]
+=\left[\begin{array}{cc} \braket{0|\hat{H}|0} & \braket{0|\hat{H}|1}\\ \braket{1|\hat{H}|0} & \braket{1|\hat{H}|1} \end{array}\right]
+\end{equation}
+<p>
+The problem statement encodes for us the following relationships:
+</p>
+\begin{equation}
+\braket{1|\hat{H}|1}-\braket{0|\hat{H}|0}=\Delta,\label{eq:Detuning}
+\end{equation}
+<p>
+and
+</p>
+\begin{equation}
+\braket{1|\hat{H}|0}=\braket{0|\hat{H}|1}=-\gamma
+\end{equation} Since the
+occupation energies \(\braket{n|\hat{H}|n}\) are potential energies, we
+get to pick the reference potential energy, i.e., we can choose the
+value of zero potential energy. This is equivalent to choosing a ground
+node in the circuit. Let us define the zero to be the midway point
+between \(\braket{1|\hat{H}|1}\) and \(\braket{0|\hat{H}|0}\):
+\begin{equation}
+0\equiv\frac{1}{2}\left(\braket{1|\hat{H}|1}+\braket{0|\hat{H}|0}\right)\label{eq:ChooseQCAZero}
+\end{equation}
+<p>
+We can eliminate \(\braket{0|\hat{H}|0}\) using Equation
+(<a href="eq:Detuning">eq:Detuning</a>) to obtain
+\(\braket{1|\hat{H}|1}-\Delta=\braket{0|\hat{H}|0}\) so that Equation
+(<a href="eq:ChooseQCAZero">eq:ChooseQCAZero</a>) becomes
+</p>
+\begin{equation}
+0\equiv\frac{1}{2}\left(\braket{1|\hat{H}|1}+\braket{1|\hat{H}|1}-\Delta\right)\quad\rightarrow\quad\braket{1|\hat{H}|1}=\frac{\Delta}{2}.
+\end{equation}
+<p>
+Similarly, we can use Equation (<a href="eq:Detuning">eq:Detuning</a>) to
+obtain \(\braket{1|\hat{H}|1}=\braket{0|\hat{H}|0}+\Delta\), which gives
+us
+</p>
+\begin{equation}
+0\equiv\frac{1}{2}\left(\braket{0|\hat{H}|0}+\Delta+\braket{0|\hat{H}|0}\right)\quad\rightarrow\quad\braket{0|\hat{H}|0}=-\frac{\Delta}{2}
+\end{equation}
+<p>
+Thus, we can write the Hamiltonian as
+</p>
+\begin{equation}
+\hat{H}=\left[\begin{array}{cc}
+-\frac{\Delta}{2} & -\gamma\\
+-\gamma & \frac{\Delta}{2}
+\end{array}\right]\stackrel{\left(\ref{eq:sigmax}\right),\left(\ref{eq:sigmayz}\right)}{=}-\gamma\sigma_{x}+\frac{\Delta}{2}\sigma_{z}\label{eq:DrivenCellHamiltonian-QMconvention}
+\end{equation}
+<p>
+Here, we have used \(\sigma_{x}\) and \(\sigma_{z}\) to write the
+Hamiltonian in a nicer form. Notice that we are using the quantum
+mechanics convention of Equation (<a href="eq:sigmayz">eq:sigmayz</a>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-the-ground-state" class="outline-4">
+<h4 id="the-ground-state"><span class="section-number-4">1.5.3.</span> The Ground State</h4>
+<div class="outline-text-4" id="text-the-ground-state">
+<ul class="org-ul">
+<li>The physics of the real world dictate that there is a <b>lowest
+eigenenergy</b> for a given physical system, and it is called the <b>ground
+state energy</b>.</li>
+
+<li>The ground state energy is indexed using either \(n=0\) or \(n=1\),
+depending on the context (different physical systems have different
+conventions)
+
+<ul class="org-ul">
+<li>For a trapped particle in a box, we typically use \(E_{1}\) as the
+ground state energy</li>
+
+<li>For a particle trapped in a parabolic potential (quantum harmonic
+oscillator), we usually label the ground state energy \(E_{0}\)</li>
+
+<li>The state \(\ket{0}\) or \(\ket{1}\) associated with the ground
+state energy \(E_{0}\) or \(E_{1}\) is called the <b>ground state</b>.</li>
+</ul></li>
+</ul>
+
+<div class="xca" id="org0aecba2">
+<p>
+Calculate the ground state of the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> by hand.
+</p>
+
+</div>
+
+<p>
+We can do this by finding the eigenvalues and the eigenvectors of
+\(\hat{H}\). To find the eigenvalues, use
+</p>
+\begin{equation}
+\det\left(\hat{H}-E_{n}\mathbf{1}\right)=0
+\end{equation}
+<p>
+Using the elements of
+\(\hat{H}\) we found, we write 
+</p>
+\begin{align}
+0 & =\det\left(\hat{H}-E_{n}\mathbf{1}\right)=
+\det\left(\left[\begin{array}{cc} -\frac{\Delta}{2} &
+-\gamma\\ -\gamma & \frac{\Delta}{2} \end{array}\right]
+-E_{n}\left[\begin{array}{cc} 1 & 0\\ 0 & 1 \end{array}\right]\right)
+=\left|\begin{array}{cc} -\frac{\Delta}{2}-E_{n} & -\gamma\\ -\gamma &
+\frac{\Delta}{2}-E_{n} \end{array}\right| \\
+ &
+=\left(-\frac{\Delta}{2}-E_{n}\right)\left(\frac{\Delta}{2}-E_{n}\right)-\gamma^{2}
+\\
+ & =-\frac{\Delta^{2}}{4}+E_{n}^{2}-\gamma^{2}
+\end{align}
+<p>
+so that
+</p>
+\begin{equation}
+E_{n}=\pm\sqrt{\frac{\Delta^{2}}{4}+\gamma^{2}}=\pm\frac{1}{2}\sqrt{\Delta^{2}+4\gamma^{2}}
+\end{equation}
+<p>
+The ground state energy, \(E_{1}\), is the lower of these values, and
+the first excited state energy is higher: 
+</p>
+\begin{align}
+E_{1} & =-\frac{1}{2}\sqrt{\Delta^{2}+4\gamma^{2}}\\
+E_{2} & =\frac{1}{2}\sqrt{\Delta^{2}+4\gamma^{2}}
+\end{align}
+<p>
+Now that we have \(E_{1}\), we can use it in Equation
+(<a href="eq:TISE">eq:TISE</a>) along with \(\hat{H}\) to find
+\(\ket{\psi_{1}}\). Write the time-independent Schrödinger equation for
+\(E_{1}\) and \(\ket{\psi_{1}}\): 
+</p>
+\begin{align}
+\hat{H}\ket{\psi_{1}} & =E_{1}\ket{\psi_{1}}\nonumber \\
+ & \downarrow\nonumber \\
+\left[\begin{array}{cc} -\frac{\Delta}{2} & -\gamma\\ -\gamma &
+\frac{\Delta}{2} \end{array}\right]\left[\begin{array}{c} a\\ b
+\end{array}\right]
+ & =-\frac{1}{2}\sqrt{\Delta^{2}
++4\gamma^{2}}\left[\begin{array}{c} a\\ b\end{array}\right]\nonumber \\
+ & \downarrow\nonumber \\
+-\frac{\Delta}{2}a-\gamma b & =-a\frac{1}{2}\sqrt{\Delta^{2}+4\gamma^{2}}\label{eq:QCAEigVectRow01}\\
+-\gamma a+\frac{\Delta}{2}b & =-b\frac{1}{2}\sqrt{\Delta^{2}+4\gamma^{2}}\label{eq:QCAEigVectRow02}
+\end{align}
+<p>
+If we take \(b=1\), then
+</p>
+\begin{equation}
+a=\frac{\Delta+\sqrt{\Delta^{2}+4\gamma^{2}}}{2\gamma}\label{eq:QCATwoDotParameter_a}
+\end{equation}
+<p>
+so that
+</p>
+\begin{equation}
+\ket{\psi_{0}}=\left[\begin{array}{c} a\\ b \end{array}\right] =\left[\begin{array}{c} a\\ 1 \end{array}\right]=a\ket{0}+\ket{1}.
+\end{equation}
+<p>
+We need to normalize this:
+</p>
+\begin{equation}
+\ket{\psi_{0}^{\prime}}=\frac{\ket{\psi_{0}}}{\sqrt{\braket{\psi_{0}|\psi_{0}}}}
+=\frac{1}{\sqrt{a^{2}+1}}\left[\begin{array}{c} a\\ 1 \end{array}\right]\label{eq:NormalizedGroundState}
+\end{equation}
+<p>
+We could write the normalized ground state out in greater detail by substituting
+(<a href="eq:QCATwoDotParameter_a">eq:QCATwoDotParameter_a</a>) into Equation
+(<a href="eq:NormalizedGroundState">eq:NormalizedGroundState</a>), but things
+would just get messier, so let's not. It can be shown that the
+probability of measuring 0 and 1 are as follows: 
+</p>
+\begin{align}
+p\left(0\right) & =\frac{a^{2}}{a^{2}+1}=\frac{1}{2}\left(1+\frac{\Delta}{\sqrt{4\gamma^{2}+\Delta^{2}}}\right)\\
+p\left(1\right) & =\frac{1}{a^{2}+1}=\frac{1}{2}\left(1-\frac{\Delta}{\sqrt{4\gamma^{2}+\Delta^{2}}}\right)
+\end{align}
+<p>
+Recall that we are using the quantum mechanics
+convention of Equation (<a href="eq:sigmayz">eq:sigmayz</a>) for
+\(\mathbf{Z}\).
+</p>
+</div>
+</div>
+
+<div id="outline-container-expectation-values" class="outline-4">
+<h4 id="expectation-values"><span class="section-number-4">1.5.4.</span> Expectation Values</h4>
+<div class="outline-text-4" id="text-expectation-values">
+<ul class="org-ul">
+<li><p>
+Let an operator \(\mathbf{Q}\) describes an observable quantity, and
+let \(\mathbf{Q}\) have eigenvalues \(q\) with associated eigenstates
+\(\ket{q}\):
+</p>
+\begin{equation}
+\mathbf{Q}\ket{q}=q\ket{q}\label{eq:ObservableEigenvalue}
+\end{equation}</li>
+
+<li>The eigenvalues \(\left\{ q\right\}\) are the only possible results of
+a measurement
+
+<ul class="org-ul">
+<li>Since \(\mathbf{Q}\) describes a measurement, the possible measured
+values must be real</li>
+
+<li>Thus, the eigenvalues of \(\mathbf{Q}\) must be real quantities</li>
+</ul></li>
+
+<li><p>
+If the eigenvalues \(\left\{ q\right\}\) of observable \(\mathbf{Q}\)
+are unique, then the eigenstates \(\left\{ \ket{q}\right\}\) form an
+orthonormal basis for the Hilbert space \(\mathcal{H}\) of our quantum
+system:
+</p>
+\begin{equation}
+\braket{q|q^{\prime}}=\delta_{q,q^{\prime}}=\begin{cases}
+1, & q=q^{\prime}\\
+0, & q\neq q^{\prime}
+\end{cases}\label{eq:KroneckerDeltaObservable}
+\end{equation}</li>
+
+<li><p>
+An arbitrary state \(\ket{\psi}\) may be expanded over the eigenbasis
+\(\left\{ \ket{q}\right\}\) as
+</p>
+\begin{equation}
+\ket{\psi}=\sum_{q}c_{q}\ket{q},\label{eq:AribtrarySuperpositionEigenbasisO}
+\end{equation}
+<p>
+where
+</p>
+\begin{equation}
+c_{q}=\braket{q|\psi}
+\end{equation}
+<p>
+are amplitudes, and the probability
+for measuring \(q\) is given by
+</p>
+\begin{equation}
+p\left(q\right)=\left|c_{q}\right|^{2}=c_{q}^{\ast}c_{q}\label{eq:MeasurementProbability}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+Thus, for physically meaningful probabilities, we require
+normalization
+</p>
+\begin{equation}
+\sum_{q}p\left(q\right)=\sum_{q}c_{q}^{\ast}c_{q}=1
+\end{equation}</li>
+</ul></li>
+
+<li><p>
+Given a state \(\ket{\psi}\), the expectation value of \(\mathbf{Q}\)
+is defined as
+</p>
+\begin{equation}
+\braket{\mathbf{Q}}=\braket{\psi|\mathbf{Q}|\psi}
+\end{equation}
+
+<ul class="org-ul">
+<li><p>
+Expand this using Equation 
+</p>
+\begin{align}
+\braket{\mathbf{Q}} & =\left(\sum_{q^{\prime}}c_{q^{\prime}}^{\ast}\bra{q^{\prime}}\right)\mathbf{Q}\left(\sum_{q}c_{q}\bra{q}\right)\\
+ & =\sum_{q,q^{\prime}}c_{q^{\prime}}^{\ast}c_{q}\braket{q^{\prime}|\mathbf{Q}|q}\\
+ & \stackrel{\left(\ref{eq:ObservableEigenvalue}\right)}{=}\sum_{q,q^{\prime}}c_{q^{\prime}}^{\ast}c_{q}q\braket{q^{\prime}|q}\\
+ & \stackrel{\left(\ref{eq:KroneckerDeltaObservable}\right)}{=}\sum_{q,q^{\prime}}c_{q^{\prime}}^{\ast}c_{q}q\delta_{q^{\prime},q}\\
+ & =\sum_{q}c_{q}^{\ast}c_{q}q\stackrel{\left(\ref{eq:MeasurementProbability}\right)}{=}\sum_{q}p\left(q\right)q
+\end{align}</li>
+</ul></li>
+
+<li>The astute reader will understand what is happening here:
+
+<ul class="org-ul">
+<li>\(\braket{\mathbf{Q}}\) is the weighted sum of measurement outcomes,
+\(\left\{ q\right\}\)</li>
+
+<li>Each outcome is weighted by its probability of measurement</li>
+
+<li>Thus, we interpret \(\braket{\mathbf{Q}}\) as the mean value of
+measurement outcomes for a large ensemble of measurements
+
+<ul class="org-ul">
+<li>Another name for \(\braket{\mathbf{Q}}\) is the <b>expected value</b>
+(you might recall this from your class on probability and
+statistics)</li>
+
+<li>In quantum mechanics, we call \(\braket{\mathbf{Q}}\) the
+<b>expectation value</b> of \(\mathbf{Q}\) given \(\ket{\psi}\), or
+simply the expectation value of \(\mathbf{Q}\)</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<div class="xca" id="org793d51d">
+<p>
+Calculate \(\braket{\mathbf{Z}}\) for the following wave functions:
+</p>
+
+</div>
+
+<ol class="org-ol">
+<li><p>
+\(\ket{\psi}=c_{0}\ket{0}+c_{1}\ket{1}\).<br />
+</p>
+
+<p>
+We write \(\ket{\psi}\) and \(\mathbf{Z}\) in their matrix
+representations in the computational basis:
+</p>
+\begin{equation}
+\ket{\psi}\leftrightarrow\left[\begin{array}{c}
+c_{0}\\
+c_{1}
+\end{array}\right];\qquad\mathbf{Z}\leftrightarrow\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]
+\end{equation}
+<p>
+Here, we are using the quantum mechanics
+convention of Equation
+(<a href="eq:sigma_y_z_more_common">eq:sigma_y_z_more_common</a>) for
+\(\mathbf{Z}\). Thus: 
+</p>
+\begin{align}
+\braket{\mathbf{Z}} & =\left[\begin{array}{cc}
+c_{0}^{\ast} & c_{1}^{\ast}\end{array}\right]\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]\left[\begin{array}{c}
+c_{0}\\
+c_{1}
+\end{array}\right]=\left[\begin{array}{cc}
+c_{0}^{\ast} & c_{1}^{\ast}\end{array}\right]\left[\begin{array}{c}
+c_{0}\\
+-c_{1}
+\end{array}\right]\\
+ & =c_{0}^{\ast}c_{0}-c_{1}^{\ast}c_{1}\\
+ & =1\cdot p\left(0\right)-1\cdot p\left(1\right)=p\left(0\right)-p\left(1\right)
+\end{align}</li>
+
+<li><p>
+\(\ket{\psi}=\ket{0}\)<br />
+</p>
+
+<p>
+We write \(\ket{\psi}\) and \(\mathbf{Z}\) in their matrix
+representations in the computational basis:
+</p>
+\begin{equation}
+\ket{\psi}\leftrightarrow\left[\begin{array}{c}
+1\\
+0
+\end{array}\right];\qquad\mathbf{Z}\leftrightarrow\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]
+\end{equation}
+<p>
+Thus: 
+</p>
+\begin{align}
+\braket{\mathbf{Z}} & =\left[\begin{array}{cc}
+1 & 0\end{array}\right]\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]\left[\begin{array}{c}
+1\\
+0
+\end{array}\right]=1
+\end{align}</li>
+
+<li><p>
+\(\ket{\psi}=\ket{1}\)<br />
+</p>
+
+<p>
+We write \(\ket{\psi}\) and \(\mathbf{Z}\) in their matrix
+representations in the computational basis:
+</p>
+\begin{equation}
+\ket{\psi}\leftrightarrow\left[\begin{array}{c}
+0\\
+1
+\end{array}\right];\qquad\mathbf{Z}\leftrightarrow\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]
+\end{equation}
+<p>
+Thus: 
+</p>
+\begin{align}
+\braket{\mathbf{Z}} & =\left[\begin{array}{cc}
+0 & 1\end{array}\right]\left[\begin{array}{cc}
+1 & 0\\
+0 & -1
+\end{array}\right]\left[\begin{array}{c}
+0\\
+1
+\end{array}\right]=-1
+\end{align}</li>
+
+<li>In QCA, \(\braket{\mathbf{Z}}=\braket{\hat{\sigma}_{z}}\) is called
+the <b>cell polarization</b></li>
+</ol>
+</div>
+
+<ol class="org-ol">
+<li><a id="org974eadc"></a>Calculate the Ground State&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-5-4-1">
+<div class="xca" id="org6d10cfe">
+<p>
+Calculate the (normalized) ground state, \(\ket{\psi_{0}^{\prime}}\) of
+the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> using Python. Let
+\(\gamma=0.05\;\text{eV}\), and choose different values of \(\Delta\)
+over the domain \(-0.5\;\text{eV}<\Delta<0.5\;\text{eV}\). For each
+value of \(\Delta,\) plot the polarization,
+\(P=\braket{\psi_{0}^{\prime}|\sigma_{z}|\psi_{0}^{\prime}}\).
+<a href="exer:PYTHON-QCA-GroundState-Isolated">exer:PYTHON-QCA-GroundState-Isolated</a>
+</p>
+
+</div>
+
+<p>
+See Equations
+(<a href="eq:DrivenCellHamiltonian-QMconvention">eq:DrivenCellHamiltonian-QMconvention</a>),
+(<a href="eq:QCATwoDotParameter_a">eq:QCATwoDotParameter_a</a>), and
+(<a href="eq:NormalizedGroundState">eq:NormalizedGroundState</a>).
+</p>
+
+<p>
+<br />
+The instructor solution is shown in Figure
+<a href="fig:Cell-Cell-Response-Python">fig:Cell-Cell-Response-Python</a>
+(Python). The MATLAB code used to produce this figure is shown in
+Listing
+<a href="code:matlab/QCAGroundState.m">code:matlab/QCAGroundState.m</a>, and
+the Python code is found in Listing
+<a href="code:python/QCAGroundState.py">code:python/QCAGroundState.py</a>. We
+can observe that whenever \(\Delta>0\), the QCA cell favors state "0";
+but, when \(\Delta<1\), the QCA cell favors state "1". This makes sense
+because \(\Delta\) is the energy difference between states 1 and 0 for
+the cell [see Equation (<a href="eq:Detuning">eq:Detuning</a>)]. The cell
+prefers the lower-energy configuration.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 1: </span>This calculates the ground state of a QCA molecule in Python. <a href="code:python/QCAGroundState.py">code:python/QCAGroundState.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">for creating path names</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">sx</span> = np.matrix([[0, 1], [1, 0]])
+<span style="color: #DFAF8F;">sz</span> = np.matrix([[-1, 0], [0, 1]]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">quantum mechanics convention</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">g</span> = 0.05 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] tunneling energy</span>
+<span style="color: #DFAF8F;">nD</span> = 51; <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">number of Delta values</span>
+
+<span style="color: #DFAF8F;">Delta</span> = np.linspace(-0.5, 0.5, nD) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] bias (Delta) values)</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Helper function</span>
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">expectation_val</span>(Op, state):
+   <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">       This is a helper function to easily calculate the</span>
+<span style="color: #9FC59F;">       expectation value of an operator given a state.</span>
+<span style="color: #9FC59F;">   """</span>
+   <span style="color: #F0DFAF; font-weight: bold;">return</span> (np.asmatrix(state).H @ Op @ state)[0,0].real
+
+<span style="color: #DFAF8F;">P</span> = np.zeros((nD,))
+<span style="color: #DFAF8F;">P_analytic</span> = np.zeros((nD,))
+
+<span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">iterates over all biased values</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, D <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(Delta):
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hamiltonian</span>
+    <span style="color: #DFAF8F;">H</span> = -g*sx + 0.5*D*sz
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">eigh gets the eigenvalues and eigenvectors</span>
+    <span style="color: #DFAF8F;">En</span>, <span style="color: #DFAF8F;">phi</span> = np.linalg.eigh(H)
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">take the lowest value [ground state]</span>
+    <span style="color: #DFAF8F;">phi_gs</span> = phi[:,0] <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">this is a (2,) vector</span>
+
+    <span style="color: #DFAF8F;">phi_gs</span> = phi_gs.reshape(-1,1) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">convert to column vector, i.e., (2,1)</span>
+
+    <span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">calculate the expectation value of sigma z</span>
+    <span style="color: #DFAF8F;">P</span>[idx] = expectation_val(sz, phi_gs)
+    <span style="color: #5F7F5F;">#</span><span style="color: #7F9F7F;">calculate ground state using analytic expression</span>
+    <span style="color: #DFAF8F;">a</span> = (D + np.sqrt(D**2 + 4*g**2))/(2*g)
+    <span style="color: #DFAF8F;">psi_0_analytic</span> = 1/np.sqrt(a**2+1)* np.matrix([[a], [1]])
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Manual(analytic) calculation</span>
+    <span style="color: #DFAF8F;">P_analytic</span>[idx] = expectation_val(sz, psi_0_analytic)
+    <span style="color: #DFAF8F;">E_gs</span> = En[0]
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The FOR loop is over now because we</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dedented everything</span>
+<span style="color: #DFAF8F;">fig</span>, <span style="color: #DFAF8F;">ax</span> = plt.subplots()
+
+plt.plot(Delta, P, marker=<span style="color: #CC9393;">'o'</span>, label=<span style="color: #CC9393;">'Numeric'</span>)
+plt.plot(Delta, P, label=<span style="color: #CC9393;">'Analytic'</span>)
+plt.grid(<span style="color: #BFEBBF;">True</span>)
+plt.xlabel(r<span style="color: #CC9393;">'$\Delta$ (eV)'</span>)
+plt.ylabel(r<span style="color: #CC9393;">'$P$'</span>)
+plt.legend()
+fig.tight_layout()
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathlib <span style="color: #F0DFAF; font-weight: bold;">import</span> Path
+Path(<span style="color: #CC9393;">'img'</span>).mkdir(parents=<span style="color: #BFEBBF;">True</span>, exist_ok=<span style="color: #BFEBBF;">True</span>)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">os.path.join is a cross-platform way to</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make path names</span>
+<span style="color: #DFAF8F;">fname</span> = os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'DrivenCellPython.png'</span>)
+plt.savefig(fname)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Org text for embedding graphic</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">[[./</span>{fname}<span style="color: #CC9393;">]]'</span>)  
+
+</pre>
+</div>
+
+<pre class="example">
+
+[[./img/DrivenCellPython.png]]
+</pre>
+
+
+
+
+<div id="org18efd79" class="figure">
+<p><img src="./img/DrivenCellPython.png" alt="DrivenCellPython.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>We compare the hand (analyitic) calculation of the ground state polarization [see Equation (<a href="eq:NormalizedGroundState">eq:NormalizedGroundState</a>)] \(P\) to a numeric calculation of the ground state polarization. The two results agree nicely. <a href="fig:Cell-Cell-Response-Python">fig:Cell-Cell-Response-Python</a></p>
+</div>
+
+
+<ul class="org-ul">
+<li>The above exercise is important in QCA, because we often want to solve
+for the ground state.
+
+<ul class="org-ul">
+<li>We assume that the circuit's ground state encodes the solution to a
+QCA calculation</li>
+
+<li>In order to find the ground state from some excited state, the
+circuit must lose energy to its environment
+
+<ul class="org-ul">
+<li>This is called relaxation or energy dissipation</li>
+</ul></li>
+</ul></li>
+
+<li>As we begin our quantum journey, we need not (yet) worry about <i>how</i> the
+system relaxes to the ground state</li>
+
+<li>Rather, we will focus on calculating the ground state of a device or a
+circuit</li>
+</ul>
+</div>
+</li>
+
+
+<li><a id="org890f849"></a>Functionalized Calculation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-5-4-2">
+<p>
+We will actually do this again, but this time using more concise
+code. We can do this by using functions and classes. Functions are
+units of code written to perform a specific task. They may be written
+to be flexible, accepting different inputs and outputting results
+appropriate to the particular input set. Using functions makes reading
+and writing code easier and more modular. Large segments of code can
+be called for by invoking the name of a function once. Functions can
+call other functions, making the use of functions a VERY powerful
+tool. Classes are an even more powerful concept, allowing the user to
+define their own customized, composite data type (a class), and
+defining how variables of that type (object) interact with one another
+and how those objects are accessed by a user.
+</p>
+
+<ul class="org-ul">
+<li>Some of the improvements we see in the second version of our script
+are as follows:
+<ul class="org-ul">
+<li>We don't need to enter a definition for <code>sx</code>, <code>sz</code>, or the
+<code>expectation_val</code> function
+<ul class="org-ul">
+<li>These already are defined in the
+<code>qcapackage.quantum.linearalgebra</code> module.</li>
+<li>Having already defined and tested these, we can simply reuse them,
+without the fear of having introduced a typo in redefining these
+functions and variables</li>
+</ul></li>
+<li>Meaningful function names tell you what is happening.
+<ul class="org-ul">
+<li>This makes code more understandable to a reader, who no longer has
+to read several lines of code, understand their relationships, and
+then infer their purpose. An aptly-named function reaveals its
+purpose</li>
+<li>We could wrap several lines of code in a <code>la.ground_state()</code>
+function that can be used repeatedly and in different contexts.</li>
+</ul></li>
+</ul></li>
+</ul>
+
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 2: </span>Functionalized Python calculation of the ground state polarization of a baised QCA cell. The bias is \(\Delta\). By ``functionalized,'' we mean that some tasks are wrapped in a function that was defined in the <code>qcapackage</code> code. <a href="functionalized-python-calculate-P-biased-dqd">functionalized-python-calculate-P-biased-dqd</a></label><pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Imports relating to:</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- the operating system and file system</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- our Python installation</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Allows load from custom path</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathtool <span style="color: #F0DFAF; font-weight: bold;">import</span> add_path
+<span style="color: #DFAF8F;">new_load_dir</span> = <span style="color: #CC9393;">'PyQCA'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">relative path to the PyQCA package code</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Load from the PyQCA package</span>
+<span style="color: #F0DFAF; font-weight: bold;">with</span> add_path(new_load_dir):
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.twodotcell <span style="color: #F0DFAF; font-weight: bold;">import</span> TwoDotCell <span style="color: #F0DFAF; font-weight: bold;">as</span> dqd
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum <span style="color: #F0DFAF; font-weight: bold;">import</span> linearalgebra <span style="color: #F0DFAF; font-weight: bold;">as</span> la
+
+<span style="color: #DFAF8F;">ket0</span>, <span style="color: #DFAF8F;">ket1</span> = la.ket0, la.ket1
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Get Pauli operators, already defined in the linearalgebra module</span>
+<span style="color: #DFAF8F;">sx</span>, <span style="color: #DFAF8F;">sz</span> = la.sx, la.sz
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(sz) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">show that we're using the quantum computing convention</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">g</span> = 0.05 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] tunneling energy</span>
+<span style="color: #DFAF8F;">nD</span> = 51; <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">number of Delta values</span>
+
+<span style="color: #DFAF8F;">Delta</span> = np.linspace(-0.5, 0.5, nD) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] bias (Delta) values)</span>
+
+<span style="color: #DFAF8F;">P</span> = np.zeros((nD,))
+<span style="color: #DFAF8F;">P_analytic</span> = np.zeros((nD,))
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, D <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(Delta):
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hamiltonian (quantum computing convention)</span>
+    <span style="color: #DFAF8F;">H</span> = -g*sx -0.5*D*sz
+
+    <span style="color: #DFAF8F;">E_gs</span>, <span style="color: #DFAF8F;">phi_gs</span> = la.ground_state( H )
+
+    <span style="color: #DFAF8F;">P</span>[idx] = la.expectation_value(-sz, phi_gs)
+
+    <span style="color: #DFAF8F;">a</span> = (D + np.sqrt(D**2 + 4*g**2))/(2*g)
+    <span style="color: #DFAF8F;">psi_0_analytic</span> = 1/np.sqrt(a**2+1)* np.matrix([[a], [1]])
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Manual calculation</span>
+    <span style="color: #DFAF8F;">P_analytic</span>[idx] = la.expectation_value(-sz, psi_0_analytic)
+
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The FOR loop is over now because we</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dedented everything</span>
+<span style="color: #DFAF8F;">fig</span>, <span style="color: #DFAF8F;">ax</span> = plt.subplots()
+
+plt.plot(Delta, P, marker=<span style="color: #CC9393;">'o'</span>, label=<span style="color: #CC9393;">'Numeric'</span>)
+plt.plot(Delta, P, label=<span style="color: #CC9393;">'Analytic'</span>)
+plt.grid(<span style="color: #BFEBBF;">True</span>)
+plt.xlabel(r<span style="color: #CC9393;">'$\Delta$ (eV)'</span>)
+plt.ylabel(r<span style="color: #CC9393;">'$P$'</span>)
+plt.legend()
+fig.tight_layout()
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathlib <span style="color: #F0DFAF; font-weight: bold;">import</span> Path
+Path(<span style="color: #CC9393;">'img'</span>).mkdir(parents=<span style="color: #BFEBBF;">True</span>, exist_ok=<span style="color: #BFEBBF;">True</span>)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">os.path.join is a cross-platform way to</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make path names</span>
+<span style="color: #DFAF8F;">fname</span> = os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'DrivenCellPython_functional.png'</span>)
+plt.savefig(fname)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Org text for embedding the graphic</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">[[./</span>{fname}<span style="color: #CC9393;">]]'</span>)
+</pre>
+</div>
+
+
+<div id="orgf38ffae" class="figure">
+<p><img src="./img/DrivenCellPython_functional.png" alt="DrivenCellPython_functional.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Our functionalized code returns the same output as before.</p>
+</div>
+</div>
+</li>
+
+<li><a id="orga5b2806"></a>Functionalized Calculation with Visuals&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-5-4-3">
+<ul class="org-ul">
+<li>Now we'll repeat this exercise again, but we'll make one small&#x2013;but
+very important&#x2013;improvement: we will add annotations to the plot
+<ul class="org-ul">
+<li>To do this, we'll use the same code as before, but we'll import
+some new tools</li>
+</ul></li>
+<li>Requirements:
+<ul class="org-ul">
+<li><p>
+To make this visual work, you need to have in your Python
+environment the <code>pyvista</code> package
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 3: </span>This code can be used to check your <code>numpy</code> and <code>pyvista</code> versions. I used <code>pyvista</code> version 0.44.1 and numpy version 1.26.4</label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> pyvista
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'My pyvista version: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(pyvista.__version__) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'My numpy version: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(numpy.__version__) )
+</pre>
+</div>
+
+<pre class="example">
+My pyvista version: 0.44.1
+My numpy version: 1.26.4
+</pre></li>
+</ul></li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Imports relating to:</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- the operating system and file system</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- our Python installation</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Allows load from custom path</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathtool <span style="color: #F0DFAF; font-weight: bold;">import</span> add_path
+<span style="color: #DFAF8F;">new_load_dir</span> = <span style="color: #CC9393;">'PyQCA'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">relative path to the PyQCA package code</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Load from the PyQCA package</span>
+<span style="color: #F0DFAF; font-weight: bold;">with</span> add_path(new_load_dir):
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum <span style="color: #F0DFAF; font-weight: bold;">import</span> linearalgebra <span style="color: #F0DFAF; font-weight: bold;">as</span> la
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Use these for visualization</span>
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.qcacircuit <span style="color: #F0DFAF; font-weight: bold;">import</span> QCACircuit
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.twodotcell <span style="color: #F0DFAF; font-weight: bold;">import</span> TwoDotCell
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> *
+
+
+<span style="color: #DFAF8F;">ket0</span>, <span style="color: #DFAF8F;">ket1</span> = la.ket0, la.ket1
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Get Pauli operators, already defined in the linearalgebra module</span>
+<span style="color: #DFAF8F;">sx</span>, <span style="color: #DFAF8F;">sz</span> = la.sx, la.sz
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(sz) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">show that we're using the quantum computing convention</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">g</span> = 0.05 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] tunneling energy</span>
+<span style="color: #DFAF8F;">nD</span> = 51; <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">number of Delta values</span>
+
+<span style="color: #DFAF8F;">Delta</span> = np.linspace(-0.5, 0.5, nD) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] bias (Delta) values)</span>
+
+<span style="color: #DFAF8F;">P</span> = np.zeros((nD,))
+<span style="color: #DFAF8F;">P_analytic</span> = np.zeros((nD,))
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, D <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(Delta):
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hamiltonian (quantum computing convention)</span>
+    <span style="color: #DFAF8F;">H</span> = -g*sx -0.5*D*sz
+
+    <span style="color: #DFAF8F;">E_gs</span>, <span style="color: #DFAF8F;">phi_gs</span> = la.ground_state( H )
+
+    <span style="color: #DFAF8F;">P</span>[idx] = la.expectation_value(-sz, phi_gs)
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Analytic formula for the ground state</span>
+    <span style="color: #DFAF8F;">a</span> = (D + np.sqrt(D**2 + 4*g**2))/(2*g)
+    <span style="color: #DFAF8F;">psi_0_analytic</span> = 1/np.sqrt(a**2+1)* np.matrix([[a], [1]])
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Manual calculation</span>
+    <span style="color: #DFAF8F;">P_analytic</span>[idx] = la.expectation_value(-sz, psi_0_analytic)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Make some insets, save to file</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> Ptgt <span style="color: #F0DFAF; font-weight: bold;">in</span> [-1, 1]:
+    draw_dqd( state=[Ptgt],
+               filename= os.path.join(<span style="color: #CC9393;">'img'</span>, f<span style="color: #CC9393;">'dqd_state</span>{Ptgt}<span style="color: #CC9393;">'</span>),
+             )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The FOR loop is over now because we</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dedented everything</span>
+<span style="color: #DFAF8F;">fig</span>, <span style="color: #DFAF8F;">ax</span> = plt.subplots()
+
+ax.plot(Delta, P, marker=<span style="color: #CC9393;">'o'</span>, label=<span style="color: #CC9393;">'Numeric'</span>)
+ax.plot(Delta, P, label=<span style="color: #CC9393;">'Analytic'</span>)
+
+<span style="color: #DFAF8F;">inset_w</span>, <span style="color: #DFAF8F;">inset_h</span> = 0.25, 0.25
+<span style="color: #DFAF8F;">insetx</span>, <span style="color: #DFAF8F;">insety</span> = [0.05, 0.7], [0.625, 0.125]
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, Ptgt <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>([1, -1]):
+    add_inset_image( ax, \
+                     [insetx[idx], insety[idx], inset_w, inset_h],
+                     os.path.join(<span style="color: #CC9393;">'img'</span>, f<span style="color: #CC9393;">'dqd_state</span>{Ptgt}<span style="color: #CC9393;">.png'</span>) )
+
+ax.grid(<span style="color: #BFEBBF;">True</span>)
+ax.set_xlabel(r<span style="color: #CC9393;">'$\Delta$ (eV)'</span>, fontsize=16)
+ax.set_ylabel(r<span style="color: #CC9393;">'$P$'</span>, fontsize=16)
+ax.set_xlim(Delta[0], Delta[-1])
+ax.set_ylim(-1, 1)
+ax.legend()
+
+fig.tight_layout()
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathlib <span style="color: #F0DFAF; font-weight: bold;">import</span> Path
+Path(<span style="color: #CC9393;">'img'</span>).mkdir(parents=<span style="color: #BFEBBF;">True</span>, exist_ok=<span style="color: #BFEBBF;">True</span>)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">os.path.join is a cross-platform way to</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make path names</span>
+<span style="color: #DFAF8F;">fname</span> = os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'BiasedCellPython_functional_annotated'</span>)
+plt.savefig(fname)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Saved plot as </span>{fname}<span style="color: #CC9393;">.'</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Org text for embedding the graphic</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">[[./</span>{fname}<span style="color: #CC9393;">.png]]'</span>)
+</pre>
+</div>
+
+<p>
+Very importantly, we have added a visual that helps the reader
+<i>interpret</i> the data.
+</p>
+
+
+<div id="org20a8fa0" class="figure">
+<p><img src="./img/BiasedCellPython_functional_annotated.png" alt="BiasedCellPython_functional_annotated.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>We've added annotations to the plot that help the reader interpret it. This is a small touch, but it very important.</p>
+</div>
+
+<div class="xca" id="org6162f21">
+<p>
+Repeat Exercise
+<a href="exer:MATLAB-QCA-GroundState-Isolated">exer:MATLAB-QCA-GroundState-Isolated</a>,
+but this time, perform the calculation using simulated D-Wave
+hardware. <a href="exer:DWaveQCATwoState">exer:DWaveQCATwoState</a>
+</p>
+
+</div>
+
+<p>
+This solution hasn't been developed yet. We need some help to do it!
+This is low-priority at the moment, since we are mostly interested right
+now in developing variational quantum algorightm (VQE) calculations. For
+now, it is important for the readers to understand the basics of quantum
+mechanics and quantum information processing.
+</p>
+</div>
+</li>
+
+<li><a id="orgaaecdd0"></a>Driven DQD (Driver+Target System)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-5-4-4">
+<div class="xca" id="orgfa194ae">
+<p>
+In Exercises
+<a href="exer:PYTHON-QCA-GroundState-Isolated">exer:PYTHON-QCA-GroundState-Isolated</a>
+and <a href="exer:DWaveQCATwoState">exer:DWaveQCATwoState</a>, we calculated
+the ground state of an isolated QCA cell, setting \(\Delta\) to a
+particular value each calculation. But, what determines the bias
+\(\Delta\) between the two dots? Several things could, such as an
+external electric field, or a nearby driver molecule. Let's focus on a
+driver molecule and treat it as a classical system that determines
+\(\Delta\) for a target cell through Coulomb repulsion.<br />
+</p>
+
+\begin{figure}[htbp]
+\newcommand{\ra}{1.5}
+\newcommand{\dx}{4}
+
+\centering
+\begin{tikzpicture}[scale=0.825]
+
+   \coordinate (dotD0ctr) at (-0.5*\ra, 0.5*\ra);
+   \coordinate (dotD1ctr) at (-0.5*\ra, -0.5*\ra);
+   \coordinate (dot0ctr) at (0.5*\ra, 0.5*\ra);
+   \coordinate (dot1ctr) at (0.5*\ra, -0.5*\ra);
+
+   \coordinate (txtAnchor) at (2*\ra, 0*\ra);
+
+   \node (dotD0) at (dotD0ctr) [schemdotstyle, dashed] {};
+   % \node [anchor=west] at (-1.25*\ra, -0.5*\ra) {\small dot 0};
+   \node (dotD1) at (dotD1ctr) [schemdotstyle, dashed] {};
+   % \node [anchor=west] at (-0.25*\ra, 0.5*\ra) {\small dot 1};
+   \draw [very thick, dashed] (dotD0) -- (dotD1);
+
+   \node [anchor = north] at (-0.5*\ra, -1) {driver};
+
+  % \node (q0) at (dotD0) [chargestyle, fill=red] {};
+
+   % \node [anchor=north] at (-1.5*\ra, -1*\ra) {\large $\ket{0}$};
+   % \node [anchor=north] at (-1.5*\ra, -1.625*\ra) {\large $P = -1$};
+
+   \node (dot0) at (dot0ctr) [schemdotstyle] {};
+   \node (dot1) at (dot1ctr) [schemdotstyle] {};
+   \draw [very thick] (dot0) -- (dot1);
+   \node [anchor = north] at (0.5*\ra, -1) {target};
+
+   \draw [very thick, |<->|] (-1*\ra, 0.5*\ra) --
+        ++(0, -1*\ra) node [midway, left] {$a$};
+
+   \draw [very thick, |<->|] (-0.5*\ra, 1*\ra) --
+        ++(1*\ra, 0) node [midway, above] {$a$};
+
+\end{tikzpicture}
+\caption{A neighboring driver molecule provides the classical bias, \(\Delta\). Fixed neutralizing charge of \(+q_{e}/2\) resides at each dot so that with one mobile electron, each molecular cell is charge neutral. \label{fig:DrivenDQD}}
+\end{figure}
+
+</div>
+
+<p>
+In this exercise, calculate \(\Delta\) for the target molecule as a
+function of driver polarization, \(P_{drv}\), assuming the driver
+molecule placed a distance \(a\) away from the target moleucle can have
+any polarization \(-1\leq P_{drv}\leq1\). Also assume that each dot has
+a fixed (immobile) neutralizing charge of \(+q_{e}/2\) residing on each
+dot, where \(q_{e}\) is the fundamental charge, and the charge of an
+electron is \(-q_{e}\).
+</p>
+
+<p>
+The graphic from our solution is shown in Figure <a href="driven_dqd">driven_dqd</a>,
+computed using the code of Listing <a href="python-code-driven-dqd">python-code-driven-dqd</a>.
+</p>
+
+<p>
+We already know that \(P_{drv}=1\) means that the mobile electron occupies dot 1
+for the driver, and that \(P_{drv}=-1\) means that the electron occupies
+dot 0 for the driver. What does a polarization \(-1<P_{drv}<1\) mean? It
+means that the driver isn't in state ``0'' with absolute certainty, and
+neither is it in state ``1'' with absolute certainty. To calculate the
+effects of the driver cell charge on target cell, we make the mean-field
+approximation. This means that we assume that the overall electric field
+\(\mathbf{E}_{drv}\left(\mathbf{r}\right)\) created from the driver is a
+combination of the fields created from the driver in state ``0'' and the
+driver in state ``1'', \(\mathbf{E}_{drv}\left(\mathbf{r}\right)\) and
+\(\mathbf{E}_{drv,1}\left(\mathbf{r}\right)\):
+</p>
+\begin{equation}
+\mathbf{E}_{drv}=p_{drv}\left(0\right)\mathbf{E}_{drv,0}\left(\mathbf{r}\right)+p_{drv}\left(1\right)\mathbf{E}_{drv,1}\left(\mathbf{r}\right).
+\end{equation}
+<p>
+The linear combination of fields for each state \(\alpha\) is weighted
+by the probability \(p_{drv}\left(\alpha\right)\). The rules of
+probability dictate that
+\(p_{drv}\left(0\right)+p_{drv}\left(1\right)=1\), so we can eliminate,
+say, \(p_{drv}\left(1\right)\) and write
+</p>
+\begin{equation}
+\mathbf{E}_{drv}=p_{drv}\left(0\right)\mathbf{E}_{drv,0}\left(\mathbf{r}\right)+\left(1-p_{drv}\left(0\right)\right)\mathbf{E}_{drv,1}\left(\mathbf{r}\right).
+\end{equation}
+<p>
+Recall that the potential energy between two charges \(q_{1}\) and
+\(q_{2}\) is given by
+</p>
+\begin{equation}
+U=q_{2}\mathbf{E}_{1}\left(\mathbf{r}_{2}\right)=\frac{q_{1}q_{2}}{4\pi\varepsilon_{0}\left|\mathbf{r}_{2}-\mathbf{r}_{1}\right|},\label{eq:ElectrostaticPotential}
+\end{equation}
+<p>
+where \(\mathbf{r}_{1}\) and \(\mathbf{r}_{2}\) are the position of
+\(q_{1}\) and \(q_{2}\), respectively, and the field from charge 1 at
+some arbitrary point is
+</p>
+\begin{equation}
+\mathbf{E}_{1}\left(\mathbf{r}\right)=\frac{q_{1}}{4\pi\varepsilon_{0}\left|\mathbf{r}_{1}-\mathbf{r}\right|}
+\end{equation}
+<p>
+Now, let \(\mathbf{r}_{0}\) and \(\mathbf{r}_{1}\) be the positions of
+driver dots 0 and 1, and \(\mathbf{r}\) be an arbitrary position. We can
+calculate the field at \(\mathbf{r}\) due to the driver in the
+mean-field approximation: 
+</p>
+\begin{align}
+\mathbf{E}_{drv}\left(\mathbf{r}\right) & =p_{drv}\left(0\right)\mathbf{E}_{drv,0}\left(\mathbf{r}\right)+p_{drv}\left(1\right)\mathbf{E}_{drv,1}\left(\mathbf{r}\right)\\
+ & =-\frac{p_{drv}\left(0\right)q_{e}}{4\pi\varepsilon_{0}\left|\mathbf{r}_{0}-\mathbf{r}\right|}-\frac{p_{drv}\left(1\right)q_{e}}{4\pi\varepsilon_{0}\left|\mathbf{r}_{1}-\mathbf{r}\right|}
+\end{align}
+<p>
+Here, we have negative signs becasue we're assuming we
+have a mobile driver electron of charge \(-q_{e}\). In this mean-field
+approximation, we can treat \(-p_{drv}\left(0\right)q_{e}\) and
+\(-p_{drv}\left(1\right)q_{e}\) as effective fractional electrons
+residing on dots 0 and 1. In fact, we can write these as a function of
+the driver polarization. It can be shown that
+</p>
+\begin{equation}
+p_{drv}\left(0\right)=\frac{1}{2}\left(1-P_{drv}\right)\qquad\text{and}\qquad p_{drv}\left(0\right)=\frac{1}{2}\left(1+P_{drv}\right)
+\end{equation}
+<p>
+Now, we can write an effective mobile charge on each dot:
+</p>
+\begin{equation}
+q_{0}=-\frac{1}{2}\left(1-P_{drv}\right)q_{e}\qquad\text{and}\qquad q_{1}=-\frac{1}{2}\left(1+P_{drv}\right)q_{e}.
+\end{equation}
+<p>
+Next, we calculate the electrostatic potential \(U_{0}\) of an electron
+on dot 0 of the target cell. The potential contribution
+\(U_{0,\text{fnc}}\) from the two neutralizing charges of the driver
+cell are
+</p>
+\begin{equation}
+U_{0,\text{fnc}}=\frac{q_{e}/2}{4\pi\varepsilon_{0}}\left(\frac{1}{a}\right)+\frac{q_{e}/2}{4\pi\varepsilon_{0}}\left(\frac{1}{a\sqrt{2}}\right)=\frac{q_{e}}{8\pi\varepsilon_{0}a}\left(1+\frac{1}{\sqrt{2}}\right)
+\end{equation}
+<p>
+We must also calculate the electrostatic potential energy
+\(U_{0,\text{mc}}\) for the electron on dot 0 of the target cell due to
+the mobile charge on both dots of the driver cell:
+</p>
+\begin{equation}
+U_{0,\text{mc}}=\overbrace{\frac{q_{e}q_{o}}{4\pi\varepsilon_{0}}\left(\frac{1}{a}\right)}^{\text{driver cell, dot 0}}+\overbrace{\frac{q_{e}q_{1}}{4\pi\varepsilon_{0}}\left(\frac{1}{a\sqrt{2}}\right)}^{\text{driver cell, dot 1}}
+\end{equation}
+<p>
+Thus, we can now write the \(\braket{0|\hat{H}|0}\) term of the
+Hamiltonian:
+</p>
+\begin{equation}
+\braket{0|\hat{H}|0}=U_{0,\text{fnc}}+U_{0,\text{mc}}
+\end{equation}
+<p>
+We can repeat this analysis for
+\(\braket{1|\hat{H}|1}=U_{1,\text{fnc}}+U_{1,\text{mc}}\). It can be
+shown that the potential energy on target cell dot 1 due to the fixed
+neutralizing charge is the same as the potential energy of the electron
+on dot zero:
+</p>
+\begin{equation}
+U_{1,\text{fnc}}=U_{0,\text{fnc}}.\label{eq:DQD_FNC_potential}
+\end{equation}
+<p>
+Next, we calcuate the potential energy \(U_{1,\text{mc}}\) of the target cell
+electron to be on dot 1 of the target cell due to the mobile charge of
+the driver:
+</p>
+\begin{equation}
+U_{1,\text{mc}}=\frac{\left(-q_{e}\right)q_{0}}{4\pi\varepsilon_{0}}\left(\frac{1}{a\sqrt{2}}\right)+\frac{\left(-q_{e}\right)q_{1}}{4\pi\varepsilon_{0}}\left(\frac{1}{a}\right)
+\end{equation}
+<p>
+Thus, if we want to calculate \(\Delta,\)we have 
+</p>
+\begin{align}
+\Delta & =\braket{1|\hat{H}|1}-\braket{0|\hat{H}|0}=\cancel{U_{1,\text{fnc}}}+U_{1,\text{mc}}-\cancel{U_{0,\text{fnc}}}-U_{0,\text{mc}}\nonumber \\
+ & \stackrel{\left(\ref{eq:DQD_FNC_potential}\right)}{=}U_{1,\text{mc}}-U_{0,\text{mc}}\nonumber \\
+ & =\frac{\left(-q_{e}\right)q_{0}}{4\pi\varepsilon_{0}}\left(\frac{1}{a\sqrt{2}}\right)+\frac{\left(-q_{e}\right)q_{1}}{4\pi\varepsilon_{0}}\left(\frac{1}{a}\right)-\frac{\left(-q_{e}\right)q_{o}}{4\pi\varepsilon_{0}}\left(\frac{1}{a}\right)-\frac{\left(-q_{e}\right)q_{1}}{4\pi\varepsilon_{0}}\left(\frac{1}{a\sqrt{2}}\right)\nonumber \\
+ & =\frac{-q_{e}}{4\pi\varepsilon_{0}a}\left[q_{0}\left(\frac{1}{\sqrt{2}}-1\right)+q_{1}\left(1-\frac{1}{\sqrt{2}}\right)\right]\nonumber \\
+ & =\frac{-q_{e}}{4\pi\varepsilon_{0}a}\left[q_{1}-q_{0}\right]\left(1-\frac{1}{\sqrt{2}}\right)\nonumber \\
+ & =\frac{-q_{e}^{2}}{4\pi\varepsilon_{0}a}\left[\frac{1}{2}\left(\cancel{1}+P_{drv}\right)-\frac{1}{2}\left(\cancel{1}-P_{drv}\right)\right]\left(\frac{1}{\sqrt{2}}-1\right)\nonumber \\
+ & =\frac{-q_{e}^{2}P_{drv}}{4\pi\varepsilon_{0}a}\left(\frac{1}{\sqrt{2}}-1\right)=\kappa P_{drv},\label{eq:Delta_Pdrv}
+\end{align}
+<p>
+where
+Notice that everything in \(\kappa\) is a physical or mathematical
+constant, save \(a\). Thus, \(a\) determines the value of \(\kappa\). We
+can now calculate \(\Delta\) and target cell polarization, \(P\), as a
+function of \(P_{\text{drv}}\), which we write only in terms of
+geometric and physical constants:
+</p>
+\begin{equation}
+\kappa=-\left(\frac{1}{\sqrt{2}}-1\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}=\left(1-\frac{1}{\sqrt{2}}\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}.\label{eq:KinkGeometricConstant}
+\end{equation}
+\begin{equation}
+\Delta\left(P_{\text{drv}}\right)=\left(1-\frac{1}{\sqrt{2}}\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}P_{\text{drv}}.\label{eq:Delta_Pdrv_explicit}
+\end{equation}
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 4: </span>This code calculates the response of a two-dot cell (double-quantum dot, DQD) system to the polarization of another driving cell. <a href="python-code-driven-dqd">python-code-driven-dqd</a></label><pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Imports relating to:</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- the operating system and file system</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- our Python installation</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Allows load from custom path</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathtool <span style="color: #F0DFAF; font-weight: bold;">import</span> add_path
+<span style="color: #DFAF8F;">new_load_dir</span> = <span style="color: #CC9393;">'PyQCA'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">relative path to the PyQCA package code</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Load from the PyQCA package</span>
+<span style="color: #F0DFAF; font-weight: bold;">with</span> add_path(new_load_dir):
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum <span style="color: #F0DFAF; font-weight: bold;">import</span> linearalgebra <span style="color: #F0DFAF; font-weight: bold;">as</span> la
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Use these for visualization</span>
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.qcacircuit <span style="color: #F0DFAF; font-weight: bold;">import</span> QCACircuit
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.twodotcell <span style="color: #F0DFAF; font-weight: bold;">import</span> TwoDotCell
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> *
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage <span style="color: #F0DFAF; font-weight: bold;">import</span> constants <span style="color: #F0DFAF; font-weight: bold;">as</span> const
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">a</span> = 1E-9 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[m] cell length</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">ket0</span>, <span style="color: #DFAF8F;">ket1</span> = la.ket0, la.ket1
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Get Pauli operators, already defined in the linearalgebra module</span>
+<span style="color: #DFAF8F;">sx</span>, <span style="color: #DFAF8F;">sz</span> = la.sx, la.sz
+
+<span style="color: #DFAF8F;">qe</span>, <span style="color: #DFAF8F;">eps0</span> = const.qe, const.eps0
+<span style="color: #DFAF8F;">kappa</span> = qe /(4* np.pi* eps0 *a)*(1 -1/np.sqrt(2));
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(sz) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">show that we're using the quantum computing convention</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">g</span> = 0.05 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] tunneling energy</span>
+<span style="color: #DFAF8F;">nPd</span> = 51; <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">number of Delta values</span>
+
+<span style="color: #DFAF8F;">Pdrv</span> = np.linspace(-1,1,nPd)
+
+<span style="color: #DFAF8F;">P</span> = np.zeros((nPd,))
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, Pd <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(Pdrv):
+
+    <span style="color: #DFAF8F;">D</span> = Pd * kappa; <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] convert polarization to a bias</span>
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hamiltonian (quantum computing convention)</span>
+    <span style="color: #DFAF8F;">H</span> = -g*sx -0.5*D*sz
+
+    <span style="color: #DFAF8F;">E_gs</span>, <span style="color: #DFAF8F;">phi_gs</span> = la.ground_state( H )
+
+    <span style="color: #DFAF8F;">P</span>[idx] = la.expectation_value(-sz, phi_gs)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Make some insets, save to file</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> Ptgt <span style="color: #F0DFAF; font-weight: bold;">in</span> [-1, 1]:
+    draw_driven_dqd( state=[-Ptgt, Ptgt],
+               filename= os.path.join(<span style="color: #CC9393;">'img'</span>, f<span style="color: #CC9393;">'driven_dqd_state</span>{Ptgt}<span style="color: #CC9393;">'</span>),
+             )
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">The FOR loop is over now because we</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">dedented everything</span>
+<span style="color: #DFAF8F;">fig</span>, <span style="color: #DFAF8F;">ax</span> = plt.subplots()
+
+ax.plot(Pdrv, P, marker=<span style="color: #CC9393;">'o'</span>, label=<span style="color: #CC9393;">'Numeric'</span>)
+
+<span style="color: #DFAF8F;">inset_w</span>, <span style="color: #DFAF8F;">inset_h</span> = 0.25, 0.25
+<span style="color: #DFAF8F;">insetx</span>, <span style="color: #DFAF8F;">insety</span> = [0.05, 0.7], [0.625, 0.125]
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, Ptgt <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>([1, -1]):
+    add_inset_image( ax, \
+                     [insetx[idx], insety[idx], inset_w, inset_h],
+                     os.path.join(<span style="color: #CC9393;">'img'</span>, f<span style="color: #CC9393;">'driven_dqd_state</span>{Ptgt}<span style="color: #CC9393;">.png'</span>) )
+
+ax.grid(<span style="color: #BFEBBF;">True</span>)
+ax.set_xlabel(r<span style="color: #CC9393;">'$P_{drv}$'</span>, fontsize=16)
+ax.set_ylabel(r<span style="color: #CC9393;">'$P$'</span>, fontsize=16)
+ax.set_xlim(Pdrv[0], Pdrv[-1])
+ax.set_ylim(-1, 1)
+
+fig.tight_layout()
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathlib <span style="color: #F0DFAF; font-weight: bold;">import</span> Path
+Path(<span style="color: #CC9393;">'img'</span>).mkdir(parents=<span style="color: #BFEBBF;">True</span>, exist_ok=<span style="color: #BFEBBF;">True</span>)
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">os.path.join is a cross-platform way to</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make path names</span>
+<span style="color: #DFAF8F;">fname</span> = os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'driven_dqd_python_functional_annotated'</span>)
+plt.savefig(fname)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Saved plot as </span>{fname}<span style="color: #CC9393;">.'</span>)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Org text for embedding the graphic</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">[[./</span>{fname}<span style="color: #CC9393;">.png]]'</span>)
+</pre>
+</div>
+
+<pre class="example">
+[[ 1.+0.j  0.+0.j]
+ [ 0.+0.j -1.+0.j]]
+</pre>
+
+
+
+<div id="org54397d4" class="figure">
+<p><img src="./img/DrivenCellPython_functional_annotated.png" alt="DrivenCellPython_functional_annotated.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>We show the response \(P\) of a two-dot cell to a driving neighbor. The driver cell is shown with a blue mobile electron, and the target cell is shown with a red mobile electron. <a href="driven-dqd-cell-cell-response">driven-dqd-cell-cell-response</a></p>
+</div>
+</div>
+</li>
+
+
+<li><a id="orgc45de04"></a>Kink Energy Exercise&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-5-4-5">
+<div class="xca" id="orgcfbfab8">
+<p>
+Determine the cost of a bit flip, given a fully-polarized driver.
+</p>
+
+</div>
+
+<p>
+Suppose that \(P_{\text{drv}}=1\). Then,
+</p>
+\begin{equation}
+\Delta\left(1\right)\stackrel{\left(\ref{eq:Delta_Pdrv_explicit}\right)}{=}\left(1-\frac{1}{\sqrt{2}}\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}\left(1\right).
+\end{equation}
+<p>
+Because all the physical parameters and geometric constants are positive
+and \(1-1/\sqrt{2}>0\), it must be that \(\Delta>0\). What does this
+mean? Recall that \(\Delta\) is the potential energy by which
+\(\ket{1}\) is higher than \(\ket{0}\). This indicates to us that state
+\(\ket{0}\) is the preferred state for the target cell is if
+\(P_{\text{drv}}=1\), and state 1 is \(\Delta\) higher than state
+\(\ket{0}\). In other words, \(\Delta\) is the amount of energy which
+must be added to the system to force the target cell to take state
+\(\ket{1}\).<br />
+On the other hand, if \(P_{\text{drv}}=-1\),
+</p>
+\begin{equation}
+\Delta\left(-1\right)\stackrel{\left(\ref{eq:Delta_Pdrv_explicit}\right)}{=}-\left(1-\frac{1}{\sqrt{2}}\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}.
+\end{equation}
+<p>
+This means that \(\ket{0}\) is energetically higher than \(\ket{1}\) by
+\(\Delta\left(-1\right)\) when \(P_{\text{drv}}=-1\). We must still
+excite the target cell by \(\Delta\) in order to make it occupy the
+state \(\ket{0}\) under these circumstances. In either case, the energy
+required to flip the target cell is the same, and we can interpret it as
+the cost of a bit flip. This is an important energy in the study of QCA,
+and we call it the kink energy,
+</p>
+\begin{equation}
+E_{k}=\left(1-\frac{1}{\sqrt{2}}\right)\frac{q_{e}^{2}}{4\pi\varepsilon_{0}a}.\label{eq:KinkEnergy}
+\end{equation}
+<p>
+We see here that two-dot QCA cells in the configuration of the
+driver-target system prefer to anti-align. If we were to make two
+adjacent cells align, this is called a kink, hence the term kink energy.
+For a cell with \(a=1\;\text{nm}\), we calculate
+\(E_{k}=421\;\text{meV}.\)
+</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-quantum-information-processing" class="outline-3">
+<h3 id="quantum-information-processing"><span class="section-number-3">1.6.</span> Quantum Information Processing</h3>
+<div class="outline-text-3" id="text-quantum-information-processing">
+<ul class="org-ul">
+<li>We've considered some operators now, from different contexts
+
+<ul class="org-ul">
+<li>the Hamiltonian, \(\mathcal{H}\), describes the physics of the
+system</li>
+
+<li>other operators, such as \(\mathbf{X}\), \(\mathbf{Y}\),
+\(\mathbf{Z}\), and \(\mathbf{H}\) transform a qubit and may be
+thought of as gates for processing quantum information</li>
+</ul></li>
+
+<li>We now focus on quantum information and a way to visualize
+transformations of a qubit</li>
+
+<li>To do this, we introduce the density operator and the Bloch vector</li>
+</ul>
+</div>
+
+<div id="outline-container-the-density-operator" class="outline-4">
+<h4 id="the-density-operator"><span class="section-number-4">1.6.1.</span> The Density Operator</h4>
+<div class="outline-text-4" id="text-the-density-operator">
+<ul class="org-ul">
+<li><p>
+For a given state
+</p>
+\begin{equation}
+\ket{\psi}\leftrightarrow\begin{bmatrix}c_{0}\\
+c_{1}
+\end{bmatrix},
+\end{equation}
+<p>
+we can form the operator
+</p>
+\begin{equation}
+\hat{\rho}=\ket{\psi}\bra{\psi}=\begin{bmatrix}c_{0}\\
+c_{1}
+\end{bmatrix}\left[\begin{array}{cc}
+c_{0}^{\ast} & c_{1}^{\ast}\end{array}\right]=\begin{bmatrix}c_{0}c_{0}^{\ast} & c_{0}c_{1}^{\ast}\\
+c_{1}c_{0}^{\ast} & c_{1}c_{1}^{\ast}
+\end{bmatrix}\label{eq:DensityOperatorSingleQubit}
+\end{equation}
+
+<ul class="org-ul">
+<li>\(\hat{\rho}\) is called a density operator or a density matrix</li>
+</ul></li>
+</ul>
+
+<div class="xca" id="org3f2fd8f">
+<p>
+Write a Python function that converts a ket to a density operator.
+</p>
+
+</div>
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 5: </span>This Python function converts a state vector to a density operator (matrix). <a href="code:python/DensityOpFunc.py">code:python/DensityOpFunc.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+
+&#8203;<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants I = np.eye(2) X = np.array([[0, 1], [1, 0]]) Z =</span>
+np.array([[1, 0], [0, -1]]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">quantum information convention Y = -1j*Z@X</span>
+<span style="color: #DFAF8F;">H</span> = (1/np.sqrt(2))*(X+Z)
+
+<span style="color: #DFAF8F;">ket0</span> = np.array([[1],[0]]) <span style="color: #DFAF8F;">ket1</span> = X @ ket0
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">densityOperator</span>( psi: np.ndarray ) -&gt; np.matrix:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">        Transform a ket to a density operator (matrix).</span>
+
+<span style="color: #9FC59F;">        Args:</span>
+<span style="color: #9FC59F;">            psi: an numpy.ndarray representing a ket. For a single qubit, this</span>
+<span style="color: #9FC59F;">                 will be a 2-by-1 column vector.</span>
+
+<span style="color: #9FC59F;">        Returns: The density operator corresponding to psi.</span>
+
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">@ is used for matrix multiplication</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">convert an numpy ndarray to a matrix</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">for access to the Hermitian adjoint</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> psi @ np.asmatrix(psi).H
+
+&#8203;<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use the function with some test cases rho0 = densityOperator( ket0 )</span>
+
+<span style="color: #DFAF8F;">rho1</span> = densityOperator( ket1 )
+
+<span style="color: #DFAF8F;">rho_plus</span> = densityOperator( H @ ket0 )
+
+<span style="color: #DFAF8F;">rho_minus</span> = densityOperator( H @ ket1 )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'operator for ket 0 (type: 0):'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">type</span>(rho0), rho0) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'operator for ket 0 (type: 0):'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">type</span>(rho1), rho1) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'operator for ket + (type: 0):'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">type</span>(rho_plus),
+rho_plus) )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'operator for ket + (type: 0):'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>( <span style="color: #DCDCCC; font-weight: bold;">type</span>(rho_minus),
+rho_minus) )
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Density operators have special properties. It can be shown that:
+
+<ul class="org-ul">
+<li><p>
+they have unit trace:
+</p>
+\begin{equation}
+\mbox{Tr}\,\hat{\rho}=c_{0}c_{0}^{\ast}+c_{1}c_{1}^{\ast}=1
+\end{equation}</li>
+
+<li><p>
+they are Hermitian:
+</p>
+\begin{equation}
+\hat{\rho}=\hat{\rho}^{\dagger}
+\end{equation}
+<p>
+or, \(\rho_{ij}=\rho_{ji}^{\ast}\)
+</p></li>
+</ul></li>
+
+<li><p>
+We can expand any single-qubit density operator over the matrices
+\(\{\mathbf{1},\hat{\sigma}_{x},\hat{\sigma}_{y},\hat{\sigma}_{z}\}\):
+</p>
+\begin{equation}
+\hat{\rho}=\frac{1}{2}\left(a_{0}\mathbf{1}+a_{x}\hat{\sigma}_{x}+a_{y}\hat{\sigma}_{y}+a_{z}\hat{\sigma}_{z}\right)\label{eq:DensityOoperatorHermitianExpansion}
+\end{equation}
+<p>
+with real coefficients \(\{a_{0},a_{1},a_{2},a_{3}\}\)
+</p>
+
+<ul class="org-ul">
+<li><p>
+For a simpler notation, we will define
+</p>
+\begin{equation}
+\hat{\sigma}_{0}=\mathbf{1},\quad\hat{\sigma}_{1}=\hat{\sigma}_{x},\quad\hat{\sigma}_{2}=\hat{\sigma}_{y},\quad\mbox{and}\quad\hat{\sigma}_{3}=\hat{\sigma}_{z},\label{eq:sigma_matrices}
+\end{equation}
+<p>
+and we rewrite our expansion as
+</p>
+\begin{equation}
+\hat{\rho}=\sum_{k=0}^{3}\frac{1}{2}a_{k}\hat{\sigma}_{k}\label{eq:DensityOperatorHermitianExpansionConvenient}
+\end{equation}</li>
+
+<li><p>
+We can we can calculate the expansion coefficients \(\{a_{k}\}\) as
+follows:
+</p>
+\begin{equation}
+a_{k}=\mbox{Tr}\;\left(\hat{\rho}\hat{\sigma}_{k}\right)\label{eq:CoherenceVectorComponents}
+\end{equation}</li>
+
+<li>For any normalized \(\ket{\psi}\), \(a_{0}=1\), so this doesn't tell
+us much information.</li>
+
+<li>On the other hand, \((a_{1},a_{2},a_{3})\) are more informative
+
+<ul class="org-ul">
+<li>They will all have a value in the range \(-1\leq a_{k}\leq1\)</li>
+</ul></li>
+
+<li>We can visualize the quantum state in 3D if we define the <b>Bloch
+vector</b>, \(\vec{\lambda}\), as a vector in real space
+(\(\mathbb{R}^{3}\))</li>
+
+<li>To form a Bloch vector, we discard \(a_{0}\) and make a 3D vector
+using \(a_{1}\), \(a_{2}\), and \(a_{3}\)</li>
+
+<li><p>
+Thus, in this example, our Bloch vector is
+</p>
+\begin{equation}
+\vec{\lambda}\equiv\begin{bmatrix}a_{1}\\
+a_{2}\\
+a_{3}
+\end{bmatrix}.\label{eq:BlochVector}
+\end{equation}</li>
+</ul></li>
+
+<li><p>
+The Bloch vector components also may be calculated in coherence vector
+formalism as
+</p>
+\begin{equation}
+ a_{k}=\braket{\hat{\sigma}_{k}}=\braket{\psi|\hat{\sigma}_{k}|\psi}\label{eq:BlochVectComponentsExpectationValueStateVect}
+ \end{equation}</li>
+</ul>
+
+<div class="xca" id="orgaa43185">
+<p>
+Write a Python functions to do the following:
+</p>
+
+<ol class="org-ol">
+<li>Convert a ket to a density operator</li>
+<li>Convert a ket to a Bloch vector</li>
+</ol>
+
+</div>
+
+<p>
+See Equation
+(<a href="eq:DensityOperatorSingleQubit">eq:DensityOperatorSingleQubit</a>).
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 6: </span>This Python function converts a state vector to a Bloch vector. We first convert the state vectors to density operators. <a href="code:python/BlochVecFunc.py">code:python/BlochVecFunc.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+
+&#8203;<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants I = np.eye(2) X = np.array([[0, 1], [1, 0]]) Z =</span>
+np.array([[1, 0], [0, -1]]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">quantum information convention Y = -1j*Z@X</span>
+<span style="color: #DFAF8F;">H</span> = (1/np.sqrt(2))*(X+Z)
+
+<span style="color: #DFAF8F;">sigma</span> = (I, X, Y, Z)
+
+<span style="color: #DFAF8F;">ket0</span> = np.array([[1],[0]]) <span style="color: #DFAF8F;">ket1</span> = X @ ket0
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">densityOperator</span>( psi: np.ndarray ) -&gt; np.matrix: &#8221;<span style="color: #CC9393;">'Transform a ket</span>
+<span style="color: #CC9393;">to a density operator (matrix).</span>
+
+<span style="color: #CC9393;">Args: psi: an numpy.ndarray representing a ket. For a single qubit, this</span>
+<span style="color: #CC9393;">will be a 2-by-1 column vector.</span>
+
+<span style="color: #CC9393;">Returns: The density operator corresponding to psi.</span>
+
+<span style="color: #CC9393;">&#8221;'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">@ is used for matrix multiplication # convert an numpy ndarray to a</span>
+matrix <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">for access to the Hermitian adjoint return psi @</span>
+np.asmatrix(psi).H
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">BlochVector</span>( psi: np.ndarray ) -&gt; np.ndarray: &#8221;<span style="color: #CC9393;">'Transform ket psi to</span>
+<span style="color: #CC9393;">a Bloch vector.</span>
+
+<span style="color: #CC9393;">Args: psi: an numpy.ndarray representing a ket for a single qubit. This</span>
+<span style="color: #CC9393;">will be a 2-by-1 column vector.</span>
+
+<span style="color: #CC9393;">Returns: The Bloch vector as a (3,) numpy array.</span>
+
+<span style="color: #CC9393;">&#8221;'</span> <span style="color: #DFAF8F;">rho</span> = densityOperator( psi )
+
+<span style="color: #DFAF8F;">BV</span> = [np.trace(rho @ sig).real <span style="color: #F0DFAF; font-weight: bold;">for</span> sig <span style="color: #F0DFAF; font-weight: bold;">in</span> sigma[1:]]
+
+<span style="color: #F0DFAF; font-weight: bold;">return</span> np.array(BV)
+
+&#8203;<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use the function with some test cases</span>
+
+<span style="color: #DFAF8F;">BV0</span> = BlochVector( ket0 ) <span style="color: #DFAF8F;">BV1</span> = BlochVector( ket1 ) <span style="color: #DFAF8F;">BVplus</span> =
+BlochVector( H @ ket0 ) <span style="color: #DFAF8F;">BVminus</span> = BlochVector( H @ ket1 )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket 0: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BV0) ) <span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector</span>
+<span style="color: #CC9393;">for ket 1: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BV1) ) <span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket +: '</span> +
+<span style="color: #DCDCCC; font-weight: bold;">str</span>(BVplus) ) <span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket -: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BVminus) )
+
+Visualize the Bloch vector <span style="color: #F0DFAF; font-weight: bold;">for</span> the following states: \(\ket{0}\),
+\(\ket{1}\), \(\ket{+}\), <span style="color: #F0DFAF; font-weight: bold;">and</span> \(\ket{-}\).
+</pre>
+</div>
+
+<p>
+See Equation
+(<a href="eq:DensityOperatorSingleQubit">eq:DensityOperatorSingleQubit</a>)
+and (<a href="eq:CoherenceVectorComponents">eq:CoherenceVectorComponents</a>).
+</p>
+
+<p>
+We'll do this in two steps. First, we'll make a file that contains our
+helper functions (the ones we wrote in the previous exercise). Then,
+we'll import and use those functions, saving the Bloch vector plots in
+files. The code is shown below, and the Bloch vectors are plotted in
+Figure <a href="fig:BlochVectorPlots">fig:BlochVectorPlots</a>.<br />
+Note: We're saving our functions in a file, and then in different Python
+scripts, we're importing these functions from
+QuantumInformationTools.py. If this were a Jupyter notebook, we could
+just define our functions within the notebook and use them after that.
+No need to tangle or import.<br />
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 7: </span>This Python function converts a state vector to a Bloch vector. We first convert the state vectors to density operators. This module file can be tangled to the file space using the Emacs macro <code>C-u C-c C-v t</code>. <a href="code:python/QuantumInfoTools.py">code:python/QuantumInfoTools.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">I</span> = np.eye(2)
+<span style="color: #DFAF8F;">X</span> = np.array([[0, 1], [1, 0]])
+<span style="color: #DFAF8F;">Z</span> = np.array([[1, 0], [0, -1]]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">quantum information convention</span>
+<span style="color: #DFAF8F;">Y</span> = -1j*Z@X
+<span style="color: #DFAF8F;">H</span> = (1/np.sqrt(2))*(X+Z)
+
+<span style="color: #DFAF8F;">sigma</span> = (I, X, Y, Z)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">densityOperator</span>( psi: np.ndarray ) -&gt; np.matrix:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">       Transform a ket to a density operator (matrix).</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">          psi: an numpy.ndarray representing a ket. For a single qubit, this</span>
+<span style="color: #9FC59F;">               will be a 2-by-1 column vector.</span>
+
+<span style="color: #9FC59F;">       Returns: The density operator corresponding to psi.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">@ is used for matrix multiplication</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">convert an numpy ndarray to a matrix</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">for access to the Hermitian adjoint</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> psi @ np.asmatrix(psi).H
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">BlochVector</span>( psi: np.ndarray ) -&gt; np.ndarray:
+    <span style="color: #9FC59F;">"""</span>
+<span style="color: #9FC59F;">        Transform ket psi to a Bloch vector.</span>
+
+<span style="color: #9FC59F;">        Args:</span>
+<span style="color: #9FC59F;">           psi: an numpy.ndarray representing a ket for a single qubit. This</span>
+<span style="color: #9FC59F;">                will be a 2-by-1 column vector.</span>
+
+<span style="color: #9FC59F;">        Returns: The Bloch vector as a (3,) numpy array.</span>
+<span style="color: #9FC59F;">    """</span>
+
+    <span style="color: #DFAF8F;">rho</span> = densityOperator( psi )
+
+    <span style="color: #DFAF8F;">BV</span> = [np.trace(rho @ sig).real <span style="color: #F0DFAF; font-weight: bold;">for</span> sig <span style="color: #F0DFAF; font-weight: bold;">in</span> sigma[1:]]
+
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> np.array(BV)
+</pre>
+</div>
+
+<p>
+Next, we'll complete the task using our functions:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 8: </span>This Python function converts a state vector to a Bloch vector. We first convert the state vectors to density operators. <a href="code:python/BlochVecPlots.py">code:python/BlochVecPlots.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Add path to QuantumInfoTools</span>
+<span style="color: #DFAF8F;">cwd</span> = os.getcwd()
+<span style="color: #DFAF8F;">pydir</span> = os.path.join(cwd, <span style="color: #CC9393;">'python'</span>)
+sys.path.append(pydir)
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> plot_bloch_vector
+<span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumInfoTools <span style="color: #F0DFAF; font-weight: bold;">as</span> qit
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">I</span> = np.eye(2)
+<span style="color: #DFAF8F;">X</span> = qit.X <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">import from qit</span>
+<span style="color: #DFAF8F;">Z</span> = np.array([[1, 0], [0, -1]])
+<span style="color: #DFAF8F;">Y</span> = -1j*Z @ X
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Y)
+<span style="color: #DFAF8F;">H</span> = (1/np.sqrt(2))*(X+Z) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hadamard</span>
+
+<span style="color: #DFAF8F;">sigma</span> = (I, X, Y, Z)
+
+<span style="color: #DFAF8F;">ket0</span> = np.array([[1],[0]])
+<span style="color: #DFAF8F;">ket1</span> = X @ ket0
+
+<span style="color: #DFAF8F;">BV0</span> = qit.BlochVector( ket0 )
+<span style="color: #DFAF8F;">BV1</span> = qit.BlochVector( ket1 )
+<span style="color: #DFAF8F;">BVplus</span> = qit.BlochVector( H @ ket0 )
+<span style="color: #DFAF8F;">BVminus</span> = qit.BlochVector( H @ ket1 )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket 0: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BV0) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket 1: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BV1) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket +: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BVplus) )
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( f<span style="color: #CC9393;">'Bloch vector for ket -: '</span> + <span style="color: #DCDCCC; font-weight: bold;">str</span>(BVminus) )
+
+<span style="color: #DFAF8F;">BVs</span> = {<span style="color: #CC9393;">'BV0'</span>: BV0,
+       <span style="color: #CC9393;">'BV1'</span>: BV1,
+       <span style="color: #CC9393;">'BVplus'</span>: BVplus,
+       <span style="color: #CC9393;">'BVminus'</span>: BVminus}
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> BV <span style="color: #F0DFAF; font-weight: bold;">in</span> BVs:
+    <span style="color: #DFAF8F;">fig</span> = plt.figure()
+    <span style="color: #DFAF8F;">ax</span> = fig.add_subplot(111,projection =<span style="color: #CC9393;">'3d'</span>)
+    <span style="color: #DFAF8F;">fname</span>=os.path.join(<span style="color: #CC9393;">'img'</span>, BV)
+    plot_bloch_vector( BVs[BV])
+    plt.savefig(fname)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'[[./</span>{fname}<span style="color: #CC9393;">]]'</span>)
+
+plt.close(<span style="color: #CC9393;">'all'</span>)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Test is over.'</span>)
+</pre>
+</div>
+
+<pre class="example" id="org8c4b23a">
+[[0.+0.j 0.-1.j]
+ [0.+1.j 0.+0.j]]
+Bloch vector for ket 0: [0. 0. 1.]
+Bloch vector for ket 1: [ 0.  0. -1.]
+Bloch vector for ket +: [1. 0. 0.]
+Bloch vector for ket -: [-1.  0.  0.]
+[[./img/BV0]]
+[[./img/BV1]]
+[[./img/BVplus]]
+[[./img/BVminus]]
+Test is over.
+</pre>
+
+
+\begin{figure}
+   \centering
+   \subfloat[ \label{subfig:BVket0}]{%
+      \includegraphics[width=2.5in]{img/BV0.png}
+   }
+   \subfloat[ \label{subfig:BVket1}]{%
+      \includegraphics[width=2.5in]{img/BV1.png}
+   } \\
+   \subfloat[\(\ket{+}\) \label{subfig:BVketplus}]{%
+      \includegraphics[width=2.5in]{img/BVplus.png}
+   }
+   \subfloat[\(\ket{-}\) \label{subfig:BVketminus}]{%
+      \includegraphics[width=2.5in]{img/BVminus.png}
+   }
+   \caption{Bloch vectors are plotted for various single-qubit states. \label{fig:BlochVectorPlots}}
+\end{figure}
+
+<p>
+<br />
+</p>
+
+<ul class="org-ul">
+<li>It may not be obvious, but we can think of an application of
+\(\mathbf{X}\) as a 180-degree rotation about the \(\hat{x}\) axis in
+the Bloch sphere.
+
+<ul class="org-ul">
+<li><p>
+We can make an arbitrary rotation through angle \(\theta_{x}\) about
+\(\hat{x}\) by forming the \(x\)-rotation operator from an
+exponential of \(\mathbf{X}\):
+</p>
+\begin{equation}
+\mathbf{R}_{x}\left(\theta_{x}\right)=\exp\left(-i\frac{\theta_{x}}{2}\mathbf{X}\right)=\begin{bmatrix}\cos\left(\theta_{x}/2\right) & -i\sin\left(\theta_{x}/2\right)\\
+-i\sin\left(\theta_{x}/2\right) & \cos\left(\theta_{x}/2\right)
+\end{bmatrix}.\label{eq:ArbitraryXRotation}
+\end{equation}</li>
+
+<li>We add a function for an arbitrary rotation \(\theta_{x}\) about
+\(\hat{x}\) to our file<br /></li>
+</ul></li>
+
+<li>Similarly, an application of \(\mathbf{Z}\) is a 180-degree rotation
+about the \(\hat{z}\) axis in the Bloch sphere, and
+
+<ul class="org-ul">
+<li>We can form an application of \(\mathbf{Y}\) is a 180-degree
+rotation about the \(\hat{y}\) axis in the Bloch sphere</li>
+</ul></li>
+</ul>
+</div>
+
+<ol class="org-ol">
+<li><a id="org93b876d"></a>Exercise - Rotations about X&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-1-1">
+<div class="xca" id="org046cdce">
+<p>
+Perform and rotations of \(\ket{0}\) about the \(\hat{x}\) axis through
+the angles \(\pi/4\), \(\pi/2\), \(3\pi/4\), \(\pi\), \(5\pi/4\), and
+\(3\pi/2\).
+</p>
+
+</div>
+
+<p>
+See Equation
+(<a href="eq:DensityOperatorSingleQubit">eq:DensityOperatorSingleQubit</a>),
+(<a href="eq:CoherenceVectorComponents">eq:CoherenceVectorComponents</a>),
+(<a href="eq:ArbitraryXRotation">eq:ArbitraryXRotation</a>).
+</p>
+
+<p>
+We'll do this in two steps. First, we'll make a file that contains our
+helper functions (the ones we wrote in the previous exercise). Then,
+we'll import and use those functions, saving the Bloch vector plots in
+files. The code is shown below, and the Bloch vectors are plotted in
+Figure <a href="fig:BlochVectorPlots">fig:BlochVectorPlots</a>.<br />
+Next, we'll complete the task using our functions:
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 9: </span>This Python function converts a state vector to a Bloch vector. We first convert the state vectors to density operators. <a href="code:python/QuantumInfoTools.py">code:python/QuantumInfoTools.py</a></label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">from</span> scipy.linalg <span style="color: #F0DFAF; font-weight: bold;">import</span> expm
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">I</span> = np.eye(2)
+<span style="color: #DFAF8F;">X</span> = np.array([[0, 1], [1, 0]])
+<span style="color: #DFAF8F;">Z</span> = np.array([[1, 0], [0, -1]]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">quantum information convention</span>
+<span style="color: #DFAF8F;">Y</span> = -1j*Z@X
+<span style="color: #DFAF8F;">H</span> = (1/np.sqrt(2))*(X+Z)
+
+<span style="color: #DFAF8F;">sigma</span> = (I, X, Y, Z)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">densityOperator</span>( psi: np.ndarray ) -&gt; np.matrix:
+    <span style="color: #9FC59F;">"""Transform a ket to a density operator (matrix).</span>
+
+<span style="color: #9FC59F;">        Args:</span>
+<span style="color: #9FC59F;">            psi: an numpy.ndarray representing a ket. For a single qubit, this</span>
+<span style="color: #9FC59F;">                 will be a 2-by-1 column vector.</span>
+
+<span style="color: #9FC59F;">        Returns: The density operator corresponding to psi.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">@ is used for matrix multiplication</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">convert an numpy ndarray to a matrix</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">for access to the Hermitian adjoint</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> psi @ np.asmatrix(psi).H
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">BlochVector</span>( psi: np.ndarray ) -&gt; np.ndarray:
+    <span style="color: #9FC59F;">"""Transform ket psi to a Bloch vector.</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">           psi: an numpy.ndarray representing a ket for a single qubit.</span>
+<span style="color: #9FC59F;">                This will be a 2-by-1 column vector.</span>
+
+<span style="color: #9FC59F;">       Returns: The Bloch vector as a (3,) numpy array.</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #DFAF8F;">rho</span> = densityOperator( psi )
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Refer to Equation 54</span>
+    <span style="color: #DFAF8F;">BV</span> = [np.trace(rho @ sig).real <span style="color: #F0DFAF; font-weight: bold;">for</span> sig <span style="color: #F0DFAF; font-weight: bold;">in</span> sigma[1:]]
+
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> np.array(BV)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">Rx</span>(theta: <span style="color: #DCDCCC; font-weight: bold;">float</span>) -&gt; np.ndarray:
+    <span style="color: #9FC59F;">"""Creates a rotation operator</span>
+<span style="color: #9FC59F;">       through angle theta about the x axis.</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">          theta: a rotation angle in radians about the x axis</span>
+
+<span style="color: #9FC59F;">       Returns: A rotation operator matrix</span>
+<span style="color: #9FC59F;">    """</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> expm(-1j*0.5*theta*X)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">Ry</span>(theta: <span style="color: #DCDCCC; font-weight: bold;">float</span>) -&gt; np.ndarray:
+   <span style="color: #9FC59F;">"""Creates a rotation operator through angle theta about the y axis.</span>
+
+<span style="color: #9FC59F;">      Args:</span>
+<span style="color: #9FC59F;">         theta: a rotation angle in radians about the y axis</span>
+
+<span style="color: #9FC59F;">      Returns: A rotation operator matrix</span>
+<span style="color: #9FC59F;">   """</span>
+   <span style="color: #F0DFAF; font-weight: bold;">return</span> expm(-1j*0.5*theta*Y)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">Rz</span>(theta: <span style="color: #DCDCCC; font-weight: bold;">float</span>) -&gt; np.ndarray:
+   <span style="color: #9FC59F;">"""Creates a rotation operator through angle theta about the z axis.</span>
+
+<span style="color: #9FC59F;">      Args:</span>
+<span style="color: #9FC59F;">         theta: a rotation angle in radians about the z axis</span>
+
+<span style="color: #9FC59F;">      Returns: A rotation operator matrix</span>
+<span style="color: #9FC59F;">   """</span>
+   <span style="color: #F0DFAF; font-weight: bold;">return</span> expm(-1j*0.5*theta*Z)
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">normalize</span>( psi: np.ndarray ) -&gt; np.ndarray:
+    <span style="color: #9FC59F;">"""Normalizes a quantum wave function. This is</span>
+<span style="color: #9FC59F;">       designed for use with complex column vectors.</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">           psi: a quantum wave function specified as a d-dimensional (d,1)</span>
+<span style="color: #9FC59F;">                np.ndarray.</span>
+
+<span style="color: #9FC59F;">       Returns: a normalized version of psi</span>
+<span style="color: #9FC59F;">    """</span>
+
+    <span style="color: #DFAF8F;">psi_norm_sq</span> = np.asmatrix(psi).H @ psi
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Refer to Equation 8</span>
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> (1/np.sqrt(psi_norm_sq[0,0])) * psi
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">direction</span>( x: np.ndarray ) -&gt; np.ndarray:
+    <span style="color: #9FC59F;">"""Returns a unit vector pointing in the direction of a</span>
+<span style="color: #9FC59F;">       d-dimensional real-space vector x.</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">           x: a d-dimensional [i.e., (d,)] vector</span>
+
+<span style="color: #9FC59F;">       Returns: a unit vector pointing in the direction of x.</span>
+<span style="color: #9FC59F;">    """</span>
+
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> (1/np.sqrt(np.dot(x,x)))*x
+
+<span style="color: #F0DFAF; font-weight: bold;">def</span> <span style="color: #93E0E3;">labelPoint</span>( ax, vec, label ):
+    <span style="color: #9FC59F;">"""Helps us label a matplotlib axes on</span>
+<span style="color: #9FC59F;">       which a qiskit Bloch sphere plot exists.</span>
+
+<span style="color: #9FC59F;">       Args:</span>
+<span style="color: #9FC59F;">           ax: the axes containing the plot</span>
+
+<span style="color: #9FC59F;">           vec: the (3,) coordinates for the position of the label</span>
+
+<span style="color: #9FC59F;">           label: A string to define the label</span>
+
+<span style="color: #9FC59F;">       Returns: None</span>
+<span style="color: #9FC59F;">    """</span>
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We have to interchange the x and y</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">coordinates and negate the</span>
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">x coordinate to get this right.</span>
+    ax.text( vec[1], -vec[0], vec[2], label )
+</pre>
+</div>
+
+<p>
+Now, we use our functions to make various rotations about \(\hat{x}\):
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 10: </span>This Python script plots various rotations about the X axis. <a href="code:python/BlochVecXRotate.py">code:python/BlochVecXRotate.py</a></label><pre class="src src-python">
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Add path to QuantumInfoTools</span>
+<span style="color: #DFAF8F;">cwd</span> = os.getcwd()
+<span style="color: #DFAF8F;">pydir</span> = os.path.join(cwd, <span style="color: #CC9393;">'python'</span>)
+sys.path.append(pydir)
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> plot_bloch_vector
+<span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumInfoTools <span style="color: #F0DFAF; font-weight: bold;">as</span> qit
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> QuantumInfoTools <span style="color: #F0DFAF; font-weight: bold;">import</span> I, H, X, Y, Z, sigma
+
+<span style="color: #DFAF8F;">ket0</span> = np.array([[1],[0]])
+<span style="color: #DFAF8F;">ket1</span> = X @ ket0
+
+<span style="color: #DFAF8F;">ang</span> = np.pi*np.array([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5])
+
+<span style="color: #DFAF8F;">kets</span> = [ qit.Rx(th)@ket0 <span style="color: #F0DFAF; font-weight: bold;">for</span> th <span style="color: #F0DFAF; font-weight: bold;">in</span> ang ]
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make list of Bloch vectors</span>
+<span style="color: #DFAF8F;">vects</span> = [ qit.BlochVector(ket) <span style="color: #F0DFAF; font-weight: bold;">for</span> ket <span style="color: #F0DFAF; font-weight: bold;">in</span> kets ]
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">fig and ax help us decorate the Bloch sphere</span>
+<span style="color: #DFAF8F;">fig</span> = plt.figure()
+<span style="color: #DFAF8F;">ax</span> = fig.add_subplot(111,projection = <span style="color: #CC9393;">'3d'</span>)
+plot_bloch_vector( vects, ax=ax )
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, vect <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(vects):
+    qit.labelPoint( ax, vect, <span style="color: #CC9393;">'{0:+4.2f}\(\pi\)'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(ang[idx]/np.pi))
+
+plt.savefig( os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'RotateXvaried.png'</span>) )
+plt.close(<span style="color: #CC9393;">'all'</span>)
+</pre>
+</div>
+
+<p>
+Now, we repeat this for rotations about \(\hat{z}\):<br />
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 11: </span>This Python script plots various rotations about the Z axis.python/BlochVecZRotate.py</label><pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Add path to QuantumInfoTools</span>
+<span style="color: #DFAF8F;">cwd</span> = os.getcwd()
+<span style="color: #DFAF8F;">pydir</span> = os.path.join(cwd, <span style="color: #CC9393;">'python'</span>)
+sys.path.append(pydir)
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> plot_bloch_vector
+<span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumInfoTools <span style="color: #F0DFAF; font-weight: bold;">as</span> qit
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> QuantumInfoTools <span style="color: #F0DFAF; font-weight: bold;">import</span> I, H, X, Y, Z, sigma
+
+<span style="color: #DFAF8F;">ket0</span> = np.array([[1],[0]])
+<span style="color: #DFAF8F;">ket1</span> = X @ ket0
+
+<span style="color: #DFAF8F;">ang</span> = np.pi*np.array([0, 0.25, 0.5, 0.75, 1, 1.25, 1.5])
+
+<span style="color: #DFAF8F;">kets</span> = [ qit.Rz(th)@H@ket0 <span style="color: #F0DFAF; font-weight: bold;">for</span> th <span style="color: #F0DFAF; font-weight: bold;">in</span> ang]
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">make list of Bloch vectors</span>
+<span style="color: #DFAF8F;">vects</span> = [ qit.BlochVector(ket) <span style="color: #F0DFAF; font-weight: bold;">for</span> ket <span style="color: #F0DFAF; font-weight: bold;">in</span> kets ]
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">fig and ax help us decorate the Bloch sphere, along with</span>
+<span style="color: #DFAF8F;">fig</span> = plt.figure()
+<span style="color: #DFAF8F;">ax</span> = fig.add_subplot(111,projection = <span style="color: #CC9393;">'3d'</span>)
+plot_bloch_vector( vects, ax=ax )
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx, vect <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(vects):
+    qit.labelPoint( ax, vect, <span style="color: #CC9393;">'{0:+4.2f} \(\pi\)'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(ang[idx]/np.pi))
+
+plt.savefig( os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'RotateZvaried.png'</span>) )
+plt.close(<span style="color: #CC9393;">'all'</span>)
+</pre>
+</div>
+
+<div class="org-center">
+<p>
+\(\mathbf{R}_{x}\left(\theta\right)\) or
+\(\mathbf{R}_{z}\left(\theta\right)\).
+<a id="orgbf5a948"></a>
+</p>
+</div>
+
+<ul class="org-ul">
+<li>Now we've learned to think about single-qubit transformations as
+rotations about axes in the Bloch sphere</li>
+
+<li><p>
+Any single-qubit rotation can be expressed as a combination of
+rotation operations. Some examples:
+</p>
+\begin{equation}
+\mathbf{X}=\mathbf{R}_{x}\left(\pm\pi\right),\qquad\mathbf{Y}=\mathbf{R}_{y}\left(\pm\pi\right),\text{\ensuremath{\qquad}and}\qquad\mathbf{Z}=\mathbf{R}_{z}\left(\pm\pi\right)
+\end{equation}</li>
+
+<li>We also can make arbitrary rotations about arbitrary axes
+
+<ul class="org-ul">
+<li><p>
+Define the arbitrary axis
+</p>
+\begin{equation}
+\hat{\mathbf{n}}=(n_{x},n_{y},n_{z})=n_{x}\mathbf{i}+n_{y}\mathbf{j}+n_{z}\mathbf{k}
+\end{equation}</li>
+
+<li><p>
+Then, a rotation about \(\hat{\mathbf{n}}\) is given by
+</p>
+\begin{equation}
+\mathbf{R}(\hat{\mathbf{n}},\theta)=\exp\left(-i\frac{\theta}{2}\hat{\mathbf{n}}\cdot\vec{\sigma}\right),\label{eq:ArbitraryRotationAxis}
+\end{equation}
+<p>
+where
+</p>
+\begin{equation}
+\vec{\sigma}=\hat{\sigma}_{x}\mathbf{i}+\hat{\sigma}_{y}\mathbf{j}+\hat{\sigma}_{z}\mathbf{k}\label{eq:SigmaVector-1}
+\end{equation}
+<p>
+is a vector of Pauli operators, and
+</p>
+\begin{equation}
+\hat{\mathbf{n}}\cdot\vec{\sigma}=n_{x}\hat{\sigma}_{x}+n_{y}\hat{\sigma}_{y}+n_{z}\hat{\sigma}_{z}\label{eq:n_dot_sigma}
+\end{equation}
+<p>
+is a single-qubit operator.
+</p></li>
+</ul></li>
+</ul>
+</div>
+</li>
+
+<li><a id="org6935953"></a>Exercise: Bloch Sphere, rotations about arbitrary axes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-1-2">
+<div class="xca" id="org95411bc">
+<p>
+Find \(\hat{\mathbf{n}}\) to perform rotations about the following axes:
+</p>
+
+</div>
+
+<ol class="org-ol">
+<li><p>
+The \(\hat{x}\) axis.<br />
+</p>
+
+<p>
+If
+</p>
+\begin{equation}
+\hat{\mathbf{n}}=\left(1,0,0\right),
+\end{equation}
+<p>
+then Equation
+(<a href="eq:n_dot_sigma">eq:n_dot_sigma</a>) becomes
+</p>
+\begin{equation}
+\hat{\mathbf{n}}\cdot\vec{\sigma}=\hat{\sigma}_{x},
+\end{equation}
+<p>
+and our rotation becomes
+</p>
+\begin{equation}
+\mathbf{R}(\hat{\mathbf{n}},\theta)=\exp\left(-i\frac{\theta}{2}\hat{\sigma}_{x}\right)=\exp\left(-i\frac{\theta}{2}\mathbf{X}\right).
+\end{equation}
+<p>
+Notice that this is equivalent to the arbitrary rotation through
+\(\theta_{x}\) about \(\hat{x}\) from Equation
+(<a href="eq:ArbitraryXRotation">eq:ArbitraryXRotation</a>).
+</p></li>
+
+<li><p>
+The \(\hat{y}\) axis.<br />
+</p>
+
+<p>
+If
+</p>
+\begin{equation}
+\hat{\mathbf{n}}=\left(0,1,0\right),
+\end{equation}
+<p>
+then Equation (<a href="eq:n_dot_sigma">eq:n_dot_sigma</a>) becomes
+</p>
+\begin{equation}
+\hat{\mathbf{n}}\cdot\vec{\sigma}=\hat{\sigma}_{y},
+\end{equation}
+<p>
+and our rotation becomes
+</p>
+\begin{equation}
+\mathbf{R}(\hat{\mathbf{n}},\theta)=\exp\left(-i\frac{\theta}{2}\hat{\sigma}_{y}\right)=\exp\left(-i\frac{\theta}{2}\mathbf{Y}\right).
+\end{equation}
+<p>
+This is equivalent to the arbitrary rotation through \(\theta_{y}\)
+about \(\hat{y}\).
+</p></li>
+
+<li><p>
+The \(\hat{z}\) axis.<br />
+</p>
+
+<p>
+If
+</p>
+\begin{equation}
+\hat{\mathbf{n}}=\left(0,0,1\right),
+\end{equation}
+<p>
+then Equation
+(<a href="eq:n_dot_sigma">eq:n_dot_sigma</a>) becomes
+</p>
+\begin{equation}
+\hat{\mathbf{n}}\cdot\vec{\sigma}=\hat{\sigma}_{z},
+\end{equation}
+<p>
+and our rotation becomes
+</p>
+\begin{equation}
+\mathbf{R}(\hat{\mathbf{n}},\theta)=\exp\left(-i\frac{\theta}{2}\hat{\sigma}_{z}\right)=\exp\left(-i\frac{\theta}{2}\mathbf{Z}\right).
+\end{equation}
+<p>
+This is equivalent to the arbitrary rotation through \(\theta_{z}\)
+about \(\hat{z}\).
+</p></li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-the-time-dependent-schrödinger-equation" class="outline-3">
+<h3 id="the-time-dependent-schrödinger-equation"><span class="section-number-3">1.7.</span> The Time-dependent Schrödinger Equation</h3>
+<div class="outline-text-3" id="text-the-time-dependent-schrödinger-equation">
+<ul class="org-ul">
+<li>Here, we consider an example of the time-dependent Schrödinger
+equation from Equation (<a href="eq:TDSE">eq:TDSE</a>)</li>
+</ul>
+
+<div class="xca" id="org31fbc03">
+<p>
+Find \(\ket{\psi\left(t\right)}\) for a QCA cell prepared in state
+\(\ket{\psi\left(0\right)}=1\) if \(\gamma=50\;\text{meV}\) and
+\(\Delta=0\).
+</p>
+
+</div>
+<p>
+<br />
+</p>
+
+<p>
+Assuming a constant Hamiltonian, \(\hat{H}\), e will use the solution of
+Equation
+(<a href="eq:TDSE-Solution-Const-H-compact">eq:TDSE-Solution-Const-H-compact</a>).
+It can be shown that for \(\hat{H}=-\gamma\mathbf{X}\), the time
+evolution operator is given by 
+</p>
+\begin{align}
+\hat{U}\left(t\right) & \stackrel{\left(\ref{eq:TimeEvolutionOperator}\right)}{=}\exp\left(-i\gamma\mathbf{X}t\right)=\cos\left(\frac{\gamma}{\hbar}t\right)\mathbf{I}-i\sin\left(\frac{\gamma}{\hbar}t\right)\hat{\sigma}_{x}.\\
+ & =\left[\begin{array}{cc}
+\cos\left(\frac{\gamma}{\hbar}t\right) & -i\sin\left(\frac{\gamma}{\hbar}t\right)\\
+-i\sin\left(\frac{\gamma}{\hbar}t\right) & \cos\left(\frac{\gamma}{\hbar}t\right)
+\end{array}\right]
+\end{align}
+<p>
+Now, we can easily find 
+</p>
+\begin{align}
+\ket{\psi\left(t\right)} & =\hat{U}\left(t\right)\ket{\psi\left(0\right)}\\
+ & =\left[\begin{array}{cc}
+\cos\left(\frac{\gamma}{\hbar}t\right) & -i\sin\left(\frac{\gamma}{\hbar}t\right)\\
+-i\sin\left(\frac{\gamma}{\hbar}t\right) & \cos\left(\frac{\gamma}{\hbar}t\right)
+\end{array}\right]\left[\begin{array}{c}
+0\\
+1
+\end{array}\right]\\
+ & =\left[\begin{array}{c}
+-i\sin\left(\frac{\gamma}{\hbar}t\right)\\
+\cos\left(\frac{\gamma}{\hbar}t\right)
+\end{array}\right]\\
+ & =-i\sin\left(\frac{\gamma}{\hbar}t\right)\ket{0}+\cos\left(\frac{\gamma}{\hbar}t\right)\ket{1}
+\end{align} Is this reasonable? A quick check at \(t=0\) indeed
+confirms that \(\ket{\psi\left(0\right)}=\ket{1}\). We also note that
+\(\ket{\psi\left(t\right)}\) is periodic with a period, \(T_{0}\), that
+can be determined by setting \begin{equation}
+\frac{\gamma}{\hbar}T_{0}=2\pi,
+\end{equation} which
+yields \begin{equation}
+T_{0}=\frac{2\pi\hbar}{\gamma}
+\end{equation}
+At \(t=T_{0}/4=\pi\hbar/2\gamma\), we find 
+\begin{align}
+\ket{\psi\left(\frac{\pi\hbar}{2\gamma}\right)} & =-i\sin\left(\frac{\gamma}{\hbar}\cdot\frac{\pi\hbar}{2\gamma}\right)\ket{0}+\cos\left(\frac{\gamma}{\hbar}\cdot\frac{\pi\hbar}{2\gamma}\right)\ket{1}\\
+ & =-i\sin\left(\frac{\pi}{2}\right)\ket{0}+\cos\left(\frac{\pi}{2}\right)\ket{1}\\
+ & =-i\ket{0}
+\end{align}
+<p>
+We see that the system will oscillate between the
+computational basis states in what is called a Rabi oscillation.
+</p>
+
+<div class="xca" id="org4108f7b">
+<p>
+Make a Python script that calculates and plots a lone cell's
+polarization as a function of time if \(\gamma=50\;\text{meV}\) and
+\(\Delta=0\).
+</p>
+
+</div>
+<p>
+<br />
+</p>
+
+<p>
+The solution is given in Listing <a href="python-code-rabi-oscillation">python-code-rabi-oscillation</a>,
+with a plot of the results in Figure <a href="dqd-polarization-rabi-osc">dqd-polarization-rabi-osc</a>.
+</p>
+
+<div class="org-src-container">
+<label class="org-src-name"><span class="listing-number">Listing 12: </span>This script calculates the time evolution of an isolated QCA cell. <a href="python-code-rabi-oscillation">python-code-rabi-oscillation</a></label><pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Imports relating to:</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- the operating system and file system</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">- our Python installation</span>
+<span style="color: #F0DFAF; font-weight: bold;">import</span> os, sys
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+<span style="color: #F0DFAF; font-weight: bold;">import</span> scipy
+<span style="color: #F0DFAF; font-weight: bold;">import</span> matplotlib.pyplot <span style="color: #F0DFAF; font-weight: bold;">as</span> plt
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Allows load from custom path</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> pathtool <span style="color: #F0DFAF; font-weight: bold;">import</span> add_path
+
+<span style="color: #DFAF8F;">new_load_dir</span> = <span style="color: #CC9393;">'PyQCA'</span> <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">relative path to the PyQCA package code</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Load from the PyQCA package</span>
+<span style="color: #F0DFAF; font-weight: bold;">with</span> add_path(new_load_dir):
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum <span style="color: #F0DFAF; font-weight: bold;">import</span> linearalgebra <span style="color: #F0DFAF; font-weight: bold;">as</span> la
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Use these for visualization</span>
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.qcacircuit <span style="color: #F0DFAF; font-weight: bold;">import</span> QCACircuit
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.qca.twodotcell <span style="color: #F0DFAF; font-weight: bold;">import</span> TwoDotCell
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage.quantum.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> *
+    <span style="color: #F0DFAF; font-weight: bold;">from</span> qcapackage <span style="color: #F0DFAF; font-weight: bold;">import</span> constants <span style="color: #F0DFAF; font-weight: bold;">as</span> const
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">a</span> = 1E-9 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[m] cell length</span>
+<span style="color: #DFAF8F;">nt</span> = 125 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[] number of time points</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Constants</span>
+<span style="color: #DFAF8F;">ket0</span>, <span style="color: #DFAF8F;">ket1</span> = la.ket0, la.ket1
+<span style="color: #DFAF8F;">hbar</span> = const.hbar
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Get Pauli operators, already defined in the linearalgebra module</span>
+<span style="color: #DFAF8F;">sx</span>, <span style="color: #DFAF8F;">sz</span> = la.sx, la.sz
+
+<span style="color: #DFAF8F;">qe</span>, <span style="color: #DFAF8F;">eps0</span> = const.qe, const.eps0
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Parameters</span>
+<span style="color: #DFAF8F;">g</span> = 0.05 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] tunneling energy</span>
+<span style="color: #DFAF8F;">D</span> = 0 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[eV] bias</span>
+<span style="color: #DFAF8F;">T0</span> = np.pi*hbar/g <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[s] time scale</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">[s] time vector</span>
+<span style="color: #DFAF8F;">t</span> = np.linspace(0, 3*T0, nt)
+
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Hamiltonian (quantum computing convention)</span>
+<span style="color: #DFAF8F;">H</span> = -g*sx -0.5*D*sz
+
+<span style="color: #DFAF8F;">psi0</span> = ket0 <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">set the initial state</span>
+
+<span style="color: #DFAF8F;">P</span> = np.zeros( (nt, ) ) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">polarization - storage vector</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Initial state</span>
+<span style="color: #F0DFAF; font-weight: bold;">for</span> it, tval <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(t):
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">time evolution operator</span>
+    <span style="color: #DFAF8F;">Ut</span> = scipy.linalg.expm( -1j * H * tval/hbar ) 
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">time-dependent psi at time t = tval</span>
+    <span style="color: #DFAF8F;">psit</span> = Ut @ psi0
+
+    <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">time-dependent polarization</span>
+    <span style="color: #DFAF8F;">P</span>[it] = la.expectation_value( -sz, psit )
+
+<span style="color: #DFAF8F;">fig</span>, <span style="color: #DFAF8F;">ax</span>= plt.subplots()
+ax.plot(t/T0, P)
+ax.grid(<span style="color: #BFEBBF;">True</span>)
+ax.set_xlabel(r<span style="color: #CC9393;">'$t/T_0$'</span>, fontsize=16)
+ax.set_ylabel(r<span style="color: #CC9393;">'$P$'</span>, fontsize=16)
+
+<span style="color: #DFAF8F;">figname</span> = os.path.join(<span style="color: #CC9393;">'img'</span>, <span style="color: #CC9393;">'polarization-Rabi-osc.png'</span>)
+plt.savefig(figname)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'[[./</span>{figname}<span style="color: #CC9393;">]]'</span>)
+
+</pre>
+</div>
+
+<pre class="example">
+[[./img\polarization-Rabi-osc.png]]
+</pre>
+
+
+
+<div id="orgc550222" class="figure">
+<p><img src="./img/polarization-Rabi-osc.png" alt="polarization-Rabi-osc.png" />
+</p>
+<p><span class="figure-number">Figure 5: </span>The polarization of an isolated two-dot cell with bias \(\Delta = 0\) and tunneling energy \(\gamma\) oscillates with period \(T_0 = \pi \hbar / \gamma\). <a href="dqd-polarization-rabi-osc">dqd-polarization-rabi-osc</a></p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-additional-resources" class="outline-3">
+<h3 id="additional-resources"><span class="section-number-3">1.8.</span> Additional Resources</h3>
+<div class="outline-text-3" id="text-additional-resources">
+<ul class="org-ul">
+<li>If you prefer videos, I have the following YouTube tutorials:
+
+<ul class="org-ul">
+<li>QCA
+
+<ul class="org-ul">
+<li><a href="https://youtu.be/z8LBOpfYcgY">QCA Part 1 - Overview of the QCA
+Concept</a></li>
+
+<li><a href="https://youtu.be/zWACOzBlkrM">QCA Part 2 - Recent Research</a>
+(it's a bit dated)</li>
+</ul></li>
+
+<li>Quantum Mechanics
+
+<ul class="org-ul">
+<li><a href="https://youtu.be/Hxq7NUbBaFc?si=PskLWzMe39E3aI5s">Tutorial:
+Finite-dimensional Quantum Systems</a></li>
+
+<li><a href="https://youtu.be/j9SdwTC7JGU">02 - Quantum Mechanical Operators
+and the Hamiltonian</a></li>
+
+<li><a href="https://youtu.be/1nbECALMemE">Demonstration - Coupled Quantum
+Dots in MATLAB</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr. E.P. Blair</p>
+<p class="date">Created: 2025-02-27 Thu 13:25</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
