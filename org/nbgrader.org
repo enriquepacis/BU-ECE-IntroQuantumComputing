@@ -15,11 +15,11 @@ The following is helpful if we want to have =org-mode= sessions linking
 multiple code blocks /and/ we are using =direnv=.
 
 #+begin_src emacs-lisp :eval never-export
-(setq-local org-babel-python-command (expand-file-name "~/anaconda3/envs/testQISreq/bin/python3"))
+(setq-local org-babel-python-command (expand-file-name "../.direnv/python-3.11/bin/python3"))
 #+end_src
 
 #+RESULTS:
-: /Users/enrique_blair/anaconda3/envs/testQISreq/bin/python3
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
 
 #+begin_src python :results output :eval never-export
 import sys
@@ -28,64 +28,10 @@ print(sys.executable)
 #+end_src
 
 #+RESULTS:
-: /Users/enrique_blair/anaconda3/envs/testQISreq/bin/python3
+: /Users/enrique_blair/Library/CloudStorage/Box-Box/Teaching/GitHub/BU-ECE-IntroQuantumComputing/.direnv/python-3.11/bin/python3
 
 
 
-* Introduction
-This file is designed to 
-
-* Python Environment
-In Spring 2025, I'm instructing the students to use Python 3.11 with packages as
-installed using a course =requirements=-type file.
-
-To get set up, I recommend the following:
-1. Creating a conda environment using
-   #+begin_src shell :eval never
-     conda crate -n <myEnvName> python=3.11
-   #+end_src
-2. Activate your environment using
-   #+begin_src shell :eval never
-     conda activate <myEnvName>
-   #+end_src
-3. Install required packages just as I have the students do it ([[https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/PythonSetup.html#outline-container-org941edc5][student
-   instructions]]) :
-   #+begin_src shell :eval never
-     pip install -r https://enriquepacis.github.io/BU-ECE-IntroQuantumComputing/python/requirementsQIS.txt
-   #+end_src
-4. Add the =nbgrader= package (not required for students, but required for
-   grading)
-   #+begin_src shell :eval never
-     pip install nbgrader
-   #+end_src
-   
-* File Structure
-This directory (=assignments/=) is the root directory where you should
-launch your Jupyter notebook.
-
-The directory =assignments= contains the files needed by =nbgrader=, as well as
-other files
-1. Required by =nbgrader=
-   1. =assignments/source/=. This is where we author assignments, complete with
-      embedded solutions.
-      1. =source= contains a folder for each assignment, =pylabXX=, where =XX=
-         is a placeholder for a number (01, 02, 03, ...)
-      2. Each folder =pylabXX= will contain the completed (reference) solution,
-         =pylabXX.ipynb=
-   2. =assignments/release/=. This is where =nbgrader= places the student
-      assignments (without solutions).
-   3. =assignments/submitted/=. This is where we stage for grading those
-      =*.ipynb= files completed by the students
-      1. =submitted= will contain a directory named using the student ID for each
-         student.
-      2. Within each student's directory, there will be a directory =pylabXX=,
-         and this will be a container for the student's submitted assignment,
-         =pylabXX.ipynb=.
-   4. =assignments/feedback/=. If not yet created, this is where =nbgrader= will
-      place =html= versions of the graded student work. This may include manual
-      feedback.
-      1. When created, the structure will be =feedback/<StudentID>/asgnXX/asgnXX.html=
-   5. 
 * 
 
 * Using =nbgrader=
