@@ -42,7 +42,10 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add docs/
-        git commit -m "Copy specific HTML files from org/html to docs"
+        git commit -m "Copy specific HTML files from org/html to docs"  || echo "No changes to commit"
+
+        # Ensure we are up to date before pushing
+        git pull --rebase origin main
         git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
