@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-02-27 Thu 13:25 -->
+<!-- 2025-02-27 Thu 13:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Operators</title>
@@ -62,35 +62,36 @@
 <ul>
 <li><a href="#operators">1. Operators</a>
 <ul>
-<li><a href="#the-not-operator">1.1. The NOT operator</a></li>
-<li><a href="#finding-the-matrix-representation-in-a-given-basis">1.2. Finding the Matrix Representation in a given Basis</a>
+<li><a href="#orgcf3356f">1.1. Introduction</a></li>
+<li><a href="#the-not-operator">1.2. The NOT operator</a></li>
+<li><a href="#finding-the-matrix-representation-in-a-given-basis">1.3. Finding the Matrix Representation in a given Basis</a>
 <ul>
-<li><a href="#matrix-columns">1.2.1. Matrix Columns</a></li>
-<li><a href="#matrix-elements">1.2.2. Matrix Elements</a></li>
-<li><a href="#a-basic-quantum-circuit">1.2.3. A Basic Quantum Circuit</a></li>
+<li><a href="#matrix-columns">1.3.1. Matrix Columns</a></li>
+<li><a href="#matrix-elements">1.3.2. Matrix Elements</a></li>
+<li><a href="#a-basic-quantum-circuit">1.3.3. A Basic Quantum Circuit</a></li>
 </ul>
 </li>
-<li><a href="#the-pauli-operators">1.3. The Pauli Operators</a></li>
-<li><a href="#complex-phase-and-interference">1.4. Complex Phase and Interference</a>
+<li><a href="#the-pauli-operators">1.4. The Pauli Operators</a></li>
+<li><a href="#complex-phase-and-interference">1.5. Complex Phase and Interference</a>
 <ul>
-<li><a href="#interference">1.4.1. Interference</a></li>
+<li><a href="#interference">1.5.1. Interference</a></li>
 </ul>
 </li>
-<li><a href="#the-hamiltonian---a-very-important-operator">1.5. The Hamiltonian - a very important operator</a>
+<li><a href="#the-hamiltonian---a-very-important-operator">1.6. The Hamiltonian - a very important operator</a>
 <ul>
-<li><a href="#electron-volts-a-unit-of-energy">1.5.1. Electron-volts: a Unit of Energy</a></li>
-<li><a href="#the-matrix-elements-of-hath">1.5.2. The Matrix Elements of \(\hat{H}\)</a></li>
-<li><a href="#the-ground-state">1.5.3. The Ground State</a></li>
-<li><a href="#expectation-values">1.5.4. Expectation Values</a></li>
+<li><a href="#electron-volts-a-unit-of-energy">1.6.1. Electron-volts: a Unit of Energy</a></li>
+<li><a href="#the-matrix-elements-of-hath">1.6.2. The Matrix Elements of \(\hat{H}\)</a></li>
+<li><a href="#the-ground-state">1.6.3. The Ground State</a></li>
+<li><a href="#expectation-values">1.6.4. Expectation Values</a></li>
 </ul>
 </li>
-<li><a href="#quantum-information-processing">1.6. Quantum Information Processing</a>
+<li><a href="#quantum-information-processing">1.7. Quantum Information Processing</a>
 <ul>
-<li><a href="#the-density-operator">1.6.1. The Density Operator</a></li>
+<li><a href="#the-density-operator">1.7.1. The Density Operator</a></li>
 </ul>
 </li>
-<li><a href="#the-time-dependent-schrödinger-equation">1.7. The Time-dependent Schrödinger Equation</a></li>
-<li><a href="#additional-resources">1.8. Additional Resources</a></li>
+<li><a href="#the-time-dependent-schrödinger-equation">1.8. The Time-dependent Schrödinger Equation</a></li>
+<li><a href="#additional-resources">1.9. Additional Resources</a></li>
 </ul>
 </li>
 </ul>
@@ -104,6 +105,11 @@
 <p>
 <i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
 </p>
+</div>
+
+<div id="outline-container-orgcf3356f" class="outline-3">
+<h3 id="orgcf3356f"><span class="section-number-3">1.1.</span> Introduction</h3>
+<div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>To process information, we need a way to transform quantum states
 
@@ -124,9 +130,10 @@ The general operator \(\mathbf{O}\) transforms a quantum state
 </ul></li>
 </ul>
 </div>
+</div>
 
 <div id="outline-container-the-not-operator" class="outline-3">
-<h3 id="the-not-operator"><span class="section-number-3">1.1.</span> The NOT operator</h3>
+<h3 id="the-not-operator"><span class="section-number-3">1.2.</span> The NOT operator</h3>
 <div class="outline-text-3" id="text-the-not-operator">
 <ul class="org-ul">
 <li>Consider a bit flip operator, \(\mathbf{X}\), that transforms a bit
@@ -152,11 +159,11 @@ chosen to work in the computational basis</li>
 </div>
 
 <div id="outline-container-finding-the-matrix-representation-in-a-given-basis" class="outline-3">
-<h3 id="finding-the-matrix-representation-in-a-given-basis"><span class="section-number-3">1.2.</span> Finding the Matrix Representation in a given Basis</h3>
+<h3 id="finding-the-matrix-representation-in-a-given-basis"><span class="section-number-3">1.3.</span> Finding the Matrix Representation in a given Basis</h3>
 <div class="outline-text-3" id="text-finding-the-matrix-representation-in-a-given-basis">
 </div>
 <div id="outline-container-matrix-columns" class="outline-4">
-<h4 id="matrix-columns"><span class="section-number-4">1.2.1.</span> Matrix Columns</h4>
+<h4 id="matrix-columns"><span class="section-number-4">1.3.1.</span> Matrix Columns</h4>
 <div class="outline-text-4" id="text-matrix-columns">
 <ul class="org-ul">
 <li>Since we've made the state-to-vector assignments as in Equation
@@ -287,7 +294,7 @@ Verify that \(X\) transforms the basis states consistent with Equation
 </div>
 
 <div id="outline-container-matrix-elements" class="outline-4">
-<h4 id="matrix-elements"><span class="section-number-4">1.2.2.</span> Matrix Elements</h4>
+<h4 id="matrix-elements"><span class="section-number-4">1.3.2.</span> Matrix Elements</h4>
 <div class="outline-text-4" id="text-matrix-elements">
 <ul class="org-ul">
 <li>Since \(\mathbf{M}\ket{\psi}\) is a state \(\ket{\chi}\), then we can
@@ -300,7 +307,7 @@ take an inner product of \(\mathbf{M}\ket{\psi}\) with another state,
 matrix element of \(\mathbf{M}\)</li>
 </ul></li>
 </ul>
-<div class="xca" id="orgd00dfcc">
+<div class="xca" id="org60b1e5d">
 <p>
 Find the following matrix elements of the \(\mathbf{X}\) operator.
 </p>
@@ -348,7 +355,7 @@ We can do this using all we know about bras and kets:
  & =\braket{1|0}=0
 \end{align}
 
-<div class="xca" id="org5bb6f68">
+<div class="xca" id="org41d318d">
 <p>
 Calculate the inner products \(\vec{e}_{2}^{T}M\vec{e}_{3}\) and
 \(\vec{e}_{3}^{T}M\vec{e}_{2}\)
@@ -403,7 +410,7 @@ analogy to \(\braket{\chi|\mathbf{M}|\psi}\) being the
 </div>
 
 <div id="outline-container-a-basic-quantum-circuit" class="outline-4">
-<h4 id="a-basic-quantum-circuit"><span class="section-number-4">1.2.3.</span> A Basic Quantum Circuit</h4>
+<h4 id="a-basic-quantum-circuit"><span class="section-number-4">1.3.3.</span> A Basic Quantum Circuit</h4>
 <div class="outline-text-4" id="text-a-basic-quantum-circuit">
 <ul class="org-ul">
 <li>Let's learn about quantum circuints and see what a circuit with a NOT
@@ -518,7 +525,7 @@ into the final state $\ket{1}$ . \label{fig:BasicSingleQubitCircuits}}
 </div>
 
 <div id="outline-container-the-pauli-operators" class="outline-3">
-<h3 id="the-pauli-operators"><span class="section-number-3">1.3.</span> The Pauli Operators</h3>
+<h3 id="the-pauli-operators"><span class="section-number-3">1.4.</span> The Pauli Operators</h3>
 <div class="outline-text-3" id="text-the-pauli-operators">
 <ul class="org-ul">
 <li><p>
@@ -594,7 +601,7 @@ combination of desirable answers</li>
 </ul></li>
 </ul></li>
 </ul>
-<div class="xca" id="org085d1c2">
+<div class="xca" id="org43b6550">
 <p>
 How does \(\mathbf{Z}\) transform the states \(\ket{0}\) and
 \(\ket{1}\)?<br />
@@ -625,7 +632,7 @@ How does \(\mathbf{Z}\) transform the states \(\ket{0}\) and
 </div>
 
 <div id="outline-container-complex-phase-and-interference" class="outline-3">
-<h3 id="complex-phase-and-interference"><span class="section-number-3">1.4.</span> Complex Phase and Interference</h3>
+<h3 id="complex-phase-and-interference"><span class="section-number-3">1.5.</span> Complex Phase and Interference</h3>
 <div class="outline-text-3" id="text-complex-phase-and-interference">
 <ul class="org-ul">
 <li>What does it mean for \(\mathbf{Z}\) to transform \(\ket{1}\) into
@@ -648,7 +655,7 @@ destrucive interference</li>
 </div>
 
 <div id="outline-container-interference" class="outline-4">
-<h4 id="interference"><span class="section-number-4">1.4.1.</span> Interference</h4>
+<h4 id="interference"><span class="section-number-4">1.5.1.</span> Interference</h4>
 <div class="outline-text-4" id="text-interference">
 <ul class="org-ul">
 <li><p>
@@ -663,7 +670,7 @@ Hadamard transformation, \(\mathbf{H}\):
 states.</li>
 </ul>
 
-<div class="xca" id="org743c1ed">
+<div class="xca" id="org9eac89b">
 <p>
 Consider \(\mathbf{H}\) from Equation
 (<a href="eq:defHadamard">eq:defHadamard</a>).
@@ -826,7 +833,7 @@ equal probability of measuring "0" or "1"</li>
 <li>What happens when we add a second Hadamard operation?</li>
 </ol>
 
-<div class="xca" id="orgd80ebb6">
+<div class="xca" id="orgdaf2a9a">
 
 </div>
 <p>
@@ -879,7 +886,7 @@ p\left(0\right)=1,\qquad p\left(1\right)=0
 \end{equation}</li>
 </ol>
 
-<div class="xca" id="orgddfd7a8">
+<div class="xca" id="org04aaa7c">
 <p>
 Consider the circuit of Figure <a href="fig:SingleQbitHsq1">fig:SingleQbitHsq1</a>.
 </p>
@@ -969,7 +976,7 @@ outcomes with a non-zero probability of measurement</li>
 </div>
 
 <div id="outline-container-the-hamiltonian---a-very-important-operator" class="outline-3">
-<h3 id="the-hamiltonian---a-very-important-operator"><span class="section-number-3">1.5.</span> The Hamiltonian - a very important operator</h3>
+<h3 id="the-hamiltonian---a-very-important-operator"><span class="section-number-3">1.6.</span> The Hamiltonian - a very important operator</h3>
 <div class="outline-text-3" id="text-the-hamiltonian---a-very-important-operator">
 <ul class="org-ul">
 <li>The Hamiltonian, \(\hat{H}\), is an important operator because it
@@ -1118,7 +1125,7 @@ energies"</li>
 </div>
 
 <div id="outline-container-electron-volts-a-unit-of-energy" class="outline-4">
-<h4 id="electron-volts-a-unit-of-energy"><span class="section-number-4">1.5.1.</span> Electron-volts: a Unit of Energy</h4>
+<h4 id="electron-volts-a-unit-of-energy"><span class="section-number-4">1.6.1.</span> Electron-volts: a Unit of Energy</h4>
 <div class="outline-text-4" id="text-electron-volts-a-unit-of-energy">
 <ul class="org-ul">
 <li>Electron-volts are more appropriate for quantum systems than Joules
@@ -1159,7 +1166,7 @@ Thus, we can covert eV to J:
 </div>
 
 <div id="outline-container-the-matrix-elements-of-hath" class="outline-4">
-<h4 id="the-matrix-elements-of-hath"><span class="section-number-4">1.5.2.</span> The Matrix Elements of \(\hat{H}\)</h4>
+<h4 id="the-matrix-elements-of-hath"><span class="section-number-4">1.6.2.</span> The Matrix Elements of \(\hat{H}\)</h4>
 <div class="outline-text-4" id="text-the-matrix-elements-of-hath">
 <ul class="org-ul">
 <li>The matrix elements of \(\hat{H}\) have certain meanings</li>
@@ -1182,7 +1189,7 @@ state \(\ket{n}\)</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="orgd878139">
+<div class="xca" id="org39c6667">
 <p>
 Consider the computational molecule of Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a>.
 </p>
@@ -1323,7 +1330,7 @@ mechanics convention of Equation (<a href="eq:sigmayz">eq:sigmayz</a>).
 </div>
 
 <div id="outline-container-the-ground-state" class="outline-4">
-<h4 id="the-ground-state"><span class="section-number-4">1.5.3.</span> The Ground State</h4>
+<h4 id="the-ground-state"><span class="section-number-4">1.6.3.</span> The Ground State</h4>
 <div class="outline-text-4" id="text-the-ground-state">
 <ul class="org-ul">
 <li>The physics of the real world dictate that there is a <b>lowest
@@ -1346,7 +1353,7 @@ state energy \(E_{0}\) or \(E_{1}\) is called the <b>ground state</b>.</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="org0aecba2">
+<div class="xca" id="org0ada19e">
 <p>
 Calculate the ground state of the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> by hand.
 </p>
@@ -1447,7 +1454,7 @@ convention of Equation (<a href="eq:sigmayz">eq:sigmayz</a>) for
 </div>
 
 <div id="outline-container-expectation-values" class="outline-4">
-<h4 id="expectation-values"><span class="section-number-4">1.5.4.</span> Expectation Values</h4>
+<h4 id="expectation-values"><span class="section-number-4">1.6.4.</span> Expectation Values</h4>
 <div class="outline-text-4" id="text-expectation-values">
 <ul class="org-ul">
 <li><p>
@@ -1557,7 +1564,7 @@ simply the expectation value of \(\mathbf{Q}\)</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="org793d51d">
+<div class="xca" id="org090c3c4">
 <p>
 Calculate \(\braket{\mathbf{Z}}\) for the following wave functions:
 </p>
@@ -1673,9 +1680,9 @@ the <b>cell polarization</b></li>
 </div>
 
 <ol class="org-ol">
-<li><a id="org974eadc"></a>Calculate the Ground State&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-5-4-1">
-<div class="xca" id="org6d10cfe">
+<li><a id="orgba3b526"></a>Calculate the Ground State&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-4-1">
+<div class="xca" id="orgffc692d">
 <p>
 Calculate the (normalized) ground state, \(\ket{\psi_{0}^{\prime}}\) of
 the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> using Python. Let
@@ -1792,7 +1799,7 @@ plt.savefig(fname)
 
 
 
-<div id="org18efd79" class="figure">
+<div id="org7ae7946" class="figure">
 <p><img src="./img/DrivenCellPython.png" alt="DrivenCellPython.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>We compare the hand (analyitic) calculation of the ground state polarization [see Equation (<a href="eq:NormalizedGroundState">eq:NormalizedGroundState</a>)] \(P\) to a numeric calculation of the ground state polarization. The two results agree nicely. <a href="fig:Cell-Cell-Response-Python">fig:Cell-Cell-Response-Python</a></p>
@@ -1825,8 +1832,8 @@ circuit</li>
 </li>
 
 
-<li><a id="org890f849"></a>Functionalized Calculation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-5-4-2">
+<li><a id="org60bd169"></a>Functionalized Calculation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-4-2">
 <p>
 We will actually do this again, but this time using more concise
 code. We can do this by using functions and classes. Functions are
@@ -1942,7 +1949,7 @@ plt.savefig(fname)
 </div>
 
 
-<div id="orgf38ffae" class="figure">
+<div id="orgd66fff1" class="figure">
 <p><img src="./img/DrivenCellPython_functional.png" alt="DrivenCellPython_functional.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Our functionalized code returns the same output as before.</p>
@@ -1950,8 +1957,8 @@ plt.savefig(fname)
 </div>
 </li>
 
-<li><a id="orga5b2806"></a>Functionalized Calculation with Visuals&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-5-4-3">
+<li><a id="orgc072414"></a>Functionalized Calculation with Visuals&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-4-3">
 <ul class="org-ul">
 <li>Now we'll repeat this exercise again, but we'll make one small&#x2013;but
 very important&#x2013;improvement: we will add annotations to the plot
@@ -2085,13 +2092,13 @@ Very importantly, we have added a visual that helps the reader
 </p>
 
 
-<div id="org20a8fa0" class="figure">
+<div id="org76d7c80" class="figure">
 <p><img src="./img/BiasedCellPython_functional_annotated.png" alt="BiasedCellPython_functional_annotated.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>We've added annotations to the plot that help the reader interpret it. This is a small touch, but it very important.</p>
 </div>
 
-<div class="xca" id="org6162f21">
+<div class="xca" id="org71f2f64">
 <p>
 Repeat Exercise
 <a href="exer:MATLAB-QCA-GroundState-Isolated">exer:MATLAB-QCA-GroundState-Isolated</a>,
@@ -2111,9 +2118,9 @@ mechanics and quantum information processing.
 </div>
 </li>
 
-<li><a id="orgaaecdd0"></a>Driven DQD (Driver+Target System)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-5-4-4">
-<div class="xca" id="orgfa194ae">
+<li><a id="org249a5f5"></a>Driven DQD (Driver+Target System)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-4-4">
+<div class="xca" id="orgab33751">
 <p>
 In Exercises
 <a href="exer:PYTHON-QCA-GroundState-Isolated">exer:PYTHON-QCA-GroundState-Isolated</a>
@@ -2425,7 +2432,7 @@ plt.savefig(fname)
 
 
 
-<div id="org54397d4" class="figure">
+<div id="org867f73f" class="figure">
 <p><img src="./img/DrivenCellPython_functional_annotated.png" alt="DrivenCellPython_functional_annotated.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>We show the response \(P\) of a two-dot cell to a driving neighbor. The driver cell is shown with a blue mobile electron, and the target cell is shown with a red mobile electron. <a href="driven-dqd-cell-cell-response">driven-dqd-cell-cell-response</a></p>
@@ -2434,9 +2441,9 @@ plt.savefig(fname)
 </li>
 
 
-<li><a id="orgc45de04"></a>Kink Energy Exercise&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-5-4-5">
-<div class="xca" id="orgcfbfab8">
+<li><a id="org5a1cab5"></a>Kink Energy Exercise&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-6-4-5">
+<div class="xca" id="org3fc4977">
 <p>
 Determine the cost of a bit flip, given a fully-polarized driver.
 </p>
@@ -2491,7 +2498,7 @@ For a cell with \(a=1\;\text{nm}\), we calculate
 
 
 <div id="outline-container-quantum-information-processing" class="outline-3">
-<h3 id="quantum-information-processing"><span class="section-number-3">1.6.</span> Quantum Information Processing</h3>
+<h3 id="quantum-information-processing"><span class="section-number-3">1.7.</span> Quantum Information Processing</h3>
 <div class="outline-text-3" id="text-quantum-information-processing">
 <ul class="org-ul">
 <li>We've considered some operators now, from different contexts
@@ -2513,7 +2520,7 @@ transformations of a qubit</li>
 </div>
 
 <div id="outline-container-the-density-operator" class="outline-4">
-<h4 id="the-density-operator"><span class="section-number-4">1.6.1.</span> The Density Operator</h4>
+<h4 id="the-density-operator"><span class="section-number-4">1.7.1.</span> The Density Operator</h4>
 <div class="outline-text-4" id="text-the-density-operator">
 <ul class="org-ul">
 <li><p>
@@ -2541,7 +2548,7 @@ c_{1}c_{0}^{\ast} & c_{1}c_{1}^{\ast}
 </ul></li>
 </ul>
 
-<div class="xca" id="org3f2fd8f">
+<div class="xca" id="orgf012e24">
 <p>
 Write a Python function that converts a ket to a density operator.
 </p>
@@ -2683,7 +2690,7 @@ formalism as
  \end{equation}</li>
 </ul>
 
-<div class="xca" id="orgaa43185">
+<div class="xca" id="orga609607">
 <p>
 Write a Python functions to do the following:
 </p>
@@ -2875,7 +2882,7 @@ plt.close(<span style="color: #CC9393;">'all'</span>)
 </pre>
 </div>
 
-<pre class="example" id="org8c4b23a">
+<pre class="example" id="org69162e8">
 [[0.+0.j 0.-1.j]
  [0.+1.j 0.+0.j]]
 Bloch vector for ket 0: [0. 0. 1.]
@@ -2943,9 +2950,9 @@ rotation about the \(\hat{y}\) axis in the Bloch sphere</li>
 </div>
 
 <ol class="org-ol">
-<li><a id="org93b876d"></a>Exercise - Rotations about X&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-6-1-1">
-<div class="xca" id="org046cdce">
+<li><a id="org4359498"></a>Exercise - Rotations about X&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-7-1-1">
+<div class="xca" id="org7381cc3">
 <p>
 Perform and rotations of \(\ket{0}\) about the \(\hat{x}\) axis through
 the angles \(\pi/4\), \(\pi/2\), \(3\pi/4\), \(\pi\), \(5\pi/4\), and
@@ -3181,7 +3188,7 @@ plt.close(<span style="color: #CC9393;">'all'</span>)
 <p>
 \(\mathbf{R}_{x}\left(\theta\right)\) or
 \(\mathbf{R}_{z}\left(\theta\right)\).
-<a id="orgbf5a948"></a>
+<a id="org4bb01b2"></a>
 </p>
 </div>
 
@@ -3233,9 +3240,9 @@ is a single-qubit operator.
 </div>
 </li>
 
-<li><a id="org6935953"></a>Exercise: Bloch Sphere, rotations about arbitrary axes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
-<div class="outline-text-5" id="text-1-6-1-2">
-<div class="xca" id="org95411bc">
+<li><a id="org27f8973"></a>Exercise: Bloch Sphere, rotations about arbitrary axes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<div class="outline-text-5" id="text-1-7-1-2">
+<div class="xca" id="orgd26efc4">
 <p>
 Find \(\hat{\mathbf{n}}\) to perform rotations about the following axes:
 </p>
@@ -3334,14 +3341,14 @@ about \(\hat{z}\).
 </div>
 
 <div id="outline-container-the-time-dependent-schrödinger-equation" class="outline-3">
-<h3 id="the-time-dependent-schrödinger-equation"><span class="section-number-3">1.7.</span> The Time-dependent Schrödinger Equation</h3>
+<h3 id="the-time-dependent-schrödinger-equation"><span class="section-number-3">1.8.</span> The Time-dependent Schrödinger Equation</h3>
 <div class="outline-text-3" id="text-the-time-dependent-schrödinger-equation">
 <ul class="org-ul">
 <li>Here, we consider an example of the time-dependent Schrödinger
 equation from Equation (<a href="eq:TDSE">eq:TDSE</a>)</li>
 </ul>
 
-<div class="xca" id="org31fbc03">
+<div class="xca" id="org7e2c36a">
 <p>
 Find \(\ket{\psi\left(t\right)}\) for a QCA cell prepared in state
 \(\ket{\psi\left(0\right)}=1\) if \(\gamma=50\;\text{meV}\) and
@@ -3404,7 +3411,7 @@ We see that the system will oscillate between the
 computational basis states in what is called a Rabi oscillation.
 </p>
 
-<div class="xca" id="org4108f7b">
+<div class="xca" id="org63cc461">
 <p>
 Make a Python script that calculates and plots a lone cell's
 polarization as a function of time if \(\gamma=50\;\text{meV}\) and
@@ -3504,7 +3511,7 @@ plt.savefig(figname)
 
 
 
-<div id="orgc550222" class="figure">
+<div id="org7e86e2a" class="figure">
 <p><img src="./img/polarization-Rabi-osc.png" alt="polarization-Rabi-osc.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>The polarization of an isolated two-dot cell with bias \(\Delta = 0\) and tunneling energy \(\gamma\) oscillates with period \(T_0 = \pi \hbar / \gamma\). <a href="dqd-polarization-rabi-osc">dqd-polarization-rabi-osc</a></p>
@@ -3513,7 +3520,7 @@ plt.savefig(figname)
 </div>
 
 <div id="outline-container-additional-resources" class="outline-3">
-<h3 id="additional-resources"><span class="section-number-3">1.8.</span> Additional Resources</h3>
+<h3 id="additional-resources"><span class="section-number-3">1.9.</span> Additional Resources</h3>
 <div class="outline-text-3" id="text-additional-resources">
 <ul class="org-ul">
 <li>If you prefer videos, I have the following YouTube tutorials:
@@ -3549,7 +3556,7 @@ Dots in MATLAB</a></li>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-02-27 Thu 13:25</p>
+<p class="date">Created: 2025-02-27 Thu 13:55</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
