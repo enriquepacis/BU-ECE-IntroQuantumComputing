@@ -65,3 +65,6 @@ export ZSH_ENV_VAR="SomeValue"
 ** Appendix
 
 [[./AppendixQiskitIBMSimRun.html][Qiskit + IBM Simulations and Calculations]]
+
+[[./AppendixExBellCircuits.html][Qiskit + IBM Example: Bell Circuits]]
+
