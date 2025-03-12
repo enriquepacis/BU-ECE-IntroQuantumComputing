@@ -643,6 +643,7 @@ We now pass two PUBs, each with a different circuit:
     
 
 * ~qiskit_aer~ Primitives
+#+include: "./back-to-index.org"
 
 *Primitives* provide an interface to quantum processing units (QPUs, actual
 quantum hardware). Version 2 (V2) Primitives are the current allowed interface
@@ -1105,6 +1106,7 @@ A next step will be to perform similar computations on actual quantum hardware,
 and then to compare the results.
 
 * Bell Circuits on IBM Quantum Hardware
+#+include: "./back-to-index.org"
 
 To run the same Bell circuits on IBM hardware, we require the
 ~qiskit_ibm_runtime~ package. For an equivalent to our previous simulation of
@@ -1574,6 +1576,7 @@ Bell circuit 1:
 [[./img/bell_ckt_results01_compare.png]]
 
 * Bell Circuits on Simulated Hardware
+#+include: "./back-to-index.org"
 
 ** Overview
 If you are unable to access IBM Quantum, you may wish to use a fake

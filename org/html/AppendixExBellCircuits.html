@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-03-11 Tue 22:46 -->
+<!-- 2025-03-11 Tue 23:26 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Example: Bell Circuits</title>
@@ -60,48 +60,48 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7ea259d">1. <code>qiskit_aer</code> Primitives</a>
+<li><a href="#org3ffbf49">1. <code>qiskit_aer</code> Primitives</a>
 <ul>
-<li><a href="#org2463f83">1.1. Example: Bell Circuits and the <code>SamplerV2</code> Class</a>
+<li><a href="#orga7670a9">1.1. Example: Bell Circuits and the <code>SamplerV2</code> Class</a>
 <ul>
-<li><a href="#org44122b9">1.1.1. Imports</a></li>
-<li><a href="#org2f9141c">1.1.2. Bell Circuits</a></li>
-<li><a href="#org63c8845">1.1.3. Transpilation</a></li>
-<li><a href="#orgddf0c1e">1.1.4. Forming PUBs</a></li>
-<li><a href="#org98ed83a">1.1.5. Simulating the Circuits</a></li>
-<li><a href="#orgd4ffca1">1.1.6. Accessing Results</a></li>
+<li><a href="#org17dd057">1.1.1. Imports</a></li>
+<li><a href="#orgc0eb1ab">1.1.2. Bell Circuits</a></li>
+<li><a href="#org3b9e472">1.1.3. Transpilation</a></li>
+<li><a href="#org885f738">1.1.4. Forming PUBs</a></li>
+<li><a href="#org0574619">1.1.5. Simulating the Circuits</a></li>
+<li><a href="#orgd55dea9">1.1.6. Accessing Results</a></li>
 </ul>
 </li>
-<li><a href="#org1d4b6d0">1.2. Summary</a></li>
+<li><a href="#orgc44658c">1.2. Summary</a></li>
 </ul>
 </li>
-<li><a href="#org5d541b6">2. Bell Circuits on IBM Quantum Hardware</a>
+<li><a href="#org70e4779">2. Bell Circuits on IBM Quantum Hardware</a>
 <ul>
-<li><a href="#org7e74d5e">2.1. Imports</a></li>
-<li><a href="#org4cb6712">2.2. The Bell Circuits</a></li>
-<li><a href="#orgf0e3c61">2.3. Transpilation</a>
+<li><a href="#org9af1bc2">2.1. Imports</a></li>
+<li><a href="#org09520bf">2.2. The Bell Circuits</a></li>
+<li><a href="#orgc82e814">2.3. Transpilation</a>
 <ul>
-<li><a href="#org55453aa">2.3.1. Overview</a></li>
-<li><a href="#orgb9100de">2.3.2. Getting Your IBM Quantum API Token</a></li>
-<li><a href="#org3b4d83e">2.3.3. The getpass Package</a></li>
-<li><a href="#orgec7ff29">2.3.4. My Approach to Loading My Token (not recommended)</a></li>
-<li><a href="#org02d53aa">2.3.5. Establish a Connection to IBM Quantum</a></li>
-<li><a href="#orgd70d80d">2.3.6. Transpilation</a></li>
-<li><a href="#org83d6eee">2.3.7. Forming PUBs</a></li>
+<li><a href="#org12cb3e2">2.3.1. Overview</a></li>
+<li><a href="#org593266d">2.3.2. Getting Your IBM Quantum API Token</a></li>
+<li><a href="#org3ceae71">2.3.3. The getpass Package</a></li>
+<li><a href="#org882c296">2.3.4. My Approach to Loading My Token (not recommended)</a></li>
+<li><a href="#org49c30e2">2.3.5. Establish a Connection to IBM Quantum</a></li>
+<li><a href="#org69b2a38">2.3.6. Transpilation</a></li>
+<li><a href="#org68a0e76">2.3.7. Forming PUBs</a></li>
 </ul>
 </li>
-<li><a href="#org803d63d">2.4. Running the Circuits</a></li>
-<li><a href="#org7212ecb">2.5. Accessing the Results</a></li>
+<li><a href="#orgc5faa8b">2.4. Running the Circuits</a></li>
+<li><a href="#org7fba42d">2.5. Accessing the Results</a></li>
 </ul>
 </li>
-<li><a href="#orga0f9350">3. Bell Circuits on Simulated Hardware</a>
+<li><a href="#org35c42cf">3. Bell Circuits on Simulated Hardware</a>
 <ul>
-<li><a href="#org0af9b3d">3.1. Overview</a></li>
-<li><a href="#org3b38d6e">3.2. Instantiate a Fake Backend</a></li>
-<li><a href="#orge75b9f3">3.3. Transpilation</a></li>
-<li><a href="#org2370147">3.4. Forming PUBs</a></li>
-<li><a href="#orge5959a0">3.5. Running the Circuits</a></li>
-<li><a href="#orgd92a9e4">3.6. Accessing the Results</a></li>
+<li><a href="#org482821f">3.1. Overview</a></li>
+<li><a href="#org4834c5b">3.2. Instantiate a Fake Backend</a></li>
+<li><a href="#org792afaf">3.3. Transpilation</a></li>
+<li><a href="#org904a3ea">3.4. Forming PUBs</a></li>
+<li><a href="#org921146c">3.5. Running the Circuits</a></li>
+<li><a href="#orgb34527c">3.6. Accessing the Results</a></li>
 </ul>
 </li>
 </ul>
@@ -109,9 +109,13 @@
 </div>
 
 
-<div id="outline-container-org7ea259d" class="outline-2">
-<h2 id="org7ea259d"><span class="section-number-2">1.</span> <code>qiskit_aer</code> Primitives</h2>
+<div id="outline-container-org3ffbf49" class="outline-2">
+<h2 id="org3ffbf49"><span class="section-number-2">1.</span> <code>qiskit_aer</code> Primitives</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+<i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
+</p>
+
 <p>
 <b>Primitives</b> provide an interface to quantum processing units (QPUs, actual
 quantum hardware). Version 2 (V2) Primitives are the current allowed interface
@@ -136,8 +140,8 @@ We demonstrate the use of <code>qiskit_aer</code> primitives.
 </p>
 </div>
 
-<div id="outline-container-org2463f83" class="outline-3">
-<h3 id="org2463f83"><span class="section-number-3">1.1.</span> Example: Bell Circuits and the <code>SamplerV2</code> Class</h3>
+<div id="outline-container-orga7670a9" class="outline-3">
+<h3 id="orga7670a9"><span class="section-number-3">1.1.</span> Example: Bell Circuits and the <code>SamplerV2</code> Class</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 Bell circuits are used to create entangled pairs of qubits. We will simulate two
@@ -146,8 +150,8 @@ of the four Bell circuits using the <code>SamplerV2</code> class provided in
 </p>
 </div>
 
-<div id="outline-container-org44122b9" class="outline-4">
-<h4 id="org44122b9"><span class="section-number-4">1.1.1.</span> Imports</h4>
+<div id="outline-container-org17dd057" class="outline-4">
+<h4 id="org17dd057"><span class="section-number-4">1.1.1.</span> Imports</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
@@ -165,7 +169,7 @@ Imports complete at 2025-03-11 21:33:03.353820
 </pre>
 
 
-<div class="note" id="org8a42263">
+<div class="note" id="orga1593e1">
 <p>
 <b>Note</b>
 </p>
@@ -186,12 +190,12 @@ properly.
 </div>
 </div>
 
-<div id="outline-container-org2f9141c" class="outline-4">
-<h4 id="org2f9141c"><span class="section-number-4">1.1.2.</span> Bell Circuits</h4>
+<div id="outline-container-orgc0eb1ab" class="outline-4">
+<h4 id="orgc0eb1ab"><span class="section-number-4">1.1.2.</span> Bell Circuits</h4>
 <div class="outline-text-4" id="text-1-1-2">
 </div>
 <ol class="org-ol">
-<li><a id="org01f2ed9"></a>First Case<br />
+<li><a id="org4fec713"></a>First Case<br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
 Not only must we form a Bell circuit, but we must also add measurement
@@ -222,7 +226,7 @@ meas: 2/══════════════╩══╩═
 
 
 
-<div id="orgcb50f8c" class="figure">
+<div id="org619d767" class="figure">
 <p><img src="./img/Bell00ckt.png" alt="Bell00ckt.png" width="380px" />
 </p>
 <p><span class="figure-number">Figure 1: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).</p>
@@ -230,7 +234,7 @@ meas: 2/══════════════╩══╩═
 </div>
 </li>
 
-<li><a id="org986e49e"></a>A Second Circuit<br />
+<li><a id="org48d0622"></a>A Second Circuit<br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #DFAF8F;">Bell01</span> = QuantumCircuit(2)
@@ -261,7 +265,7 @@ Code block complete at 2025-03-11 21:34:11.983964
 
 
 
-<div id="org2e19a71" class="figure">
+<div id="org27260d0" class="figure">
 <p><img src="./img/Bell01ckt.png" alt="Bell01ckt.png" width="380px" />
 </p>
 <p><span class="figure-number">Figure 2: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).</p>
@@ -271,7 +275,7 @@ Code block complete at 2025-03-11 21:34:11.983964
 
 
 
-<li><a id="org928c4da"></a>Join Circuits into a List<br />
+<li><a id="org14dd246"></a>Join Circuits into a List<br />
 <div class="outline-text-5" id="text-1-1-2-3">
 <p>
 Now, we form a list of circuits.
@@ -293,8 +297,8 @@ Code block complete at 2025-03-11 21:34:29.318626
 </ol>
 </div>
 
-<div id="outline-container-org63c8845" class="outline-4">
-<h4 id="org63c8845"><span class="section-number-4">1.1.3.</span> Transpilation</h4>
+<div id="outline-container-org3b9e472" class="outline-4">
+<h4 id="org3b9e472"><span class="section-number-4">1.1.3.</span> Transpilation</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
 We can now transpile our list of circuits. To <b>transpile</b> a circuit is to form
@@ -375,7 +379,7 @@ We may wish to compare our transpiled circuit to our original circuit:
 </pre>
 </div>
 
-<pre class="example" id="org0ddce87">
+<pre class="example" id="org2aadc1c">
 ======================================================================
 idx = 0
 Original
@@ -422,8 +426,8 @@ circuit may look quite different from the origial circuit you designed.
 </div>
 </div>
 
-<div id="outline-container-orgddf0c1e" class="outline-4">
-<h4 id="orgddf0c1e"><span class="section-number-4">1.1.4.</span> Forming PUBs</h4>
+<div id="outline-container-org885f738" class="outline-4">
+<h4 id="org885f738"><span class="section-number-4">1.1.4.</span> Forming PUBs</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
 Now that we have transpiled circuits that we can run on a simulator&#x2013;or, if
@@ -449,8 +453,8 @@ Your list of PUBs contains 2 PUBs.
 </div>
 </div>
 
-<div id="outline-container-org98ed83a" class="outline-4">
-<h4 id="org98ed83a"><span class="section-number-4">1.1.5.</span> Simulating the Circuits</h4>
+<div id="outline-container-org0574619" class="outline-4">
+<h4 id="org0574619"><span class="section-number-4">1.1.5.</span> Simulating the Circuits</h4>
 <div class="outline-text-4" id="text-1-1-5">
 <p>
 Here, we will use <code>qiskit_aer.primitives.SamplerV2()</code> as our simulation
@@ -500,8 +504,8 @@ Simulated the SamplerV2 at 2025-03-11 21:35:26.778244
 </div>
 </div>
 
-<div id="outline-container-orgd4ffca1" class="outline-4">
-<h4 id="orgd4ffca1"><span class="section-number-4">1.1.6.</span> Accessing Results</h4>
+<div id="outline-container-orgd55dea9" class="outline-4">
+<h4 id="orgd55dea9"><span class="section-number-4">1.1.6.</span> Accessing Results</h4>
 <div class="outline-text-4" id="text-1-1-6">
 <p>
 We can extract results from our job using its <code>.result()</code> method:
@@ -562,7 +566,7 @@ histogram.
 A histgoram for the results of Bell circuit 0 are shown here:
 </p>
 
-<div id="org1a281aa" class="figure">
+<div id="orgf77b99d" class="figure">
 <p><img src="./img/bell_ckt_results00.png" alt="bell_ckt_results00.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 3: </span>The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|00 \right\rangle + \left|11 \right\rangle\right)/\sqrt{2}\).</p>
@@ -573,7 +577,7 @@ A histgoram for the results of Bell circuit 0 are shown here:
 A similar histogram for measurements on Bell circuit 1 are shown here:
 </p>
 
-<div id="org0ff7a71" class="figure">
+<div id="org5eaea30" class="figure">
 <p><img src="./img/bell_ckt_results01.png" alt="bell_ckt_results01.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 4: </span>The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|01 \right\rangle + \left|10 \right\rangle\right)/\sqrt{2}\).</p>
@@ -582,8 +586,8 @@ A similar histogram for measurements on Bell circuit 1 are shown here:
 </div>
 </div>
 
-<div id="outline-container-org1d4b6d0" class="outline-3">
-<h3 id="org1d4b6d0"><span class="section-number-3">1.2.</span> Summary</h3>
+<div id="outline-container-orgc44658c" class="outline-3">
+<h3 id="orgc44658c"><span class="section-number-3">1.2.</span> Summary</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 We have used a <code>qiskit_aer.primitives.SamplerV2</code> object to perform noise-free
@@ -598,9 +602,13 @@ and then to compare the results.
 </div>
 </div>
 
-<div id="outline-container-org5d541b6" class="outline-2">
-<h2 id="org5d541b6"><span class="section-number-2">2.</span> Bell Circuits on IBM Quantum Hardware</h2>
+<div id="outline-container-org70e4779" class="outline-2">
+<h2 id="org70e4779"><span class="section-number-2">2.</span> Bell Circuits on IBM Quantum Hardware</h2>
 <div class="outline-text-2" id="text-2">
+<p>
+<i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
+</p>
+
 <p>
 To run the same Bell circuits on IBM hardware, we require the
 <code>qiskit_ibm_runtime</code> package. For an equivalent to our previous simulation of
@@ -608,8 +616,8 @@ Bell circuits, we will also use the <code>SamplerV2</code> class.
 </p>
 </div>
 
-<div id="outline-container-org7e74d5e" class="outline-3">
-<h3 id="org7e74d5e"><span class="section-number-3">2.1.</span> Imports</h3>
+<div id="outline-container-org9af1bc2" class="outline-3">
+<h3 id="org9af1bc2"><span class="section-number-3">2.1.</span> Imports</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Let's begin by importing some tools we need from <code>qiskit_ibm_runtime</code>. We will
@@ -631,8 +639,8 @@ Code block complete at 2025-03-11 21:38:10.249899
 </div>
 </div>
 
-<div id="outline-container-org4cb6712" class="outline-3">
-<h3 id="org4cb6712"><span class="section-number-3">2.2.</span> The Bell Circuits</h3>
+<div id="outline-container-org09520bf" class="outline-3">
+<h3 id="org09520bf"><span class="section-number-3">2.2.</span> The Bell Circuits</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 We do not recreate the Bell circuits here, since we already have created them.
@@ -640,14 +648,14 @@ Instead, we show them here once again.
 </p>
 
 
-<div id="org73ca9de" class="figure">
+<div id="org0b1d48a" class="figure">
 <p><img src="./img/Bell00ckt.png" alt="Bell00ckt.png" width="380px" />
 </p>
 <p><span class="figure-number">Figure 5: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).</p>
 </div>
 
 
-<div id="orgfa0f12a" class="figure">
+<div id="org2bd222b" class="figure">
 <p><img src="./img/Bell01ckt.png" alt="Bell01ckt.png" width="380px" />
 </p>
 <p><span class="figure-number">Figure 6: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).</p>
@@ -655,12 +663,12 @@ Instead, we show them here once again.
 </div>
 </div>
 
-<div id="outline-container-orgf0e3c61" class="outline-3">
-<h3 id="orgf0e3c61"><span class="section-number-3">2.3.</span> Transpilation</h3>
+<div id="outline-container-orgc82e814" class="outline-3">
+<h3 id="orgc82e814"><span class="section-number-3">2.3.</span> Transpilation</h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org55453aa" class="outline-4">
-<h4 id="org55453aa"><span class="section-number-4">2.3.1.</span> Overview</h4>
+<div id="outline-container-org12cb3e2" class="outline-4">
+<h4 id="org12cb3e2"><span class="section-number-4">2.3.1.</span> Overview</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 To transpile our circuits, we first require a backend, which is the target ISA
@@ -683,8 +691,8 @@ We will take the following steps:
 </div>
 </div>
 
-<div id="outline-container-orgb9100de" class="outline-4">
-<h4 id="orgb9100de"><span class="section-number-4">2.3.2.</span> Getting Your IBM Quantum API Token</h4>
+<div id="outline-container-org593266d" class="outline-4">
+<h4 id="org593266d"><span class="section-number-4">2.3.2.</span> Getting Your IBM Quantum API Token</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <ol class="org-ol">
 <li>If you don't already have one, use your university e-mail account
@@ -698,7 +706,7 @@ In the upper right, you'll see a box where you can view or copy your
 IBM Quantum API token
 </p>
 
-<div id="org66e47dc" class="figure">
+<div id="orga9076ee" class="figure">
 <p><img src="./img/IBMQuantumDashboard.png" alt="IBMQuantumDashboard.png" width="360px" />
 </p>
 </div></li>
@@ -708,7 +716,7 @@ Click the "Account" button (by default, it looks like an anonymized
 profile pic). This brings up your <i>Profile Settings</i>
 </p>
 
-<div id="orga107e8f" class="figure">
+<div id="org9d459ff" class="figure">
 <p><img src="./img/IBMQuantumAccountIcon.png" alt="IBMQuantumAccountIcon.png" width="360px" />
 </p>
 </div>
@@ -751,8 +759,8 @@ Code block complete at 2025-03-11 21:38:52.661463
 </div>
 
 
-<div id="outline-container-org3b4d83e" class="outline-4">
-<h4 id="org3b4d83e"><span class="section-number-4">2.3.3.</span> The <a href="https://docs.python.org/3/library/getpass.html">getpass</a> Package</h4>
+<div id="outline-container-org3ceae71" class="outline-4">
+<h4 id="org3ceae71"><span class="section-number-4">2.3.3.</span> The <a href="https://docs.python.org/3/library/getpass.html">getpass</a> Package</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <ul class="org-ul">
 <li>This is a nice Python package that is useful in Jupyter notebooks</li>
@@ -774,10 +782,10 @@ password/token/API key.</li>
 </div>
 </div>
 
-<div id="outline-container-orgec7ff29" class="outline-4">
-<h4 id="orgec7ff29"><span class="section-number-4">2.3.4.</span> My Approach to Loading My Token (not recommended)</h4>
+<div id="outline-container-org882c296" class="outline-4">
+<h4 id="org882c296"><span class="section-number-4">2.3.4.</span> My Approach to Loading My Token (not recommended)</h4>
 <div class="outline-text-4" id="text-2-3-4">
-<div class="note" id="org544010d">
+<div class="note" id="orgbcb2315">
 <p>
 If you are using a Jupyter Lab notebook, please ignore this section. This is
 useful for me, since I'm coding in Emacs Org mode.
@@ -816,8 +824,8 @@ Loaded IBM Quantum token: 2025-03-11 21:39:16.412666
 </ul>
 </div>
 </div>
-<div id="outline-container-org02d53aa" class="outline-4">
-<h4 id="org02d53aa"><span class="section-number-4">2.3.5.</span> Establish a Connection to IBM Quantum</h4>
+<div id="outline-container-org49c30e2" class="outline-4">
+<h4 id="org49c30e2"><span class="section-number-4">2.3.5.</span> Establish a Connection to IBM Quantum</h4>
 <div class="outline-text-4" id="text-2-3-5">
 <ul class="org-ul">
 <li><p>
@@ -892,8 +900,8 @@ backend.</li>
 </div>
 </div>
 
-<div id="outline-container-orgd70d80d" class="outline-4">
-<h4 id="orgd70d80d"><span class="section-number-4">2.3.6.</span> Transpilation</h4>
+<div id="outline-container-org69b2a38" class="outline-4">
+<h4 id="org69b2a38"><span class="section-number-4">2.3.6.</span> Transpilation</h4>
 <div class="outline-text-4" id="text-2-3-6">
 <p>
 Now that we have a backend in mind, we can transpile our circuits for the
@@ -937,14 +945,14 @@ circuits:
 </div>
 
 
-<div id="org1068c5a" class="figure">
+<div id="org2efdfff" class="figure">
 <p><img src="./img/BellCkt0_qpu.png" alt="BellCkt0_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 7: </span>The first Bell circuit is transpiled for the selected backend, <code>backend_qpu</code>.</p>
 </div>
 
 
-<div id="orge157407" class="figure">
+<div id="org83cfa2e" class="figure">
 <p><img src="./img/BellCkt1_qpu.png" alt="BellCkt1_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 8: </span>The first Bell circuit is transpiled for the selected backend, <code>backend_qpu</code>.</p>
@@ -964,7 +972,7 @@ We may wish to compare our transpiled circuit to our original circuit:
 </pre>
 </div>
 
-<pre class="example" id="orgd3ddbe8">
+<pre class="example" id="orgdcf0fc4">
 ======================================================================
 idx = 0
 Original circuit design:
@@ -996,8 +1004,8 @@ the keyword <code>idle_qubits=False</code> in the <code>draw()</code> method for
 </div>
 </div>
 
-<div id="outline-container-org83d6eee" class="outline-4">
-<h4 id="org83d6eee"><span class="section-number-4">2.3.7.</span> Forming PUBs</h4>
+<div id="outline-container-org68a0e76" class="outline-4">
+<h4 id="org68a0e76"><span class="section-number-4">2.3.7.</span> Forming PUBs</h4>
 <div class="outline-text-4" id="text-2-3-7">
 <p>
 Now that we have transpiled circuits for the QPU, we must form a list of PUBs:
@@ -1023,8 +1031,8 @@ Next, we will run our jobs by submittin the PUBs.
 </div>
 </div>
 
-<div id="outline-container-org803d63d" class="outline-3">
-<h3 id="org803d63d"><span class="section-number-3">2.4.</span> Running the Circuits</h3>
+<div id="outline-container-orgc5faa8b" class="outline-3">
+<h3 id="orgc5faa8b"><span class="section-number-3">2.4.</span> Running the Circuits</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 Here, we will use <code>qiskit_aer.primitives.SamplerV2()</code> as our simulation
@@ -1095,8 +1103,8 @@ The status of our job is: DONE
 </div>
 </div>
 
-<div id="outline-container-org7212ecb" class="outline-3">
-<h3 id="org7212ecb"><span class="section-number-3">2.5.</span> Accessing the Results</h3>
+<div id="outline-container-org7fba42d" class="outline-3">
+<h3 id="org7fba42d"><span class="section-number-3">2.5.</span> Accessing the Results</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 We can extract results from our job using its <code>.result()</code> method:
@@ -1161,7 +1169,7 @@ the same plot:
 </div>
 
 
-<div id="orgcd58af7" class="figure">
+<div id="orgb87c0c1" class="figure">
 <p><img src="./img/bell_ckt_results00_compare.png" alt="bell_ckt_results00_compare.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 9: </span>QPU results are compared with noise-free simulation results for Bell circuit 0.</p>
@@ -1172,7 +1180,7 @@ Bell circuit 1:
 </p>
 
 
-<div id="org65653b4" class="figure">
+<div id="org4324ea2" class="figure">
 <p><img src="./img/bell_ckt_results01_compare.png" alt="bell_ckt_results01_compare.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 10: </span>QPU results are compared with noise-free simulation results for Bell circuit 1.</p>
@@ -1181,12 +1189,16 @@ Bell circuit 1:
 </div>
 </div>
 
-<div id="outline-container-orga0f9350" class="outline-2">
-<h2 id="orga0f9350"><span class="section-number-2">3.</span> Bell Circuits on Simulated Hardware</h2>
+<div id="outline-container-org35c42cf" class="outline-2">
+<h2 id="org35c42cf"><span class="section-number-2">3.</span> Bell Circuits on Simulated Hardware</h2>
 <div class="outline-text-2" id="text-3">
+<p>
+<i>[Go back to <a href="./index.html">Table of Contents</a>]</i>
+</p>
 </div>
-<div id="outline-container-org0af9b3d" class="outline-3">
-<h3 id="org0af9b3d"><span class="section-number-3">3.1.</span> Overview</h3>
+
+<div id="outline-container-org482821f" class="outline-3">
+<h3 id="org482821f"><span class="section-number-3">3.1.</span> Overview</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 If you are unable to access IBM Quantum, you may wish to use a fake
@@ -1196,8 +1208,8 @@ mimic the behaviors of IBM Quantum systems from system snapshots.
 </div>
 </div>
 
-<div id="outline-container-org3b38d6e" class="outline-3">
-<h3 id="org3b38d6e"><span class="section-number-3">3.2.</span> Instantiate a Fake Backend</h3>
+<div id="outline-container-org4834c5b" class="outline-3">
+<h3 id="org4834c5b"><span class="section-number-3">3.2.</span> Instantiate a Fake Backend</h3>
 <div class="outline-text-3" id="text-3-2">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_ibm_runtime.fake_provider <span style="color: #F0DFAF; font-weight: bold;">import</span> FakeManilaV2
@@ -1215,8 +1227,8 @@ Code block complete at 2025-03-11 21:43:05.396416
 </div>
 </div>
 
-<div id="outline-container-orge75b9f3" class="outline-3">
-<h3 id="orge75b9f3"><span class="section-number-3">3.3.</span> Transpilation</h3>
+<div id="outline-container-org792afaf" class="outline-3">
+<h3 id="org792afaf"><span class="section-number-3">3.3.</span> Transpilation</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 We can now transpile our list of circuits. To <b>transpile</b> a circuit is to form
@@ -1291,7 +1303,7 @@ We may wish to compare our transpiled circuit to our original circuit:
 </pre>
 </div>
 
-<pre class="example" id="org1ed2f80">
+<pre class="example" id="org7cc6aa1">
 ======================================================================
 idx = 0
 Original
@@ -1353,8 +1365,8 @@ circuit may look quite different from the origial circuit you designed.
 </div>
 
 
-<div id="outline-container-org2370147" class="outline-3">
-<h3 id="org2370147"><span class="section-number-3">3.4.</span> Forming PUBs</h3>
+<div id="outline-container-org904a3ea" class="outline-3">
+<h3 id="org904a3ea"><span class="section-number-3">3.4.</span> Forming PUBs</h3>
 <div class="outline-text-3" id="text-3-4">
 <p>
 Now that we have transpiled circuits for the fake QPU, we must form a list of
@@ -1380,8 +1392,8 @@ Next, we will run our jobs by submitting the PUBs.
 </div>
 </div>
 
-<div id="outline-container-orge5959a0" class="outline-3">
-<h3 id="orge5959a0"><span class="section-number-3">3.5.</span> Running the Circuits</h3>
+<div id="outline-container-org921146c" class="outline-3">
+<h3 id="org921146c"><span class="section-number-3">3.5.</span> Running the Circuits</h3>
 <div class="outline-text-3" id="text-3-5">
 <p>
 Here, we will use <code>qiskit_aer.primitives.SamplerV2()</code> as our simulation
@@ -1428,8 +1440,8 @@ Submitted the fake QPU job at 2025-03-11 21:57:10.160899
 </div>
 
 
-<div id="outline-container-orgd92a9e4" class="outline-3">
-<h3 id="orgd92a9e4"><span class="section-number-3">3.6.</span> Accessing the Results</h3>
+<div id="outline-container-orgb34527c" class="outline-3">
+<h3 id="orgb34527c"><span class="section-number-3">3.6.</span> Accessing the Results</h3>
 <div class="outline-text-3" id="text-3-6">
 <p>
 We can extract results from our job using its <code>.result()</code> method:
@@ -1489,7 +1501,7 @@ simulation. To do this, we plot the results on the same plot:
 </div>
 
 
-<div id="org714ab04" class="figure">
+<div id="orgb02ab97" class="figure">
 <p><img src="./img/bell_ckt_results00_compare_nf_fake_qpu.png" alt="bell_ckt_results00_compare_nf_fake_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 11: </span>Fake QPU results are compared with noise-free simulation results for Bell circuit 0.</p>
@@ -1500,7 +1512,7 @@ For Bell circuit 1:
 </p>
 
 
-<div id="org2c6cb90" class="figure">
+<div id="org750ddb6" class="figure">
 <p><img src="./img/bell_ckt_results01_compare_nf_fake_qpu.png" alt="bell_ckt_results01_compare_nf_fake_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 12: </span>Fake QPU results are compared with noise-free simulation results for Bell circuit 1.</p>
@@ -1528,7 +1540,7 @@ Bell circuit 0:
 </p>
 
 
-<div id="org48a5390" class="figure">
+<div id="orgd7e8df8" class="figure">
 <p><img src="./img/bell_ckt_results00_compare_nf_fake_qpu_qpu.png" alt="bell_ckt_results00_compare_nf_fake_qpu_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 13: </span>A noise-free simulation is compared to a noisy simulation and an anctual QPU for Bell circuit 0.</p>
@@ -1539,7 +1551,7 @@ Bell circuit 1:
 </p>
 
 
-<div id="org4700d57" class="figure">
+<div id="org92c6ae1" class="figure">
 <p><img src="./img/bell_ckt_results01_compare_nf_fake_qpu_qpu.png" alt="bell_ckt_results01_compare_nf_fake_qpu_qpu.png" width="480px" />
 </p>
 <p><span class="figure-number">Figure 14: </span>A noise-free simulation is compared to a noisy simulation and an anctual QPU for Bell circuit 1.</p>
@@ -1550,7 +1562,7 @@ Bell circuit 1:
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-03-11 Tue 22:46</p>
+<p class="date">Created: 2025-03-11 Tue 23:26</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
