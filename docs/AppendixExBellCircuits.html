@@ -1,0 +1,1837 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-03-11 Tue 20:32 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Example: Bell Circuits</title>
+<meta name="author" content="Dr. E.P. Blair" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/bigblow.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/bigblow_theme/css/hideshow.css"/>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery-ui-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.localscroll-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/jquery.zclip.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Example: Bell Circuits</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org0f55a5e">1. Qiskit Primitives</a>
+<ul>
+<li><a href="#orgb42cfc0">1.1. Overview</a></li>
+<li><a href="#org6441a7d">1.2. Primitives</a>
+<ul>
+<li><a href="#orge672a71">1.2.1. Imports</a></li>
+<li><a href="#org74c4710">1.2.2. Build a Circuit</a></li>
+<li><a href="#org55aac4c">1.2.3. Run Simulations</a></li>
+<li><a href="#org849b7a5">1.2.4. Extracting Results</a></li>
+</ul>
+</li>
+<li><a href="#orge1cb0fb">1.3. Example: A Parametrized Circuit</a>
+<ul>
+<li><a href="#orgef5ac14">1.3.1. <code>BasicSimulator</code> Usage</a></li>
+<li><a href="#org25e1b1e">1.3.2. <code>StatevectorSampler</code> Usage</a></li>
+<li><a href="#org81e72c2">1.3.3. <code>StatevectorSampler</code> Usage with Multiple PUBs</a></li>
+</ul>
+</li>
+<li><a href="#org8a3fa43">1.4. The Estimator Primitive</a>
+<ul>
+<li><a href="#orgd9394f8">1.4.1. Observables</a></li>
+<li><a href="#org24a036e">1.4.2. Run the Estimator</a></li>
+<li><a href="#orgb681016">1.4.3. Extract Expectation Values</a></li>
+</ul>
+</li>
+<li><a href="#orga04dfef">1.5. Qiskit Estimator Example</a>
+<ul>
+<li><a href="#org104c43c">1.5.1. Build an Operator</a></li>
+<li><a href="#org1db358d">1.5.2. Instantiate a <code>StatevectorEstimator</code></a></li>
+<li><a href="#orga4a507d">1.5.3. Transpile the Circuit</a></li>
+<li><a href="#orgd647e6d">1.5.4. Run the Estimator</a></li>
+<li><a href="#org845d16d">1.5.5. Extract Results</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org0980d72">2. <code>qiskit_aer</code> Primitives</a>
+<ul>
+<li><a href="#org2354dde">2.1. Example: Bell Circuits and the <code>SamplerV2</code> Class</a>
+<ul>
+<li><a href="#orgfe124f3">2.1.1. Imports</a></li>
+<li><a href="#org1bc0946">2.1.2. Bell Circuits</a></li>
+<li><a href="#org8ed466a">2.1.3. Transpilation</a></li>
+<li><a href="#org4ffa4ea">2.1.4. Forming PUBs</a></li>
+<li><a href="#orge8533ab">2.1.5. Simulating the Circuits</a></li>
+<li><a href="#orgc8fe883">2.1.6. Accessing Results</a></li>
+</ul>
+</li>
+<li><a href="#orgbfd8d9d">2.2. Summary</a></li>
+</ul>
+</li>
+<li><a href="#org22754a0">3. Bell Circuits on IBM Quantum Hardware</a>
+<ul>
+<li><a href="#org4b3cef7">3.1. Imports</a></li>
+<li><a href="#org3532ab6">3.2. The Bell Circuits</a></li>
+<li><a href="#orgbaedc4a">3.3. Transpilation</a>
+<ul>
+<li><a href="#orgcaeae51">3.3.1. Getting Your IBM Quantum API Token</a></li>
+<li><a href="#org14e645a">3.3.2. The getpass Package</a></li>
+<li><a href="#org3d9be03">3.3.3. My Approach to Loading My Token (not recommended)</a></li>
+<li><a href="#org2dda7b9">3.3.4. Establish a Connection to IBM Quantum</a></li>
+<li><a href="#org34159d4">3.3.5. Transpilation</a></li>
+<li><a href="#org6e766c3">3.3.6. Forming PUBs</a></li>
+</ul>
+</li>
+<li><a href="#org9f712f6">3.4. Running the Circuits</a></li>
+<li><a href="#orgeaa1a0b">3.5. Accessing the Results</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org0f55a5e" class="outline-2">
+<h2 id="org0f55a5e"><span class="section-number-2">1.</span> Qiskit Primitives</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgb42cfc0" class="outline-3">
+<h3 id="orgb42cfc0"><span class="section-number-3">1.1.</span> Overview</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>The interface for the various simulators (BasicSimulator, AerSimulator) were
+identical to the Qiskit IBM Provider interface to the quantum hardware</li>
+<li>The backend was an abstraction for something that was either simulator or an
+actual quantum processor.</li>
+<li>Primitives abstract the interface between users and backends</li>
+<li>There are two available primitives:
+<ul class="org-ul">
+<li>Sampler - this samples the output state of a circuit</li>
+<li>Estimator - this stimates expectation values of a state with respect to
+observables</li>
+</ul></li>
+<li>Qiskit, Qiskit Aer, and Qiskit IBM Runtime each provide different primitives.</li>
+<li>Diego recommends starting with the version 2 primitives, which are compatible
+with the current hardware:</li>
+
+<li>Qiskit
+<ul class="org-ul">
+<li>StatevectorSampler</li>
+<li>StatevectorEstimator</li>
+</ul></li>
+<li><code>qiskit_aer</code>
+<ul class="org-ul">
+<li><code>primitives.SamplerV2</code></li>
+<li><code>primitives.EstimatorV2</code></li>
+</ul></li>
+<li><code>qiskit_ibm_runtime</code>
+<ul class="org-ul">
+<li><code>SamplerV2</code></li>
+<li><code>EstimatorV2</code></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6441a7d" class="outline-3">
+<h3 id="org6441a7d"><span class="section-number-3">1.2.</span> Primitives</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Qiskit primitives are computational building blocks used in larger applications that require quantum resources to efficiently produce outputs. The inputs to a primitive consists of primitive unified blocs (PUBs).
+</p>
+
+<p>
+There are two types of primitives:
+</p>
+<ol class="org-ol">
+<li><code>EstimatorV2</code></li>
+<li><code>SamplerV2</code></li>
+</ol>
+
+<p>
+The workflow is as before: build a circuit, and then simulate it (or run it on
+hardware).
+</p>
+</div>
+
+<div id="outline-container-orge672a71" class="outline-4">
+<h4 id="orge672a71"><span class="section-number-4">1.2.1.</span> Imports</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.primitives <span style="color: #F0DFAF; font-weight: bold;">import</span> StatevectorSampler, StatevectorEstimator
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.providers.basic_provider <span style="color: #F0DFAF; font-weight: bold;">import</span> BasicSimulator
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'imports complete'</span>) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">it's sometimes desirable to check job completion</span>
+</pre>
+</div>
+
+<pre class="example">
+imports complete
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org74c4710" class="outline-4">
+<h4 id="org74c4710"><span class="section-number-4">1.2.2.</span> Build a Circuit</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2, 2)
+qc.h(1)
+qc.cx(1,0)
+qc.measure([1,0],[1,0]) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">measurement register: c</span>
+qc.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
+</pre>
+</div>
+
+
+<div id="org1c2cfa2" class="figure">
+<p><img src="./img/qisprimckt01.png" alt="qisprimckt01.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 1: </span>This is a circuit for use with the <code>qiskit</code> primitives.</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org55aac4c" class="outline-4">
+<h4 id="org55aac4c"><span class="section-number-4">1.2.3.</span> Run Simulations</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">simulator</span> = BasicSimulator()
+<span style="color: #DFAF8F;">sampler</span> = StatevectorSampler()
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org955f386"></a>Basic Simulation<br />
+<div class="outline-text-5" id="text-1-2-3-1">
+<p>
+This simulates the circuit using ~qiskit.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">No transpilation is needed for this simple circuit</span>
+<span style="color: #DFAF8F;">job_simulator</span> = simulator.run( qc, shots=1024)
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgba65186"></a>Simulation using a Sampler<br />
+<div class="outline-text-5" id="text-1-2-3-2">
+<ul class="org-ul">
+<li>The syntax for a sampler simulation is somewhat different than that of the
+<code>BasicSimulator</code> class.
+<ul class="org-ul">
+<li>Here, inputs are in the form of primitive-unified blocs (PUBS)</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">job_sampler</span> = sampler.run( [qc], shots=1024)
+</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org849b7a5" class="outline-4">
+<h4 id="org849b7a5"><span class="section-number-4">1.2.4.</span> Extracting Results</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<ul class="org-ul">
+<li>We extract results in the same way from both the simulator and the sampler:</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">result_simulator</span> = job_simulator.result()
+<span style="color: #DFAF8F;">result_sampler</span> = job_sampler.result()
+</pre>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org17b95cb"></a>Simulator Counts<br />
+<div class="outline-text-6" id="text-1-2-4-0-1">
+<ul class="org-ul">
+<li><p>
+We can retrieve counts from the simulator result as before, using the
+<code>get_counts()</code> method:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">counts_simulator</span> = result_simulator.get_counts()
+<span style="color: #DCDCCC; font-weight: bold;">print</span>( counts_simulator )
+</pre>
+</div>
+
+<pre class="example">
+{'11': 522, '00': 502}
+</pre></li>
+</ul>
+</div>
+</li>
+
+
+<li><a id="org9f2e7e8"></a>Sampler Counts<br />
+<div class="outline-text-6" id="text-1-2-4-0-2">
+<ul class="org-ul">
+<li><p>
+Getting counts from the sampler is a bit more involved. Let's eamine the
+results we obtained:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">type</span>(result_sampler))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(result_sampler)
+</pre>
+</div>
+
+<pre class="example">
+&lt;class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'&gt;
+PrimitiveResult([SamplerPubResult(data=DataBin(c=BitArray(&lt;shape=(), num_shots=1024, num_bits=2&gt;)), metadata={'shots': 1024, 'circuit_metadata': {}})], metadata={'version': 2})
+</pre>
+
+
+<ul class="org-ul">
+<li>The results from the sampler come as an object of class <code>PubResult</code>
+object.
+<ul class="org-ul">
+<li>This class has a <code>get_counts()</code> method.</li>
+<li>Since the input PUB for the sampler is a list, we must similarly index the
+result to get the result(s)  for a specific PUB item.</li>
+<li>If we don't provide an index, get<sub>counts</sub>() will
+aggregate the results, which may not be what we want.</li>
+</ul></li>
+</ul></li>
+<li>To get counts, we do the following:</li>
+<li>index the PUB result. Here, we call for the zeroth element.</li>
+<li>reference the data member data element, and reference the classical register name.</li>
+<li><p>
+use the <code>get_counts()</code> method.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">counts_sampler</span> = result_sampler[0].data.c.get_counts()
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(counts_sampler)
+</pre>
+</div>
+
+<pre class="example">
+{'11': 504, '00': 520}
+</pre></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orge1cb0fb" class="outline-3">
+<h3 id="orge1cb0fb"><span class="section-number-3">1.3.</span> Example: A Parametrized Circuit</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> transpile
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.circuit <span style="color: #F0DFAF; font-weight: bold;">import</span> Parameter
+<span style="color: #F0DFAF; font-weight: bold;">from</span> math <span style="color: #F0DFAF; font-weight: bold;">import</span> pi
+
+<span style="color: #DFAF8F;">&#952;</span> = Parameter(<span style="color: #CC9393;">'&#952;'</span>)
+
+<span style="color: #DFAF8F;">qc2</span> = QuantumCircuit(2)
+qc2.rx(&#952;, 1) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">assign a parameter for this rotation</span>
+qc2.cx(1, 0)
+qc2.measure_all()
+qc2.draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
+</pre>
+</div>
+
+
+<div id="orgc3fc601" class="figure">
+<p><img src="./img/prametrizedckt.png" alt="prametrizedckt.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 2: </span>This circuit has a parameter θ.</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgef5ac14" class="outline-4">
+<h4 id="orgef5ac14"><span class="section-number-4">1.3.1.</span> <code>BasicSimulator</code> Usage</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+Here, we make a list of circuits, each with a specific value of the parameter θ.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">angles</span> = [[pi/4], [pi/3], [pi/2]]
+
+<span style="color: #DFAF8F;">circuits</span> = []
+<span style="color: #F0DFAF; font-weight: bold;">for</span> angle <span style="color: #F0DFAF; font-weight: bold;">in</span> angles:
+    <span style="color: #DFAF8F;">qc_temp</span> = qc2.assign_parameters({&#952;:angle[0]})
+    circuits.append(qc_temp)
+</pre>
+</div>
+
+<p>
+We can draw the different circuits by indexing the list:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">circuits[1].draw(reverse_bits=<span style="color: #BFEBBF;">True</span>)
+</pre>
+</div>
+
+
+<div id="org926bcb4" class="figure">
+<p><img src="./img/prametrizedckt_ex.png" alt="prametrizedckt_ex.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 3: </span>We print a circuit from a list of circuits. Unlike the circuit of Fig. <a href="#orgc3fc601">2</a>, this circuit has a specific value for θ.</p>
+</div>
+</div>
+
+
+<ol class="org-ol">
+<li><a id="org783e714"></a>Transpiling and Running<br />
+<div class="outline-text-5" id="text-1-3-1-1">
+<ul class="org-ul">
+<li>The entire list of circuits can be transpiled in a single call to <code>transpile()</code></li>
+<li><p>
+The transpiled list can be called using one call to the <code>BasicSimulator.run()</code>
+method.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">transpile the circuit list</span>
+<span style="color: #DFAF8F;">circuits_t</span> = transpile( circuits, backend=simulator )
+
+<span style="color: #DFAF8F;">result_simulator</span> = simulator.run( circuits_t, shots=1024 ).result()
+</pre>
+</div></li>
+<li><p>
+We provide an index to <code>get_counts()</code> for the corresponding circuit in
+<code>circuits_t</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">counts_simulator</span> = []
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> i, _ <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(angles):
+    <span style="color: #DFAF8F;">result_temp</span> = result_simulator.get_counts(i)
+    counts_simulator.append(result_temp)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(counts_simulator)
+</pre>
+</div>
+
+<pre class="example">
+[{'00': 875, '11': 149}, {'00': 780, '11': 244}, {'11': 465, '00': 559}]
+</pre></li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div id="outline-container-org25e1b1e" class="outline-4">
+<h4 id="org25e1b1e"><span class="section-number-4">1.3.2.</span> <code>StatevectorSampler</code> Usage</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<ul class="org-ul">
+<li>For a sampler, we pass a list of PUBs. This contains
+<ul class="org-ul">
+<li>the generic parametrized circuit, along with</li>
+<li>the list of parameters</li>
+</ul></li>
+<li>This makes the <code>run()</code> command very simple.</li>
+<li>To get the results, we index the <code>result_sampler</code>, i.e., <code>results_sampler[0]</code>
+<ul class="org-ul">
+<li>This indexes the zeroth (and only) PUB, with the flexibility to support multiple PUBs</li>
+</ul></li>
+<li>We iterate over the angles as before to get results for each angles</li>
+</ul>
+<div class="warning" id="org2f9fd65">
+<p>
+Caution: if we simply use <code>result.sampler[0].data.meas.get_counts()</code>, this aggregates the counts by summing them. Often, this is not what we want. 
+</p>
+
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org81e72c2" class="outline-4">
+<h4 id="org81e72c2"><span class="section-number-4">1.3.3.</span> <code>StatevectorSampler</code> Usage with Multiple PUBs</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+We now pass two PUBs, each with a different circuit:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2,2)
+qc.h(1)
+qc.cx(1,0)
+qc.measure([1,0], [1,0])
+
+qc.draw()
+</pre>
+</div>
+
+
+<div id="orgd6c671e" class="figure">
+<p><img src="./img/circuit_multiPUBex.png" alt="circuit_multiPUBex.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 4: </span>A circuit for use in an example with multiple PUBs.</p>
+</div>
+</div>
+
+<ol class="org-ol">
+<li><a id="org2a80c2b"></a>Run the Multi-Pub Basic Sampler<br />
+<div class="outline-text-5" id="text-1-3-3-1">
+<ul class="org-ul">
+<li>Here, we run one job with two different PUBs, each with a different circuit.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">result_sampler</span> = sampler.run([(qc2, angles), (qc, <span style="color: #BFEBBF;">None</span>)], shots=1024).result()
+</pre>
+</div>
+</div>
+</li>
+
+<li><a id="orgfe08c7a"></a>Retrieve Data for the Zeroth Circuit<br />
+<div class="outline-text-5" id="text-1-3-3-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">counts_sampler</span> = [ result_sampler[0].data.meas.get_counts(k) <span style="color: #F0DFAF; font-weight: bold;">for</span> k <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(3) ]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(counts_sampler)
+</pre>
+</div>
+
+<pre class="example">
+[{'00': 857, '11': 167}, {'00': 774, '11': 250}, {'00': 501, '11': 523}]
+</pre>
+</div>
+</li>
+
+<li><a id="orgac40669"></a>Retrieve Data for the First Circuit<br />
+<div class="outline-text-5" id="text-1-3-3-3">
+<ul class="org-ul">
+<li>Here, we have a non-parametrized circuit, so we don't need to provide an argument to <code>get_counts()</code></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">counts_sampler</span> = result_sampler[1].data.c.get_counts()
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(counts_sampler)
+</pre>
+</div>
+
+<pre class="example">
+{'11': 521, '00': 503}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-org8a3fa43" class="outline-3">
+<h3 id="org8a3fa43"><span class="section-number-3">1.4.</span> The Estimator Primitive</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>The <code>StatevectorEstimator</code> primitive takes a PUB, but with a slightly different format from <code>BasicSampler</code>.</li>
+<li>The circuits cannot have any measurement gates</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">qc2</span> = QuantumCircuit(2)
+qc2.rx(&#952;, 1)
+qc2.cx(1, 0)
+
+qc2.draw( reverse_bits = <span style="color: #BFEBBF;">True</span>)
+</pre>
+</div>
+
+
+<div id="org9b2d40d" class="figure">
+<p><img src="./img/sample_ckt_for_Estimator.png" alt="sample_ckt_for_Estimator.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 5: </span>This circuit was built for use with an <code>Estimator</code> simulation. For this reason, we do not include measurement blocks.</p>
+</div>
+</div>
+
+<div id="outline-container-orgd9394f8" class="outline-4">
+<h4 id="orgd9394f8"><span class="section-number-4">1.4.1.</span> Observables</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<ul class="org-ul">
+<li>Since an estimator estimates expectation values \(\left\langle \psi |
+  \mathbf{O} | \right\rangle\), we need an observable, \(\mathbf{O}\).</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.quantum_info <span style="color: #F0DFAF; font-weight: bold;">import</span> SparsePauliOp
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This is a list of observables. I'm not sure why it's a list of lists.</span>
+<span style="color: #DFAF8F;">obsv</span> = [ [ SparsePauliOp( [<span style="color: #CC9393;">"XX"</span>, <span style="color: #CC9393;">"IY"</span>], [0.5, 0.5] ) ],
+         [ SparsePauliOp( [<span style="color: #CC9393;">"XX"</span>], [1] ) ] ]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(obsv)
+</pre>
+</div>
+
+<pre class="example">
+[[SparsePauliOp(['XX', 'IY'],
+              coeffs=[0.5+0.j, 0.5+0.j])], [SparsePauliOp(['XX'],
+              coeffs=[1.+0.j])]]
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org24a036e" class="outline-4">
+<h4 id="org24a036e"><span class="section-number-4">1.4.2.</span> Run the Estimator</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">estimator</span> = StatevectorEstimator()
+<span style="color: #DFAF8F;">result_estimator</span> = estimator.run( [(qc2, obsv, angles, 0.1)] ).result()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgb681016" class="outline-4">
+<h4 id="orgb681016"><span class="section-number-4">1.4.3.</span> Extract Expectation Values</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<ul class="org-ul">
+<li>To extract the expectation values from the estimator result, we do the following:
+<ul class="org-ul">
+<li>index the result</li>
+<li>use the <code>.data.evs</code> property</li>
+<li>(optional) we can see some metadata using the <code>.metadata</code> function</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Extract the expectation values (evs) from the result for PUB 0</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(result_estimator[0].data.evs)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(result_estimator[0].metadata)
+</pre>
+</div>
+
+<pre class="example">
+[[ 0.05985877  0.14030793  0.18762585]
+ [ 0.10722808 -0.04870472  0.15934201]]
+{'target_precision': 0.1, 'circuit_metadata': {}}
+</pre>
+
+
+<ul class="org-ul">
+<li>This is a list of two observables, with one value for each of the input
+parameters.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga04dfef" class="outline-3">
+<h3 id="orga04dfef"><span class="section-number-3">1.5.</span> Qiskit Estimator Example</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li><p>
+This provides another example from a Qiskit documentation <a href="https://docs.quantum.ibm.com/guides/simulate-with-qiskit-sdk-primitives">tutorial</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.circuit <span style="color: #F0DFAF; font-weight: bold;">import</span> Parameter
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">circuit for which you want to obtain the expected value</span>
+<span style="color: #DFAF8F;">qc</span> = QuantumCircuit(2)
+qc.ry(Parameter(<span style="color: #CC9393;">'theta'</span>), 0)
+qc.h(0)
+qc.cx(0,1)
+qc.draw(<span style="color: #CC9393;">"mpl"</span>, style=<span style="color: #CC9393;">"iqp"</span>)
+</pre>
+</div>
+
+
+<div id="org966ffae" class="figure">
+<p><img src="./img/EstimatorIBMExCkt.png" alt="EstimatorIBMExCkt.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 6: </span>This is a simple circuit built for an IBM Quantum tutorial on using the <code>StatevectorEstimator</code>.</p>
+</div></li>
+</ul>
+</div>
+
+<div id="outline-container-org104c43c" class="outline-4">
+<h4 id="org104c43c"><span class="section-number-4">1.5.1.</span> Build an Operator</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.quantum_info <span style="color: #F0DFAF; font-weight: bold;">import</span> SparsePauliOp
+<span style="color: #F0DFAF; font-weight: bold;">import</span> numpy <span style="color: #F0DFAF; font-weight: bold;">as</span> np
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">observable(s) whose expected values you want to compute</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.quantum_info <span style="color: #F0DFAF; font-weight: bold;">import</span> SparsePauliOp
+<span style="color: #DFAF8F;">observable</span> = SparsePauliOp([<span style="color: #CC9393;">"II"</span>, <span style="color: #CC9393;">"XX"</span>, <span style="color: #CC9393;">"YY"</span>, <span style="color: #CC9393;">"ZZ"</span>], coeffs=[1, 1, -1, 1])
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">value(s) for the circuit parameter(s)</span>
+<span style="color: #DFAF8F;">parameter_values</span> = [[0], [np.pi/6], [np.pi/2]]
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(parameter_values)
+</pre>
+</div>
+
+<pre class="example">
+[[0], [0.5235987755982988], [1.5707963267948966]]
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org1db358d" class="outline-4">
+<h4 id="org1db358d"><span class="section-number-4">1.5.2.</span> Instantiate a <code>StatevectorEstimator</code></h4>
+<div class="outline-text-4" id="text-1-5-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.primitives <span style="color: #F0DFAF; font-weight: bold;">import</span> StatevectorEstimator
+<span style="color: #DFAF8F;">estimator</span> = StatevectorEstimator()
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga4a507d" class="outline-4">
+<h4 id="orga4a507d"><span class="section-number-4">1.5.3.</span> Transpile the Circuit</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Generate a pass manager without providing a backend</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.transpiler.preset_passmanagers <span style="color: #F0DFAF; font-weight: bold;">import</span> generate_preset_pass_manager
+
+<span style="color: #DFAF8F;">pm</span> = generate_preset_pass_manager(optimization_level=1)
+<span style="color: #DFAF8F;">isa_circuit</span> = pm.run(qc)
+<span style="color: #DFAF8F;">isa_observable</span> = observable.apply_layout(isa_circuit.layout)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd647e6d" class="outline-4">
+<h4 id="orgd647e6d"><span class="section-number-4">1.5.4.</span> Run the Estimator</h4>
+<div class="outline-text-4" id="text-1-5-4">
+<ul class="org-ul">
+<li>We form a PUB as an argument to the <code>StatevectorEstimator</code></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">job</span> = estimator.run([(isa_circuit, isa_observable, parameter_values)])
+<span style="color: #DFAF8F;">result</span> = job.result()
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">" &gt; Result class: </span>{<span style="color: #DCDCCC; font-weight: bold;">type</span>(result)}<span style="color: #CC9393;">"</span>)
+</pre>
+</div>
+
+<pre class="example">
+&gt; Result class: &lt;class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'&gt;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org845d16d" class="outline-4">
+<h4 id="org845d16d"><span class="section-number-4">1.5.5.</span> Extract Results</h4>
+<div class="outline-text-4" id="text-1-5-5">
+<ul class="org-ul">
+<li>To extract the expectation values from the estimator result, we do the
+following:
+<ul class="org-ul">
+<li>index the result</li>
+<li>use the <code>.data.evs</code> property</li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DCDCCC; font-weight: bold;">print</span>(result)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #DCDCCC; font-weight: bold;">len</span>(result))
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">" &gt; Expectation value: </span>{result[0].data.evs}<span style="color: #CC9393;">"</span>)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">" &gt; Metadata: </span>{result[0].metadata}<span style="color: #CC9393;">"</span>)
+</pre>
+</div>
+
+<pre class="example">
+PrimitiveResult([PubResult(data=DataBin(evs=np.ndarray(&lt;shape=(3,), dtype=float64&gt;), stds=np.ndarray(&lt;shape=(3,), dtype=float64&gt;), shape=(3,)), metadata={'target_precision': 0.0, 'circuit_metadata': {}})], metadata={'version': 2})
+1
+ &gt; Expectation value: [4.         3.73205081 2.        ]
+ &gt; Metadata: {'target_precision': 0.0, 'circuit_metadata': {}}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0980d72" class="outline-2">
+<h2 id="org0980d72"><span class="section-number-2">2.</span> <code>qiskit_aer</code> Primitives</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+We demonstrate the use of <code>qiskit_aer</code> primitives.
+</p>
+</div>
+
+<div id="outline-container-org2354dde" class="outline-3">
+<h3 id="org2354dde"><span class="section-number-3">2.1.</span> Example: Bell Circuits and the <code>SamplerV2</code> Class</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Bell circuits are used to create entangled pairs of qubits. We will simulate two
+of the four Bell circuits using the <code>SamplerV2</code> class provided in
+<code>qiskit_aer.primitives</code>.
+</p>
+</div>
+
+<div id="outline-container-orgfe124f3" class="outline-4">
+<h4 id="orgfe124f3"><span class="section-number-4">2.1.1.</span> Imports</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit <span style="color: #F0DFAF; font-weight: bold;">import</span> QuantumCircuit
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_aer.primitives <span style="color: #F0DFAF; font-weight: bold;">import</span> SamplerV2
+
+<span style="color: #F0DFAF; font-weight: bold;">from</span> datetime <span style="color: #F0DFAF; font-weight: bold;">import</span> datetime
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Optional</span>
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Imports complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Imports complete at 2025-03-11 20:18:54.318288
+</pre>
+
+
+<div class="note" id="org39cf575">
+<p>
+<b>Note</b>
+</p>
+
+<p>
+If you are using Jupyter Lab, you need not use <code>dateime</code> and <code>print()</code> to
+indicate completion.
+</p>
+
+<p>
+Here, I'm using <code>datetime</code> and <code>print()</code> because I'm developing these notes in
+Emacs org mode. Here, Python code blocks in session mode often do not indicate
+errors, and completion messages help me know the code block has executed
+properly.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1bc0946" class="outline-4">
+<h4 id="org1bc0946"><span class="section-number-4">2.1.2.</span> Bell Circuits</h4>
+<div class="outline-text-4" id="text-2-1-2">
+</div>
+<ol class="org-ol">
+<li><a id="orgfc1626f"></a>First Case<br />
+<div class="outline-text-5" id="text-2-1-2-1">
+<p>
+Not only must we form a Bell circuit, but we must also add measurement
+gates. The measurement gates are required if we wish to obtain circuit counts.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">Bell00</span> = QuantumCircuit(2)
+Bell00.h(0)
+Bell00.cx(0,1)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">measure_all() adds a classical register named "meas"</span>
+Bell00.measure_all()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Bell00)
+</pre>
+</div>
+
+<pre class="example">
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1
+</pre>
+
+
+
+
+<div id="org0d21b99" class="figure">
+<p><img src="./img/Bell00ckt.png" alt="Bell00ckt.png" width="380px" />
+</p>
+<p><span class="figure-number">Figure 7: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).</p>
+</div>
+</div>
+</li>
+
+<li><a id="org971d9dc"></a>A Second Circuit<br />
+<div class="outline-text-5" id="text-2-1-2-2">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">Bell01</span> = QuantumCircuit(2)
+Bell01.h(0)
+Bell01.x(1)
+Bell01.cx(0,1)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">measure_all() adds a classical register named "meas"</span>
+Bell01.measure_all()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(Bell01)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+
+Code block complete at 2025-03-11 20:19:47.075302
+</pre>
+
+
+
+
+<div id="org0e4e072" class="figure">
+<p><img src="./img/Bell01ckt.png" alt="Bell01ckt.png" width="380px" />
+</p>
+<p><span class="figure-number">Figure 8: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).</p>
+</div>
+</div>
+</li>
+
+
+
+<li><a id="orgdbb765d"></a>Join Circuits into a List<br />
+<div class="outline-text-5" id="text-2-1-2-3">
+<p>
+Now, we form a list of circuits.
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Form a list of Bell circuits</span>
+<span style="color: #DFAF8F;">BellCkts</span> = [Bell00, Bell01]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+
+Code block complete at 2025-03-11 20:20:10.001986
+</pre>
+</div>
+</li>
+</ol>
+</div>
+
+<div id="outline-container-org8ed466a" class="outline-4">
+<h4 id="org8ed466a"><span class="section-number-4">2.1.3.</span> Transpilation</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+We can now transpile our list of circuits. To <b>transpile</b> a circuit is to form
+an equivalent circuit using a set of gates (instruction set architecture, or
+ISA) that is supported on a specific quantum processing unit (QPU).
+</p>
+
+<p>
+To transpile, we tools called <code>pass_managers</code>. <code>qiskit</code> has some preset pass
+managers, which make it more convenient.
+</p>
+
+<p>
+One other piece of information we must provide is the target backend. The target
+backend could be an <code>AerSimulator()</code>, a local model of a QPU (<code>FakeBackend</code>), or
+an actual QPU. Different resources may have different ISAs, so it is important
+to specify your transpilation target.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> sys
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_aer <span style="color: #F0DFAF; font-weight: bold;">import</span> AerSimulator
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.transpiler.preset_passmanagers <span style="color: #F0DFAF; font-weight: bold;">import</span> generate_preset_pass_manager
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">create a backend</span>
+<span style="color: #DFAF8F;">backend_aer</span> = AerSimulator()
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Specify the target backend for transpilation</span>
+<span style="color: #DFAF8F;">target_aer</span> = backend_aer.target
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Create a pass manager object to perform the transpilation</span>
+<span style="color: #DFAF8F;">pm_aer</span> = generate_preset_pass_manager(target=target_aer, optimization_level=1)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Want to know more about the pass manager? Start printing things about it.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'Class of pm_aer: {type(pm_aer)}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer: {pm_aer}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer attributes: {pm_aer.__dict__}')</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+
+Code block complete at 2025-03-11 20:20:20.348854
+</pre>
+
+
+
+<p>
+Next, we can transpile our circuits for the desired backend:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">BellCkts_aer</span> = pm_aer.run( BellCkts ) 
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Code block complete at 2025-03-11 20:20:26.363925
+</pre>
+
+
+<p>
+We may wish to compare our transpiled circuit to our original circuit:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> idx, ckt <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(BellCkts):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'='</span>*70 + f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">idx = </span>{idx}<span style="color: #CC9393;">'</span>)
+
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Original'</span>)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(ckt)
+
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Transpiled'</span>)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(BellCkts_aer[idx])      
+
+</pre>
+</div>
+
+<pre class="example" id="org6a141d2">
+======================================================================
+idx = 0
+Original
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+Transpiled
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+======================================================================
+idx = 1
+Original
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+Transpiled
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1
+</pre>
+
+<p>
+In this case, both the original circuit and the transpiled circuit are the
+same. When we try to use a <code>FakeBackend</code> or a real QPU, however, the transpiled
+circuit may look quite different from the origial circuit you designed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4ffa4ea" class="outline-4">
+<h4 id="org4ffa4ea"><span class="section-number-4">2.1.4.</span> Forming PUBs</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+Now that we have transpiled circuits that we can run on a simulator&#x2013;or, if
+transpiled properly, on actual hardware&#x2013;we can form a list of PUBs as a batch
+of subtasks forming a job. A PUB is a "primitive unified bloc." Each PUB is a
+tuple containing a circuit and circuit parameters, as in <code>(circ, params)</code>. Here,
+the circuits we are dealing with are simple and do not require parameters. Thus,
+they are said to be non-parameterized circuits, and we use <code>None</code> for <code>params</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">PUBs_aer</span> = [ (ckt, <span style="color: #BFEBBF;">None</span>) <span style="color: #F0DFAF; font-weight: bold;">for</span> ckt <span style="color: #F0DFAF; font-weight: bold;">in</span> BellCkts_aer ]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Created a list of PUBs for the Aer SamplerV2 at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Your list of PUBs contains </span>{<span style="color: #DCDCCC; font-weight: bold;">len</span>(PUBs_aer)}<span style="color: #CC9393;"> PUBs.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Created a list of PUBs for the Aer SamplerV2 at 2025-03-11 20:20:48.877108
+Your list of PUBs contains 2 PUBs.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orge8533ab" class="outline-4">
+<h4 id="orge8533ab"><span class="section-number-4">2.1.5.</span> Simulating the Circuits</h4>
+<div class="outline-text-4" id="text-2-1-5">
+<p>
+Here, we will use <code>qiskit_aer.primitives.SamplerV2()</code> as our simulation
+platform. First, we instantiate a <code>SamplerV2</code> object. Note: we import
+`qiskit<sub>aer.primitives.SamplerV2</sub>~ as <code>Sampler</code> to distinguish it from the
+<code>qiskit_ibm_runtime.SamplerV2</code> which we will use later.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Instantiate a sampler</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_aer.primitives <span style="color: #F0DFAF; font-weight: bold;">import</span> SamplerV2 <span style="color: #F0DFAF; font-weight: bold;">as</span> Sampler
+
+<span style="color: #DFAF8F;">sampler_aer</span> = Sampler() <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">sampler for simulator, no arguments</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Run the `SamplerV2` simulation</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Created a SamplerV2 at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+
+</pre>
+</div>
+
+<pre class="example">
+Created a SamplerV2 at 2025-03-11 20:21:03.407891
+</pre>
+
+
+<p>
+Finally, we use the <code>run()</code> method of our sampler. We will specify a shot count
+of 4096, since we may wish to compare with results from actual hardware using a
+<code>qiskit_ibm_runtime.SamplerV2</code> object. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Instantiate a sampler</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_aer.primitives <span style="color: #F0DFAF; font-weight: bold;">import</span> SamplerV2 <span style="color: #F0DFAF; font-weight: bold;">as</span> Sampler
+
+<span style="color: #DFAF8F;">job_sim</span> = sampler_aer.run( PUBs_aer, shots=4092 ) <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">simulated job with 4092 shots</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Run the `SamplerV2` simulation</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Simulated the SamplerV2 at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+
+</pre>
+</div>
+
+<pre class="example">
+Simulated the SamplerV2 at 2025-03-11 20:21:12.211500
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgc8fe883" class="outline-4">
+<h4 id="orgc8fe883"><span class="section-number-4">2.1.6.</span> Accessing Results</h4>
+<div class="outline-text-4" id="text-2-1-6">
+<p>
+We can extract results from our job using its <code>.result()</code> method:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">results_sim</span> = job_sim.result()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(results_sim)
+</pre>
+</div>
+
+<pre class="example">
+PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(&lt;shape=(), num_shots=4092, num_bits=2&gt;)), metadata={'shots': 4092, 'circuit_metadata': {}, 'simulator_metadata': {'time_taken_parameter_binding': 0.000121042, 'max_memory_mb': 36864, 'time_taken_execute': 0.011992916, 'omp_enabled': True, 'max_gpu_memory_mb': 0, 'parallel_experiments': 1}}), SamplerPubResult(data=DataBin(meas=BitArray(&lt;shape=(), num_shots=4092, num_bits=2&gt;)), metadata={'shots': 4092, 'circuit_metadata': {}, 'simulator_metadata': {'time_taken_parameter_binding': 0.000121042, 'max_memory_mb': 36864, 'time_taken_execute': 0.011992916, 'omp_enabled': True, 'max_gpu_memory_mb': 0, 'parallel_experiments': 1}})], metadata={'version': 2})
+</pre>
+
+
+<p>
+Since the list of PUBs contained two PUBs, our job has two results embedded in
+it. We access them using an index, as in <code>job_sim[0]</code> and
+<code>job_sim[1]</code>. Furthermore, to extract counts, we use the <code>.data</code> property for
+each PUB result. We also must specify the name of the classical register on
+which measurement results are stored. In this case, we used <code>.measure_all()</code> to
+add measurement gates, so this creates a classical register named
+<code>meas</code>. Finally, for our classical register, we use the <code>get_counts()</code> method.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> idx <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(2):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(results_sim[idx].data.meas.get_counts())
+</pre>
+</div>
+
+<pre class="example">
+{'11': 2052, '00': 2040}
+{'01': 2024, '10': 2068}
+</pre>
+
+
+<p>
+Indeed, we can print our results, but it is much nicer to plot them using a
+histogram.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.visualization <span style="color: #F0DFAF; font-weight: bold;">import</span> plot_histogram
+
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(2):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Bell circuit </span>{idx}<span style="color: #CC9393;">'</span>)
+    display(plot_histogram(results_sim[idx].data.meas.get_counts()))
+</pre>
+</div>
+
+<p>
+A histgoram for the results of Bell circuit 0 are shown here:
+</p>
+
+<div id="org1646dcd" class="figure">
+<p><img src="./img/bell_ckt_results00.png" alt="bell_ckt_results00.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 9: </span>The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|00 \right\rangle + \left|11 \right\rangle\right)/\sqrt{2}\).</p>
+</div>
+
+
+<p>
+A similar histogram for measurements on Bell circuit 1 are shown here:
+</p>
+
+<div id="org0a138bd" class="figure">
+<p><img src="./img/bell_ckt_results01.png" alt="bell_ckt_results01.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 10: </span>The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|01 \right\rangle + \left|10 \right\rangle\right)/\sqrt{2}\).</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbfd8d9d" class="outline-3">
+<h3 id="orgbfd8d9d"><span class="section-number-3">2.2.</span> Summary</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+We have used a <code>qiskit_aer.primitives.SamplerV2</code> object to perform noise-free
+simulations of quantum circuits.
+</p>
+
+<p>
+A next step will be to perform similar computations on actual quantum hardware,
+and then to compare the results.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org22754a0" class="outline-2">
+<h2 id="org22754a0"><span class="section-number-2">3.</span> Bell Circuits on IBM Quantum Hardware</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+To run the same Bell circuits on IBM hardware, we require the
+<code>qiskit_ibm_runtime</code> package. For an equivalent to our previous simulation of
+Bell circuits, we will also use the <code>SamplerV2</code> class.
+</p>
+</div>
+
+<div id="outline-container-org4b3cef7" class="outline-3">
+<h3 id="org4b3cef7"><span class="section-number-3">3.1.</span> Imports</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Let's begin by importing some tools we need from <code>qiskit_ibm_runtime</code>. We will
+import the <code>SamplerV2</code> for getting measurement counts on actual hardware, and
+<code>QiskitRuntimeService</code> for making a connection to IBM Quantum.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_ibm_runtime <span style="color: #F0DFAF; font-weight: bold;">import</span> SamplerV2, QiskitRuntimeService
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+
+Code block complete at 2025-03-11 20:22:36.131949
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org3532ab6" class="outline-3">
+<h3 id="org3532ab6"><span class="section-number-3">3.2.</span> The Bell Circuits</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+We do not recreate the Bell circuits here, since we already have created them.
+Instead, we show them here once again.
+</p>
+
+
+<div id="org6c9649a" class="figure">
+<p><img src="./img/Bell00ckt.png" alt="Bell00ckt.png" width="380px" />
+</p>
+<p><span class="figure-number">Figure 11: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).</p>
+</div>
+
+
+<div id="org2a3bb4a" class="figure">
+<p><img src="./img/Bell01ckt.png" alt="Bell01ckt.png" width="380px" />
+</p>
+<p><span class="figure-number">Figure 12: </span>This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbaedc4a" class="outline-3">
+<h3 id="orgbaedc4a"><span class="section-number-3">3.3.</span> Transpilation</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+To transpile our circuits, we first require a backend, which is the target ISA
+for the transpilation process. To obtain a backend, we must use our IBM Quantum
+API token. To do this, you need to create an IBM Quantum account if you don't
+already have one; and you need to find your IBM Quantum API token.
+</p>
+
+<p>
+We will take the following steps:
+</p>
+<ol class="org-ol">
+<li>Register for an IBM Quantum account if you don't already have one.</li>
+<li>Find your IBM Quantum API token</li>
+<li>Load your token in Python for programmatic access to IBM Quantum.</li>
+<li>Establish a connection to IBM Quantum using your API token.</li>
+<li>Select a backend QPU</li>
+<li>Transpile your circuits for the target backend</li>
+</ol>
+</div>
+
+<div id="outline-container-orgcaeae51" class="outline-4">
+<h4 id="orgcaeae51"><span class="section-number-4">3.3.1.</span> Getting Your IBM Quantum API Token</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ol class="org-ol">
+<li>If you don't already have one, use your university e-mail account
+(prefferable) to register for an account.</li>
+<li>Once logged in, you can get your IBM token in one of two ways:
+<ol class="org-ol">
+<li>Visit your <a href="https://quantum.ibm.com">IBM Quantum Platform dashboard</a>
+<ol class="org-ol">
+<li><p>
+In the upper right, you'll see a box where you can view or copy your
+IBM Quantum API token
+</p>
+
+<div id="org1bac46b" class="figure">
+<p><img src="./img/IBMQuantumDashboard.png" alt="IBMQuantumDashboard.png" width="360px" />
+</p>
+</div></li>
+</ol></li>
+<li><p>
+Click the "Account" button (by default, it looks like an anonymized
+profile pic). This brings up your <i>Profile Settings</i>
+</p>
+
+<div id="orgd072f5b" class="figure">
+<p><img src="./img/IBMQuantumAccountIcon.png" alt="IBMQuantumAccountIcon.png" width="360px" />
+</p>
+</div>
+<ol class="org-ol">
+<li>Below the <i>Profile Details</i> is an <i>API Token</i>. Click the icon that allows
+you to copy you IBM Quantum API token. You will paste this information
+elsewhere later.</li>
+</ol></li>
+</ol></li>
+</ol>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> sys
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_aer <span style="color: #F0DFAF; font-weight: bold;">import</span> AerSimulator
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit.transpiler.preset_passmanagers <span style="color: #F0DFAF; font-weight: bold;">import</span> generate_preset_pass_manager
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">create a backend</span>
+<span style="color: #DFAF8F;">backend_aer</span> = AerSimulator()
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Specify the target backend for transpilation</span>
+<span style="color: #DFAF8F;">target_aer</span> = backend_aer.target
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Create a pass manager object to perform the transpilation</span>
+<span style="color: #DFAF8F;">pm_aer</span> = generate_preset_pass_manager(target=target_aer, optimization_level=1)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Want to know more about the pass manager? Start printing things about it.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'Class of pm_aer: {type(pm_aer)}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer: {pm_aer}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer attributes: {pm_aer.__dict__}')</span>
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+
+Code block complete at 2025-03-11 20:22:53.987704
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org14e645a" class="outline-4">
+<h4 id="org14e645a"><span class="section-number-4">3.3.2.</span> The <a href="https://docs.python.org/3/library/getpass.html">getpass</a> Package</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<ul class="org-ul">
+<li>This is a nice Python package that is useful in Jupyter notebooks</li>
+<li>It allows you to prompt the user for a password that can be used later in the file.</li>
+<li><p>
+The basic usage is:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> getpass <span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">this comes with standard Python</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">This interactively prompts the user for their password</span>
+<span style="color: #DFAF8F;">token</span> = getpass.getpass(<span style="color: #CC9393;">'Enter your password: '</span>)
+</pre>
+</div></li>
+<li>You can then use <code>token</code> in an API call</li>
+<li>This allows you to share Jupyter notebooks <i>without</i> also sharing your
+password/token/API key.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3d9be03" class="outline-4">
+<h4 id="org3d9be03"><span class="section-number-4">3.3.3.</span> My Approach to Loading My Token (not recommended)</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<div class="note" id="org59934a7">
+<p>
+If you are using a Jupyter Lab notebook, please ignore this section. This is
+useful for me, since I'm coding in Emacs Org mode.
+</p>
+
+</div>
+<ul class="org-ul">
+<li>I use this approach because I sometimes run Python code <i>outside</i> of a Jupyter
+notebook, so I don't have an opportunity to dynamically input my password
+using <code>getpass</code></li>
+<li>My approach was to save a file on my computer, say, <code>~/.IBMQpass</code>
+<ul class="org-ul">
+<li>This is a text file containing only my IBM Quantum token</li>
+</ul></li>
+<li><p>
+Then, I can load the token in a variable called <code>token</code> using code like this:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">import</span> os
+<span style="color: #F0DFAF; font-weight: bold;">from</span> datetime <span style="color: #F0DFAF; font-weight: bold;">import</span> datetime
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Read the token from a secure file</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Expand the '~' to the full path</span>
+<span style="color: #DFAF8F;">file_path</span> = os.path.expanduser(<span style="color: #CC9393;">"~/.IBMQpass"</span>)
+<span style="color: #F0DFAF; font-weight: bold;">with</span> <span style="color: #DCDCCC; font-weight: bold;">open</span>(file_path, <span style="color: #CC9393;">"r"</span>) <span style="color: #F0DFAF; font-weight: bold;">as</span> <span style="color: #DCDCCC; font-weight: bold;">file</span>:
+    <span style="color: #DFAF8F;">token</span> = <span style="color: #DCDCCC; font-weight: bold;">file</span>.read().strip()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">Loaded IBM Quantum token: {0}'</span>.<span style="color: #DCDCCC; font-weight: bold;">format</span>(datetime.now()))
+</pre>
+</div>
+
+<pre class="example">
+
+Loaded IBM Quantum token: 2025-03-11 20:23:13.538164
+</pre></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2dda7b9" class="outline-4">
+<h4 id="org2dda7b9"><span class="section-number-4">3.3.4.</span> Establish a Connection to IBM Quantum</h4>
+<div class="outline-text-4" id="text-3-3-4">
+<ul class="org-ul">
+<li><p>
+To interface with the IBM cloud resources, we establish a
+<code>QiskitRuntimeService</code> object, <code>service</code>
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">service</span> = QiskitRuntimeService(channel=<span style="color: #CC9393;">'ibm_quantum'</span>)
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Established a service at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Established a service at 2025-03-11 20:24:51.421527
+</pre></li>
+
+<li><p>
+We can then use the <code>service</code> object to query available QPUs
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DCDCCC; font-weight: bold;">print</span>(service.backends())
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">in Jupyter notebook, you don't need print() ... just use</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">service.backends() as the last command in your cell.</span>
+</pre>
+</div>
+
+<pre class="example">
+[&lt;IBMBackend('ibm_brisbane')&gt;, &lt;IBMBackend('ibm_kyiv')&gt;, &lt;IBMBackend('ibm_sherbrooke')&gt;]
+</pre></li>
+
+<li>This is a list of objects of the <a href="https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/qiskit_ibm_runtime.IBMBackend">IBMBackend</a> class
+<ul class="org-ul">
+<li><p>
+We can ask for the least-busy backend using the <code>.least_busy()</code> method:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">save the least-busy backend as backend</span>
+<span style="color: #DFAF8F;">backend_qpu</span> = service.least_busy()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Least busy QPU: </span>{backend_qpu}<span style="color: #CC9393;"> (</span>{datetime.now()}<span style="color: #CC9393;">)'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Least busy QPU: &lt;IBMBackend('ibm_brisbane')&gt; (2025-03-11 20:25:06.639705)
+</pre></li>
+</ul></li>
+
+<li><p>
+We can get information about a backend using properties such as <code>.name</code>,
+<code>.version</code>, and <code>.num_qubits</code>:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DCDCCC; font-weight: bold;">print</span>(
+    f<span style="color: #CC9393;">"Name: </span>{backend_qpu.name}<span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">"</span>
+    f<span style="color: #CC9393;">"Version: </span>{backend_qpu.version}<span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">"</span>
+    f<span style="color: #CC9393;">"No. of qubits: </span>{backend_qpu.num_qubits}<span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">"</span>
+)
+</pre>
+</div>
+
+<pre class="example">
+Name: ibm_brisbane
+Version: 2
+No. of qubits: 127
+</pre></li>
+
+<li>Now that we've picked a backend, we can transpile our circuits for that
+backend.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org34159d4" class="outline-4">
+<h4 id="org34159d4"><span class="section-number-4">3.3.5.</span> Transpilation</h4>
+<div class="outline-text-4" id="text-3-3-5">
+<p>
+Now that we have a backend in mind, we can transpile our circuits for the
+desired backend:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Specify the target backend for transpilation</span>
+<span style="color: #DFAF8F;">target_qpu</span> = backend_qpu.target
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Create a pass manager object to perform the transpilation</span>
+<span style="color: #DFAF8F;">pm_qpu</span> = generate_preset_pass_manager(target=target_qpu, optimization_level=1)
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Want to know more about the pass manager? Start printing things about it.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'Class of pm_aer: {type(pm_aer)}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer: {pm_aer}')</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">print(f'pm_aer attributes: {pm_aer.__dict__}')</span>
+
+<span style="color: #DFAF8F;">BellCkts_qpu</span> = pm_qpu.run( BellCkts ) 
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Code block complete at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Code block complete at 2025-03-11 20:25:21.057943
+</pre>
+
+
+<p>
+We can see the transpiled version of our circuits if we print them.
+</p>
+
+<p>
+In Jupyter Lab, something like the following may be used to display the
+circuits:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> idx, ckt <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(BellCkts):
+    display(BellCkts_qpu[idx].draw(idle_wires=<span style="color: #BFEBBF;">False</span>))
+</pre>
+</div>
+
+
+<div id="org36d926b" class="figure">
+<p><img src="./img/BellCkt0_qpu.png" alt="BellCkt0_qpu.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 13: </span>The first Bell circuit is transpiled for the selected backend, <code>backend_qpu</code>.</p>
+</div>
+
+
+<div id="orge708539" class="figure">
+<p><img src="./img/BellCkt1_qpu.png" alt="BellCkt1_qpu.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 14: </span>The first Bell circuit is transpiled for the selected backend, <code>backend_qpu</code>.</p>
+</div>
+
+
+<p>
+We may wish to compare our transpiled circuit to our original circuit:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> idx, ckt <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">enumerate</span>(BellCkts):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'='</span>*70 + f<span style="color: #CC9393;">'</span><span style="color: #BFEBBF;">\n</span><span style="color: #CC9393;">idx = </span>{idx}<span style="color: #CC9393;">'</span>)
+
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(<span style="color: #CC9393;">'Original circuit design:'</span>)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(ckt)
+
+</pre>
+</div>
+
+<pre class="example" id="org54f45bc">
+======================================================================
+idx = 0
+Original circuit design:
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+======================================================================
+idx = 1
+Original circuit design:
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1
+</pre>
+
+<p>
+Now, we can clearly see that the transpiled circuit looks rather different from
+the original design. The transpiled circuit may have many more qubits than the
+original design; however, extra qubits are suppressed from our drawings by using
+the keyword <code>idle_qubits=False</code> in the <code>draw()</code> method for a circuit.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6e766c3" class="outline-4">
+<h4 id="org6e766c3"><span class="section-number-4">3.3.6.</span> Forming PUBs</h4>
+<div class="outline-text-4" id="text-3-3-6">
+<p>
+Now that we have transpiled circuits for the QPU, we must form a list of PUBs:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">PUBs_qpu</span> = [ (ckt, <span style="color: #BFEBBF;">None</span>) <span style="color: #F0DFAF; font-weight: bold;">for</span> ckt <span style="color: #F0DFAF; font-weight: bold;">in</span> BellCkts_qpu ]
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Created a list of PUBs for the QPU at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Your list of PUBs contains </span>{<span style="color: #DCDCCC; font-weight: bold;">len</span>(PUBs_qpu)}<span style="color: #CC9393;"> PUBs.'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Created a list of PUBs for the QPU at 2025-03-11 20:26:29.161041
+Your list of PUBs contains 2 PUBs.
+</pre>
+
+
+<p>
+Next, we will run our jobs by submittin the PUBs.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9f712f6" class="outline-3">
+<h3 id="org9f712f6"><span class="section-number-3">3.4.</span> Running the Circuits</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Here, we will use <code>qiskit_aer.primitives.SamplerV2()</code> as our simulation
+platform. First, we instantiate a <code>SamplerV2</code> object. Note: we import
+`qiskit<sub>aer.primitives.SamplerV2</sub>~ as <code>Sampler</code> to distinguish it from the
+<code>qiskit_ibm_runtime.SamplerV2</code> which we will use later.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">Instantiate a sampler</span>
+<span style="color: #F0DFAF; font-weight: bold;">from</span> qiskit_ibm_runtime <span style="color: #F0DFAF; font-weight: bold;">import</span> SamplerV2
+
+<span style="color: #DFAF8F;">sampler_qpu</span> = SamplerV2( backend_qpu )
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Created a SamplerV2 for use with a QPU at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Created a SamplerV2 for use with a QPU at 2025-03-11 20:26:38.055146
+</pre>
+
+
+<p>
+Finally, we use the <code>run()</code> method of our sampler. We will specify a shot count
+of 4096, since we may wish to compare with results from actual hardware using a
+<code>qiskit_ibm_runtime.SamplerV2</code> object. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">We specify the same number of shots as in our simulated run</span>
+
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use None to launch a new calculation.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">use an actual job_id to retrieve an existing calculation.</span>
+<span style="color: #5F7F5F;"># </span><span style="color: #7F9F7F;">job_id = None</span>
+<span style="color: #DFAF8F;">job_id</span> = <span style="color: #CC9393;">'cz890patp60g008grx9g'</span>
+
+<span style="color: #F0DFAF; font-weight: bold;">if</span> job_id <span style="color: #F0DFAF; font-weight: bold;">is</span> <span style="color: #BFEBBF;">None</span>:
+    <span style="color: #DFAF8F;">job_qpu</span> = sampler_qpu.run( PUBs_qpu, shots=4092 ) 
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Submitted the QPU job at </span>{datetime.now()}<span style="color: #CC9393;">'</span>)
+    <span style="color: #DFAF8F;">job_id</span> = job_qpu.job_id()
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'   Job ID: </span>{job_id}<span style="color: #CC9393;">'</span>)
+
+<span style="color: #F0DFAF; font-weight: bold;">else</span>:
+    <span style="color: #DFAF8F;">job_qpu</span> = service.job( job_id )
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Retrieved existing job (</span>{datetime.now()}<span style="color: #CC9393;">).'</span>)
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'   Job ID: </span>{job_id}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+Retrieved existing job (2025-03-11 20:26:42.768706).
+   Job ID: cz890patp60g008grx9g
+</pre>
+
+
+<p>
+We can check the status of our job:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'The status of our job is: </span>{job_qpu.status()}<span style="color: #CC9393;">'</span>)
+</pre>
+</div>
+
+<pre class="example">
+The status of our job is: DONE
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgeaa1a0b" class="outline-3">
+<h3 id="orgeaa1a0b"><span class="section-number-3">3.5.</span> Accessing the Results</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+We can extract results from our job using its <code>.result()</code> method:
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #DFAF8F;">results_qpu</span> = job_qpu.result()
+
+<span style="color: #DCDCCC; font-weight: bold;">print</span>(results_qpu)
+</pre>
+</div>
+
+<pre class="example">
+PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(&lt;shape=(), num_shots=4092, num_bits=2&gt;)), metadata={'circuit_metadata': {}}), SamplerPubResult(data=DataBin(meas=BitArray(&lt;shape=(), num_shots=4092, num_bits=2&gt;)), metadata={'circuit_metadata': {}})], metadata={'execution': {'execution_spans': ExecutionSpans([DoubleSliceSpan(&lt;start='2025-03-11 19:34:53', stop='2025-03-11 19:34:56', size=8184&gt;)])}, 'version': 2})
+</pre>
+
+
+<p>
+We can plot the results, just as before:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #F0DFAF; font-weight: bold;">for</span> idx <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(2):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(results_qpu[idx].data.meas.get_counts())
+</pre>
+</div>
+
+<pre class="example">
+{'00': 1961, '11': 2065, '01': 36, '10': 30}
+{'10': 2058, '01': 1964, '00': 22, '11': 48}
+</pre>
+
+
+<p>
+Indeed, we can print our results, but it is much nicer to plot them using a
+histogram.
+</p>
+
+<p>
+Unlike in the simulation, which was noise-free, we now have noise. Bell circuit
+0 should not produce states \(\left| 01 \right \rangle\) nor
+\(\left| 10 \right \rangle\), yet, they are listed in the measurement results,
+indicating that they have a non-zero probability of occurring. Similarly,
+circuit 1 should not produce \(\left| 00 \right \rangle\) nor
+\(\left| 11 \right \rangle\).
+</p>
+
+<p>
+For a better comparison between our noise-free simulation and QPU results, we
+plot the counts on the same histogram. We can do this using the
+<code>plot_histogram()</code> method if we provide a list the counts we want to appear on
+the same plot:
+</p>
+<div class="org-src-container">
+<pre class="src src-python">
+<span style="color: #F0DFAF; font-weight: bold;">for</span> idx <span style="color: #F0DFAF; font-weight: bold;">in</span> <span style="color: #DCDCCC; font-weight: bold;">range</span>(2):
+    <span style="color: #DCDCCC; font-weight: bold;">print</span>(f<span style="color: #CC9393;">'Bell circuit </span>{idx}<span style="color: #CC9393;">'</span>)
+    display(plot_histogram([results_sim[idx].data.meas.get_counts()),
+                           results_qpu[idx].data.meas.get_counts())])
+</pre>
+</div>
+
+
+<div id="org1a733a4" class="figure">
+<p><img src="./img/bell_ckt_results00_compare.png" alt="bell_ckt_results00_compare.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 15: </span>QPU results are compared with noise-free simulation results for Bell circuit 0.</p>
+</div>
+
+<p>
+Bell circuit 1:
+</p>
+
+
+<div id="org45d0c01" class="figure">
+<p><img src="./img/bell_ckt_results01_compare.png" alt="bell_ckt_results01_compare.png" width="480px" />
+</p>
+<p><span class="figure-number">Figure 16: </span>QPU results are compared with noise-free simulation results for Bell circuit 1.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Dr. E.P. Blair</p>
+<p class="date">Created: 2025-03-11 Tue 20:32</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
