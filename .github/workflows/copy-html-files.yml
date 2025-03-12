@@ -24,6 +24,7 @@ jobs:
           "org/html/ClassicalInfoQuantumInfo.html"
           "org/html/Operators.html"
           "org/html/AppendixQiskitIBMSimRun.html"
+          "org/html/AppendixExBellCircuits.html"
           "org/html/nbgrader.html"
         )
 

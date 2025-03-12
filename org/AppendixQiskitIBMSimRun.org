@@ -1747,7 +1747,7 @@ We now pass two PUBs, each with a different circuit:
 :  > Metadata: {'target_precision': 0.0, 'circuit_metadata': {}}
     
 
-* ~qiskit_aer~ Primitives
+* ~qiskit_aer~ Primitives                                          :noexport:
 We demonstrate the use of ~qiskit_aer~ primitives.
 
 ** Example: Bell Circuits and the ~SamplerV2~ Class
@@ -2182,7 +2182,7 @@ simulations of quantum circuits.
 A next step will be to perform similar computations on actual quantum hardware,
 and then to compare the results.
 
-* Bell Circuits on IBM Quantum Hardware
+* Bell Circuits on IBM Quantum Hardware                            :noexport:
 
 To run the same Bell circuits on IBM hardware, we require the
 ~qiskit_ibm_runtime~ package. For an equivalent to our previous simulation of
@@ -2644,7 +2644,7 @@ Bell circuit 1:
 [[./img/bell_ckt_results01_compare.png]]
 
 
-* Qiskit IBM Runtime Primitives
+* Qiskit IBM Runtime Primitives                                    :noexport:
 
 ** Helper Function: =orgfig=                                      :noexport:
 #+begin_src python :results output :session IBMrun :exports both

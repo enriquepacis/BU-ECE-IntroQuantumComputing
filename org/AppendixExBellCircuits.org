@@ -1,0 +1,1549 @@
+# -*- coding: utf-8 -*-
+# -*- mode: org -*-
+
+#+startup: overview indent auto-fill
+#+export_file_name: ./html/AppendixExBellCircuits.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
+#+PROPERTY: header-args :eval never-export
+
+#+title: Example: Bell Circuits
+#+author: Dr. E.P. Blair
+
+
+* Notebook Setup                                                   :noexport:
+
+** Python Sessions
+
+*** Set Python Environment
+The following is helpful if we want to have =org-mode= sessions linking
+multiple code blocks /and/ we are using =direnv=.
+
+#+begin_src emacs-lisp :eval never-export
+(setq-local org-babel-python-command (expand-file-name "~/anaconda3/envs/QC2025env/bin/python3"))
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/anaconda3/envs/QC2025env/bin/python3
+
+
+#+begin_src python :results output :eval never-export
+  import sys, qiskit
+
+  print(sys.executable)
+  print(f'Python version: {sys.version}')
+
+
+  print(f'Qiskit version: {qiskit.__version__}')
+#+end_src
+
+#+RESULTS:
+: /Users/enrique_blair/anaconda3/envs/QC2025env/bin/python3
+: Python version: 3.11.11 (main, Dec 11 2024, 10:25:04) [Clang 14.0.6 ]
+: Qiskit version: 1.3.1
+
+
+*** Show Session Errors(?)
+
+#+begin_src emacs-lisp
+  (advice-add #'org-babel-python-send-string 
+              :override
+              #'my/org-babel-python-send-string)
+
+  (defun my/org-babel-python-send-string (session body)
+    "Pass BODY to the Python process in SESSION.
+  Return output."
+    (with-current-buffer session
+      (let* ((string-buffer "")
+         (comint-output-filter-functions
+          (cons (lambda (text) (setq string-buffer
+                         (concat string-buffer text)))
+            comint-output-filter-functions))
+         (body (format "\
+  try:
+  %s
+  except Exception as e:
+      # These are the relevant lines to change. 
+      print(e)
+  finally:
+      print('%s')"
+               (org-babel-python--shift-right body 4)
+               org-babel-python-eoe-indicator)))
+        (let ((python-shell-buffer-name
+           (org-babel-python-without-earmuffs session)))
+      (python-shell-send-string body))
+        ;; same as `python-shell-comint-end-of-output-p' in emacs-25.1+
+        (while (not (and (python-shell-comint-end-of-output-p string-buffer)
+                         (string-match
+                  org-babel-python-eoe-indicator
+                  string-buffer)))
+      (accept-process-output (get-buffer-process (current-buffer))))
+        (org-babel-chomp (substring string-buffer 0 (match-beginning 0))))))
+#+end_src
+
+#+RESULTS:
+: my/org-babel-python-send-string
+
+* Qiskit Primitives
+
+** Overview
+
+- The interface for the various simulators (BasicSimulator, AerSimulator) were
+  identical to the Qiskit IBM Provider interface to the quantum hardware
+- The backend was an abstraction for something that was either simulator or an
+  actual quantum processor.
+- Primitives abstract the interface between users and backends
+- There are two available primitives:
+  - Sampler - this samples the output state of a circuit
+  - Estimator - this stimates expectation values of a state with respect to
+    observables
+- Qiskit, Qiskit Aer, and Qiskit IBM Runtime each provide different primitives.
+- Diego recommends starting with the version 2 primitives, which are compatible
+  with the current hardware:
+
+- Qiskit
+  - StatevectorSampler
+  - StatevectorEstimator
+- ~qiskit_aer~
+  - ~primitives.SamplerV2~
+  - ~primitives.EstimatorV2~
+- ~qiskit_ibm_runtime~
+  - ~SamplerV2~
+  - ~EstimatorV2~
+
+** Primitives
+Qiskit primitives are computational building blocks used in larger applications that require quantum resources to efficiently produce outputs. The inputs to a primitive consists of primitive unified blocs (PUBs).
+
+There are two types of primitives:
+1. ~EstimatorV2~
+2. ~SamplerV2~
+
+The workflow is as before: build a circuit, and then simulate it (or run it on
+hardware).
+
+*** Helper Function: =orgfig=                                    :noexport:
+#+begin_src  python :results output :session qisprim :exports both
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+#+end_src
+
+#+RESULTS:
+
+*** Imports
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit import QuantumCircuit
+  from qiskit.primitives import StatevectorSampler, StatevectorEstimator
+  from qiskit.providers.basic_provider import BasicSimulator
+
+  print('imports complete') # it's sometimes desirable to check job completion
+#+end_src
+
+#+RESULTS:
+: imports complete
+
+*** Build a Circuit
+
+#+begin_src python :results output :session qisprim :exports both
+  qc = QuantumCircuit(2, 2)
+  qc.h(1)
+  qc.cx(1,0)
+  qc.measure([1,0],[1,0]) # measurement register: c
+  qc.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  import os
+  fname = os.path.join('html', 'img', 'qisprimckt01.png')
+  qc.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/qisprimckt01.png]]
+
+#+name: fig:qisprimckt01
+#+attr_html: :width 480px
+#+caption: This is a circuit for use with the =qiskit= primitives.
+[[./img/qisprimckt01.png]]
+
+*** Run Simulations
+
+#+begin_src python :results output :session qisprim :exports both
+  simulator = BasicSimulator()
+  sampler = StatevectorSampler()
+#+end_src
+
+#+RESULTS:
+
+**** Basic Simulation
+
+This simulates the circuit using ~qiskit.
+#+begin_src python :results output :session qisprim :exports both
+  # No transpilation is needed for this simple circuit
+  job_simulator = simulator.run( qc, shots=1024)
+#+end_src
+
+#+RESULTS:
+
+**** Simulation using a Sampler
+
+- The syntax for a sampler simulation is somewhat different than that of the
+  =BasicSimulator= class.
+  - Here, inputs are in the form of primitive-unified blocs (PUBS)
+#+begin_src python :results output :session qisprim :exports both
+  job_sampler = sampler.run( [qc], shots=1024)
+#+end_src
+
+#+RESULTS:
+
+*** Extracting Results
+
+- We extract results in the same way from both the simulator and the sampler:
+
+#+begin_src python :results output :session qisprim :exports both
+  result_simulator = job_simulator.result()
+  result_sampler = job_sampler.result()
+#+end_src
+
+#+RESULTS:
+
+***** Simulator Counts
+
+- We can retrieve counts from the simulator result as before, using the
+  ~get_counts()~ method:
+  #+begin_src python :results output :session qisprim :exports both
+    counts_simulator = result_simulator.get_counts()
+    print( counts_simulator )
+  #+end_src
+
+  #+RESULTS:
+  : {'11': 522, '00': 502}
+
+
+***** Sampler Counts
+- Getting counts from the sampler is a bit more involved. Let's eamine the
+  results we obtained:
+  #+begin_src python :results output :session qisprim :exports both
+    print(type(result_sampler))
+    print(result_sampler)
+  #+end_src
+
+  #+RESULTS:
+  : <class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'>
+  : PrimitiveResult([SamplerPubResult(data=DataBin(c=BitArray(<shape=(), num_shots=1024, num_bits=2>)), metadata={'shots': 1024, 'circuit_metadata': {}})], metadata={'version': 2})
+
+  - The results from the sampler come as an object of class ~PubResult~
+    object.
+    - This class has a ~get_counts()~ method.
+    - Since the input PUB for the sampler is a list, we must similarly index the
+      result to get the result(s)  for a specific PUB item.
+    - If we don't provide an index, get_counts() will
+      aggregate the results, which may not be what we want.
+- To get counts, we do the following:
+- index the PUB result. Here, we call for the zeroth element.
+- reference the data member data element, and reference the classical register name.
+- use the ~get_counts()~ method.
+  #+begin_src python :results output :session qisprim :exports both
+    counts_sampler = result_sampler[0].data.c.get_counts()
+    print(counts_sampler)
+  #+end_src
+
+  #+RESULTS:
+  : {'11': 504, '00': 520}
+** Example: A Parametrized Circuit
+
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit import transpile
+  from qiskit.circuit import Parameter
+  from math import pi
+
+  θ = Parameter('θ')
+
+  qc2 = QuantumCircuit(2)
+  qc2.rx(θ, 1) # assign a parameter for this rotation
+  qc2.cx(1, 0)
+  qc2.measure_all()
+  qc2.draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join( 'html', 'img', 'prametrizedckt.png')
+  qc2.draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/prametrizedckt.png]]
+
+#+name: fig:parametrizedCkt
+#+attr_html: :width 480px
+#+caption: This circuit has a parameter θ.
+[[./img/prametrizedckt.png]]
+
+
+*** =BasicSimulator= Usage
+Here, we make a list of circuits, each with a specific value of the parameter θ.
+#+begin_src python :results output :session qisprim :exports both
+  angles = [[pi/4], [pi/3], [pi/2]]
+
+  circuits = []
+  for angle in angles:
+      qc_temp = qc2.assign_parameters({θ:angle[0]})
+      circuits.append(qc_temp)
+#+end_src
+
+#+RESULTS:
+
+We can draw the different circuits by indexing the list:
+#+begin_src python :results output :session qisprim :exports both
+  circuits[1].draw(reverse_bits=True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join( 'html', 'img', 'prametrizedckt_ex.png')
+  circuits[1].draw(reverse_bits=True, filename=fname)
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+
+#+name: fig:paramCktPrintFromList
+#+attr_html: :width 480px
+#+caption: We print a circuit from a list of circuits. Unlike the circuit of Fig. [[fig:parametrizedCkt]], this circuit has a specific value for θ.
+[[./img/prametrizedckt_ex.png]]
+
+
+**** Transpiling and Running
+
+- The entire list of circuits can be transpiled in a single call to ~transpile()~
+- The transpiled list can be called using one call to the =BasicSimulator.run()=
+  method.
+
+  #+begin_src python :results output :session qisprim :exports both
+    # transpile the circuit list
+    circuits_t = transpile( circuits, backend=simulator )
+
+    result_simulator = simulator.run( circuits_t, shots=1024 ).result()
+  #+end_src
+
+  #+RESULTS:
+- We provide an index to =get_counts()= for the corresponding circuit in
+  =circuits_t=.
+  #+begin_src python :results output :session qisprim :exports both
+    counts_simulator = []
+
+    for i, _ in enumerate(angles):
+        result_temp = result_simulator.get_counts(i)
+        counts_simulator.append(result_temp)
+
+    print(counts_simulator)
+  #+end_src  
+
+  #+RESULTS:
+  : [{'00': 875, '11': 149}, {'00': 780, '11': 244}, {'11': 465, '00': 559}]
+*** =StatevectorSampler= Usage
+- For a sampler, we pass a list of PUBs. This contains
+  - the generic parametrized circuit, along with
+  - the list of parameters
+- This makes the =run()= command very simple.
+#+begin_src python :results output :session qisprim :exports none
+  result_sampler = sampler.run([(qc2, angles)], shots=1024).result()
+#+end_src
+
+#+RESULTS:
+
+- To get the results, we index the =result_sampler=, i.e., =results_sampler[0]=
+  - This indexes the zeroth (and only) PUB, with the flexibility to support multiple PUBs
+- We iterate over the angles as before to get results for each angles
+#+begin_src python :results output :session qisprim :exports none
+  counts_sampler = []
+
+  for i, _ in enumerate( angles ):
+      result_temp = result_sampler[0].data.meas.get_counts(i)
+      counts_sampler.append(result_temp)
+
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: [{'00': 879, '11': 145}, {'00': 768, '11': 256}, {'00': 506, '11': 518}]
+
+#+begin_warning
+Caution: if we simply use =result.sampler[0].data.meas.get_counts()=, this aggregates the counts by summing them. Often, this is not what we want. 
+#+end_warning
+
+
+*** =StatevectorSampler= Usage with Multiple PUBs
+We now pass two PUBs, each with a different circuit:
+#+begin_src python :results output :session qisprim :exports both
+  qc = QuantumCircuit(2,2)
+  qc.h(1)
+  qc.cx(1,0)
+  qc.measure([1,0], [1,0])
+
+  qc.draw()
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join('html', 'img', 'circuit_multiPUBex.png')
+  qc.draw( filename = fname )
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/circuit_multiPUBex.png]]
+
+#+name: fig:StateVectorMultiPubCkt
+#+attr_html: :width 480px
+#+caption: A circuit for use in an example with multiple PUBs.
+[[./img/circuit_multiPUBex.png]]
+
+**** Run the Multi-Pub Basic Sampler
+- Here, we run one job with two different PUBs, each with a different circuit.
+#+begin_src python :results output :session qisprim :exports both
+  result_sampler = sampler.run([(qc2, angles), (qc, None)], shots=1024).result()
+#+end_src
+
+#+RESULTS:
+
+**** Retrieve Data for the Zeroth Circuit
+#+begin_src python :results output :session qisprim :exports both
+  counts_sampler = [ result_sampler[0].data.meas.get_counts(k) for k in range(3) ]
+
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: [{'00': 857, '11': 167}, {'00': 774, '11': 250}, {'00': 501, '11': 523}]
+
+**** Retrieve Data for the First Circuit
+- Here, we have a non-parametrized circuit, so we don't need to provide an argument to =get_counts()=
+#+begin_src python :results output :session qisprim :exports both
+  counts_sampler = result_sampler[1].data.c.get_counts()
+  print(counts_sampler)
+#+end_src
+
+#+RESULTS:
+: {'11': 521, '00': 503}
+
+** The Estimator Primitive
+- The =StatevectorEstimator= primitive takes a PUB, but with a slightly different format from =BasicSampler=.
+- The circuits cannot have any measurement gates
+#+begin_src python :results output :session qisprim :exports both
+  qc2 = QuantumCircuit(2)
+  qc2.rx(θ, 1)
+  qc2.cx(1, 0)
+
+  qc2.draw( reverse_bits = True)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python :results output :session qisprim :exports none
+  fname = os.path.join('html', 'img', 'sample_ckt_for_Estimator.png')
+  qc2.draw( reverse_bits = True, filename=fname)
+
+  orgfig( fname[5:] )
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/sample_ckt_for_Estimator.png]]
+
+#+name: fig:defaultName
+#+attr_html: :width 480px
+#+caption: This circuit was built for use with an =Estimator= simulation. For this reason, we do not include measurement blocks.
+[[./img/sample_ckt_for_Estimator.png]]
+
+*** Observables
+- Since an estimator estimates expectation values \(\left\langle \psi |
+  \mathbf{O} | \right\rangle\), we need an observable, \(\mathbf{O}\).
+#+begin_src python :results output :session qisprim :exports both
+  from qiskit.quantum_info import SparsePauliOp
+
+  # This is a list of observables. I'm not sure why it's a list of lists.
+  obsv = [ [ SparsePauliOp( ["XX", "IY"], [0.5, 0.5] ) ],
+           [ SparsePauliOp( ["XX"], [1] ) ] ]
+
+  print(obsv)
+#+end_src
+
+#+RESULTS:
+: [[SparsePauliOp(['XX', 'IY'],
+:               coeffs=[0.5+0.j, 0.5+0.j])], [SparsePauliOp(['XX'],
+:               coeffs=[1.+0.j])]]
+
+*** Run the Estimator
+
+#+begin_src python :results output :session qisprim :exports both
+  estimator = StatevectorEstimator()
+  result_estimator = estimator.run( [(qc2, obsv, angles, 0.1)] ).result()
+#+end_src
+
+#+RESULTS:
+
+*** Extract Expectation Values
+- To extract the expectation values from the estimator result, we do the following:
+  - index the result
+  - use the =.data.evs= property
+  - (optional) we can see some metadata using the =.metadata= function
+#+begin_src python :results output :session qisprim :exports both
+  # Extract the expectation values (evs) from the result for PUB 0
+  print(result_estimator[0].data.evs)
+  print(result_estimator[0].metadata)
+#+end_src
+
+#+RESULTS:
+: [[ 0.05985877  0.14030793  0.18762585]
+:  [ 0.10722808 -0.04870472  0.15934201]]
+: {'target_precision': 0.1, 'circuit_metadata': {}}
+
+- This is a list of two observables, with one value for each of the input
+  parameters.
+** Qiskit Estimator Example
+- This provides another example from a Qiskit documentation [[https://docs.quantum.ibm.com/guides/simulate-with-qiskit-sdk-primitives][tutorial]]
+  #+begin_src python :results output :session IBMexample :exports both
+    from qiskit import QuantumCircuit
+    from qiskit.circuit import Parameter
+ 
+    # circuit for which you want to obtain the expected value
+    qc = QuantumCircuit(2)
+    qc.ry(Parameter('theta'), 0)
+    qc.h(0)
+    qc.cx(0,1)
+    qc.draw("mpl", style="iqp")
+  #+end_src
+
+  #+RESULTS:
+
+  #+begin_src python :results output :session IBMexample :exports none
+    def orgfig( fname, width=480 ):
+
+        print(f'\n#+name: fig:defaultName')
+        print(f'#+attr_html: :width {width}px')
+        print(f'#+caption: Default caption.')
+        print(f'[[./{fname}]]')
+
+    import os
+
+    fname = os.path.join('html', 'img', 'EstimatorIBMExCkt.png')
+    qc.draw("mpl", style="iqp", filename=fname)
+
+    orgfig( fname[5:] )
+
+  #+end_src
+
+  #+RESULTS:
+  : 
+  : #+name: fig:defaultName
+  : #+attr_html: :width 480px
+  : #+caption: Default caption.
+  : [[./img/EstimatorIBMExCkt.png]]
+  : Saved figure
+
+  #+name: fig:defaultName
+  #+attr_html: :width 480px
+  #+caption: This is a simple circuit built for an IBM Quantum tutorial on using the =StatevectorEstimator=.
+  [[./img/EstimatorIBMExCkt.png]]
+
+*** Build an Operator
+#+begin_src python :results output :session IBMexample :exports both
+  from qiskit.quantum_info import SparsePauliOp
+  import numpy as np
+
+  # observable(s) whose expected values you want to compute
+  from qiskit.quantum_info import SparsePauliOp
+  observable = SparsePauliOp(["II", "XX", "YY", "ZZ"], coeffs=[1, 1, -1, 1])
+
+  # value(s) for the circuit parameter(s)
+  parameter_values = [[0], [np.pi/6], [np.pi/2]]
+  print(parameter_values)
+#+end_src
+
+#+RESULTS:
+: [[0], [0.5235987755982988], [1.5707963267948966]]
+
+  
+*** Instantiate a =StatevectorEstimator=
+#+begin_src python :results output :session IBMexample :exports both
+  from qiskit.primitives import StatevectorEstimator
+  estimator = StatevectorEstimator()
+#+end_src
+
+#+RESULTS:
+
+  
+*** Transpile the Circuit
+#+begin_src python :results output :session IBMexample :exports both
+  # Generate a pass manager without providing a backend
+  from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+ 
+  pm = generate_preset_pass_manager(optimization_level=1)
+  isa_circuit = pm.run(qc)
+  isa_observable = observable.apply_layout(isa_circuit.layout)
+#+end_src
+
+#+RESULTS:
+
+*** Run the Estimator
+- We form a PUB as an argument to the =StatevectorEstimator=
+#+begin_src python :results output :session IBMexample :exports both
+  job = estimator.run([(isa_circuit, isa_observable, parameter_values)])
+  result = job.result()
+  print(f" > Result class: {type(result)}")
+#+end_src
+
+#+RESULTS:
+:  > Result class: <class 'qiskit.primitives.containers.primitive_result.PrimitiveResult'>
+
+*** Extract Results
+- To extract the expectation values from the estimator result, we do the
+  following:
+  - index the result
+  - use the =.data.evs= property
+#+begin_src python :results output :session IBMexample :exports both
+  print(result)
+  print(len(result))
+  print(f" > Expectation value: {result[0].data.evs}")
+  print(f" > Metadata: {result[0].metadata}")
+#+end_src
+
+#+RESULTS:
+: PrimitiveResult([PubResult(data=DataBin(evs=np.ndarray(<shape=(3,), dtype=float64>), stds=np.ndarray(<shape=(3,), dtype=float64>), shape=(3,)), metadata={'target_precision': 0.0, 'circuit_metadata': {}})], metadata={'version': 2})
+: 1
+:  > Expectation value: [4.         3.73205081 2.        ]
+:  > Metadata: {'target_precision': 0.0, 'circuit_metadata': {}}
+    
+
+* ~qiskit_aer~ Primitives
+We demonstrate the use of ~qiskit_aer~ primitives.
+
+** Example: Bell Circuits and the ~SamplerV2~ Class
+
+Bell circuits are used to create entangled pairs of qubits. We will simulate two
+of the four Bell circuits using the ~SamplerV2~ class provided in
+~qiskit_aer.primitives~.
+
+*** Helper function                                             :noexport:
+#+begin_src  python :results output :session bellcirc :exports both
+  from datetime  import datetime
+
+  def orgfig( fname, width=480 ):
+
+      print(f'\n#+name: fig:defaultName')
+      print(f'#+attr_html: :width {width}px')
+      print(f'#+caption: Default caption.')
+      print(f'[[./{fname}]]')
+
+  print(f'Defined function orgfig() at {datetime.now()}')
+
+  # import sys
+  # print(sys.version)
+  # print(sys.executable)
+#+end_src
+
+#+RESULTS:
+: Defined function orgfig() at 2025-03-11 20:18:42.332516
+
+*** Imports
+#+begin_src python :session bellcirc :results output :exports both
+  from qiskit import QuantumCircuit
+  from qiskit_aer.primitives import SamplerV2
+
+  from datetime import datetime
+
+  # Optional
+  print(f'Imports complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: Imports complete at 2025-03-11 20:18:54.318288
+
+#+begin_note
+*Note*
+
+If you are using Jupyter Lab, you need not use ~dateime~ and ~print()~ to
+indicate completion.
+
+Here, I'm using ~datetime~ and ~print()~ because I'm developing these notes in
+Emacs org mode. Here, Python code blocks in session mode often do not indicate
+errors, and completion messages help me know the code block has executed
+properly.
+#+end_note
+
+*** Bell Circuits
+
+**** First Case
+
+Not only must we form a Bell circuit, but we must also add measurement
+gates. The measurement gates are required if we wish to obtain circuit counts.
+#+begin_src python :session bellcirc :results output :exports both
+  Bell00 = QuantumCircuit(2)
+  Bell00.h(0)
+  Bell00.cx(0,1)
+
+  # measure_all() adds a classical register named "meas"
+  Bell00.measure_all()
+
+  print(Bell00)
+#+end_src
+
+#+RESULTS:
+:         ┌───┐      ░ ┌─┐   
+:    q_0: ┤ H ├──■───░─┤M├───
+:         └───┘┌─┴─┐ ░ └╥┘┌─┐
+:    q_1: ─────┤ X ├─░──╫─┤M├
+:              └───┘ ░  ║ └╥┘
+: meas: 2/══════════════╩══╩═
+:                       0  1
+
+
+#+begin_src python :session bellcirc :results output :exports none
+  import os
+
+  fname = os.path.join( 'html', 'img', 'Bell00ckt.png' )
+  Bell00.draw( filename = fname )
+
+  # print(fname)
+  orgfig( fname[5:] )
+
+  print(f'\nCode block complete at {datetime.now()}')
+
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./img/Bell00ckt.png]]
+: 
+: Code block complete at 2025-03-11 20:19:24.368211
+
+#+name: fig:BellCircuit01
+#+attr_html: :width 380px
+#+caption: This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).
+[[./img/Bell00ckt.png]]
+
+**** A Second Circuit
+
+#+begin_src python :session bellcirc :results output :exports both
+  Bell01 = QuantumCircuit(2)
+  Bell01.h(0)
+  Bell01.x(1)
+  Bell01.cx(0,1)
+
+  # measure_all() adds a classical register named "meas"
+  Bell01.measure_all()
+
+  print(Bell01)
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+:         ┌───┐      ░ ┌─┐   
+:    q_0: ┤ H ├──■───░─┤M├───
+:         ├───┤┌─┴─┐ ░ └╥┘┌─┐
+:    q_1: ┤ X ├┤ X ├─░──╫─┤M├
+:         └───┘└───┘ ░  ║ └╥┘
+: meas: 2/══════════════╩══╩═
+:                       0  1 
+: 
+: Code block complete at 2025-03-11 20:19:47.075302
+
+
+#+begin_src python :session bellcirc :results output :exports none
+  import os
+
+  fname = os.path.join( 'html', 'img', 'Bell01ckt.png' )
+  Bell01.draw( filename = fname )
+
+  # print(fname)
+  orgfig( fname )
+
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: 
+: #+name: fig:defaultName
+: #+attr_html: :width 480px
+: #+caption: Default caption.
+: [[./html/img/Bell01ckt.png]]
+: 
+: Code block complete at 2025-03-11 20:19:55.103923
+
+#+name: fig:BellCircuit01
+#+attr_html: :width 380px
+#+caption: This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).
+[[./img/Bell01ckt.png]]
+
+
+
+**** Join Circuits into a List
+
+Now, we form a list of circuits.
+#+begin_src python :session bellcirc :results output :exports both
+  # Form a list of Bell circuits
+  BellCkts = [Bell00, Bell01]
+
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: 
+: Code block complete at 2025-03-11 20:20:10.001986
+
+*** Transpilation
+
+We can now transpile our list of circuits. To *transpile* a circuit is to form
+an equivalent circuit using a set of gates (instruction set architecture, or
+ISA) that is supported on a specific quantum processing unit (QPU).
+
+To transpile, we tools called =pass_managers=. =qiskit= has some preset pass
+managers, which make it more convenient.
+
+One other piece of information we must provide is the target backend. The target
+backend could be an =AerSimulator()=, a local model of a QPU (=FakeBackend=), or
+an actual QPU. Different resources may have different ISAs, so it is important
+to specify your transpilation target.
+
+#+begin_src python :session bellcirc :results output :exports both
+  import sys
+  from qiskit_aer import AerSimulator
+  from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+  
+  # create a backend
+  backend_aer = AerSimulator()
+
+  # Specify the target backend for transpilation
+  target_aer = backend_aer.target
+  
+  # Create a pass manager object to perform the transpilation
+  pm_aer = generate_preset_pass_manager(target=target_aer, optimization_level=1)
+
+  # Want to know more about the pass manager? Start printing things about it.
+  # print(f'Class of pm_aer: {type(pm_aer)}')
+  # print(f'pm_aer: {pm_aer}')
+  # print(f'pm_aer attributes: {pm_aer.__dict__}')
+
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: 
+: Code block complete at 2025-03-11 20:20:20.348854
+
+
+Next, we can transpile our circuits for the desired backend:
+#+begin_src python :session bellcirc :results output :exports both
+  BellCkts_aer = pm_aer.run( BellCkts ) 
+
+  print(f'Code block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: Code block complete at 2025-03-11 20:20:26.363925
+
+We may wish to compare our transpiled circuit to our original circuit:
+#+begin_src python :session bellcirc :results output :exports both
+  for idx, ckt in enumerate(BellCkts):
+      print('='*70 + f'\nidx = {idx}')
+
+      print('Original')
+      print(ckt)
+
+      print('Transpiled')
+      print(BellCkts_aer[idx])      
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+======================================================================
+idx = 0
+Original
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+Transpiled
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+======================================================================
+idx = 1
+Original
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+Transpiled
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1
+#+end_example
+
+In this case, both the original circuit and the transpiled circuit are the
+same. When we try to use a =FakeBackend= or a real QPU, however, the transpiled
+circuit may look quite different from the origial circuit you designed.
+
+*** Forming PUBs
+
+Now that we have transpiled circuits that we can run on a simulator--or, if
+transpiled properly, on actual hardware--we can form a list of PUBs as a batch
+of subtasks forming a job. A PUB is a "primitive unified bloc." Each PUB is a
+tuple containing a circuit and circuit parameters, as in ~(circ, params)~. Here,
+the circuits we are dealing with are simple and do not require parameters. Thus,
+they are said to be non-parameterized circuits, and we use ~None~ for ~params~.
+
+#+begin_src python :session bellcirc :results output :exports both
+  PUBs_aer = [ (ckt, None) for ckt in BellCkts_aer ]
+
+  print(f'Created a list of PUBs for the Aer SamplerV2 at {datetime.now()}')
+  print(f'Your list of PUBs contains {len(PUBs_aer)} PUBs.')
+#+end_src
+
+#+RESULTS:
+: Created a list of PUBs for the Aer SamplerV2 at 2025-03-11 20:20:48.877108
+: Your list of PUBs contains 2 PUBs.
+
+*** Simulating the Circuits
+
+Here, we will use =qiskit_aer.primitives.SamplerV2()= as our simulation
+platform. First, we instantiate a ~SamplerV2~ object. Note: we import
+`qiskit_aer.primitives.SamplerV2~ as ~Sampler~ to distinguish it from the
+~qiskit_ibm_runtime.SamplerV2~ which we will use later.
+
+#+begin_src python :session bellcirc :results output :exports both
+  # Instantiate a sampler
+  from qiskit_aer.primitives import SamplerV2 as Sampler
+
+  sampler_aer = Sampler() # sampler for simulator, no arguments
+  # Run the `SamplerV2` simulation
+
+  print(f'Created a SamplerV2 at {datetime.now()}')
+
+#+end_src
+
+#+RESULTS:
+: Created a SamplerV2 at 2025-03-11 20:21:03.407891
+
+Finally, we use the ~run()~ method of our sampler. We will specify a shot count
+of 4096, since we may wish to compare with results from actual hardware using a
+~qiskit_ibm_runtime.SamplerV2~ object. 
+
+#+begin_src python :session bellcirc :results output :exports both
+  # Instantiate a sampler
+  from qiskit_aer.primitives import SamplerV2 as Sampler
+
+  job_sim = sampler_aer.run( PUBs_aer, shots=4092 ) # simulated job with 4092 shots
+  # Run the `SamplerV2` simulation
+
+  print(f'Simulated the SamplerV2 at {datetime.now()}')
+
+#+end_src
+
+#+RESULTS:
+: Simulated the SamplerV2 at 2025-03-11 20:21:12.211500
+
+*** Accessing Results
+
+We can extract results from our job using its ~.result()~ method:
+#+begin_src python :session bellcirc :results output :exports both
+  results_sim = job_sim.result()
+
+  print(results_sim)
+#+end_src
+
+#+RESULTS:
+: PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=4092, num_bits=2>)), metadata={'shots': 4092, 'circuit_metadata': {}, 'simulator_metadata': {'time_taken_parameter_binding': 0.000121042, 'max_memory_mb': 36864, 'time_taken_execute': 0.011992916, 'omp_enabled': True, 'max_gpu_memory_mb': 0, 'parallel_experiments': 1}}), SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=4092, num_bits=2>)), metadata={'shots': 4092, 'circuit_metadata': {}, 'simulator_metadata': {'time_taken_parameter_binding': 0.000121042, 'max_memory_mb': 36864, 'time_taken_execute': 0.011992916, 'omp_enabled': True, 'max_gpu_memory_mb': 0, 'parallel_experiments': 1}})], metadata={'version': 2})
+
+Since the list of PUBs contained two PUBs, our job has two results embedded in
+it. We access them using an index, as in ~job_sim[0]~ and
+~job_sim[1]~. Furthermore, to extract counts, we use the ~.data~ property for
+each PUB result. We also must specify the name of the classical register on
+which measurement results are stored. In this case, we used ~.measure_all()~ to
+add measurement gates, so this creates a classical register named
+~meas~. Finally, for our classical register, we use the ~get_counts()~ method.
+
+#+begin_src python :session bellcirc :results output :exports both
+  for idx in range(2):
+      print(results_sim[idx].data.meas.get_counts())
+#+end_src
+
+#+RESULTS:
+: {'11': 2052, '00': 2040}
+: {'01': 2024, '10': 2068}
+
+Indeed, we can print our results, but it is much nicer to plot them using a
+histogram.
+
+#+begin_src python :eval never
+  from qiskit.visualization import plot_histogram
+
+  for idx in range(2):
+      print(f'Bell circuit {idx}')
+      display(plot_histogram(results_sim[idx].data.meas.get_counts()))
+#+end_src
+
+#+begin_src python :session bellcirc :results output :exports none
+  from qiskit.visualization import plot_histogram
+  import os
+
+  for idx in range(2):
+      fname = os.path.join('html', 'img',
+                           f'bell_ckt_results{idx:02d}.png')
+    
+      print(f'\nBell circuit {idx}:')
+      plot_histogram(results_sim[idx].data.meas.get_counts(),
+                     filename=fname)
+
+      orgfig(fname[5:])
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+Bell circuit 0:
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/bell_ckt_results00.png]]
+
+Bell circuit 1:
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/bell_ckt_results01.png]]
+#+end_example
+
+A histgoram for the results of Bell circuit 0 are shown here:
+#+name: fig:BellCkt00_hist
+#+attr_html: :width 480px
+#+caption: The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|00 \right\rangle + \left|11 \right\rangle\right)/\sqrt{2}\).
+[[./img/bell_ckt_results00.png]]
+
+
+A similar histogram for measurements on Bell circuit 1 are shown here:
+#+name: fig:BellCkt01_hist
+#+attr_html: :width 480px
+#+caption: The measured  result is consistent with Bell circuit 0, which produces \(\left(\left|01 \right\rangle + \left|10 \right\rangle\right)/\sqrt{2}\).
+[[./img/bell_ckt_results01.png]]
+
+** Summary
+
+We have used a ~qiskit_aer.primitives.SamplerV2~ object to perform noise-free
+simulations of quantum circuits.
+
+A next step will be to perform similar computations on actual quantum hardware,
+and then to compare the results.
+
+* Bell Circuits on IBM Quantum Hardware
+
+To run the same Bell circuits on IBM hardware, we require the
+~qiskit_ibm_runtime~ package. For an equivalent to our previous simulation of
+Bell circuits, we will also use the ~SamplerV2~ class.
+
+** Imports
+Let's begin by importing some tools we need from ~qiskit_ibm_runtime~. We will
+import the ~SamplerV2~ for getting measurement counts on actual hardware, and
+~QiskitRuntimeService~ for making a connection to IBM Quantum.
+
+#+begin_src python :session bellcirc :results output :exports both
+  from qiskit_ibm_runtime import SamplerV2, QiskitRuntimeService
+
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: 
+: Code block complete at 2025-03-11 20:22:36.131949
+
+** The Bell Circuits
+
+We do not recreate the Bell circuits here, since we already have created them.
+Instead, we show them here once again.
+
+#+name: fig:BellCircuit01-redrawn
+#+attr_html: :width 380px
+#+caption: This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 00 \right\rangle + \left|11  \right\rangle \right)/\sqrt{2} \).
+[[./img/Bell00ckt.png]]
+
+#+name: fig:BellCircuit01-redrawn
+#+attr_html: :width 380px
+#+caption: This bell circuit produces the state \(\left|\Psi \right\rangle = \left( \left| 01 \right\rangle + \left|10  \right\rangle \right)/\sqrt{2} \).
+[[./img/Bell01ckt.png]]
+
+** Transpilation
+
+To transpile our circuits, we first require a backend, which is the target ISA
+for the transpilation process. To obtain a backend, we must use our IBM Quantum
+API token. To do this, you need to create an IBM Quantum account if you don't
+already have one; and you need to find your IBM Quantum API token.
+
+We will take the following steps:
+1. Register for an IBM Quantum account if you don't already have one.
+2. Find your IBM Quantum API token
+3. Load your token in Python for programmatic access to IBM Quantum.
+4. Establish a connection to IBM Quantum using your API token.
+5. Select a backend QPU
+6. Transpile your circuits for the target backend
+
+*** Getting Your IBM Quantum API Token
+
+1. If you don't already have one, use your university e-mail account
+   (prefferable) to register for an account.
+2. Once logged in, you can get your IBM token in one of two ways:
+   1. Visit your [[https://quantum.ibm.com][IBM Quantum Platform dashboard]]
+      1. In the upper right, you'll see a box where you can view or copy your
+         IBM Quantum API token
+         #+attr_html: :width 360px
+         [[./img/IBMQuantumDashboard.png]]
+   2. Click the "Account" button (by default, it looks like an anonymized
+      profile pic). This brings up your /Profile Settings/
+      #+attr_html: :width 360px
+      [[./img/IBMQuantumAccountIcon.png]]
+      1. Below the /Profile Details/ is an /API Token/. Click the icon that allows
+         you to copy you IBM Quantum API token. You will paste this information
+         elsewhere later.
+         
+#+begin_src python :session bellcirc :results output :exports both
+  import sys
+  from qiskit_aer import AerSimulator
+  from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+  
+  # create a backend
+  backend_aer = AerSimulator()
+
+  # Specify the target backend for transpilation
+  target_aer = backend_aer.target
+  
+  # Create a pass manager object to perform the transpilation
+  pm_aer = generate_preset_pass_manager(target=target_aer, optimization_level=1)
+
+  # Want to know more about the pass manager? Start printing things about it.
+  # print(f'Class of pm_aer: {type(pm_aer)}')
+  # print(f'pm_aer: {pm_aer}')
+  # print(f'pm_aer attributes: {pm_aer.__dict__}')
+
+  print(f'\nCode block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: 
+: Code block complete at 2025-03-11 20:22:53.987704
+
+
+*** The [[https://docs.python.org/3/library/getpass.html][getpass]] Package
+- This is a nice Python package that is useful in Jupyter notebooks
+- It allows you to prompt the user for a password that can be used later in the file.
+- The basic usage is:
+  #+begin_src python :eval never
+    import getpass # this comes with standard Python
+
+    # This interactively prompts the user for their password
+    token = getpass.getpass('Enter your password: ')
+  #+end_src
+- You can then use =token= in an API call
+- This allows you to share Jupyter notebooks /without/ also sharing your
+  password/token/API key.
+
+*** My Approach to Loading My Token (not recommended)
+#+begin_note
+If you are using a Jupyter Lab notebook, please ignore this section. This is
+useful for me, since I'm coding in Emacs Org mode.
+#+end_note
+- I use this approach because I sometimes run Python code /outside/ of a Jupyter
+  notebook, so I don't have an opportunity to dynamically input my password
+  using =getpass=
+- My approach was to save a file on my computer, say, =~/.IBMQpass=
+  - This is a text file containing only my IBM Quantum token
+- Then, I can load the token in a variable called =token= using code like this:
+  #+begin_src python :session bellcirc :results output :exports both
+    import os
+    from datetime import datetime
+
+    # Read the token from a secure file
+    # Expand the '~' to the full path
+    file_path = os.path.expanduser("~/.IBMQpass")
+    with open(file_path, "r") as file:
+        token = file.read().strip()
+
+    print('\nLoaded IBM Quantum token: {0}'.format(datetime.now()))
+  #+end_src
+
+  #+RESULTS:
+  : 
+  : Loaded IBM Quantum token: 2025-03-11 20:23:13.538164
+*** Establish a Connection to IBM Quantum
+- To interface with the IBM cloud resources, we establish a
+  =QiskitRuntimeService= object, =service=
+  #+begin_src python :session bellcirc :results output :exports both
+    service = QiskitRuntimeService(channel='ibm_quantum')
+
+    print(f'Established a service at {datetime.now()}')
+  #+end_src
+
+  #+RESULTS:
+  : Established a service at 2025-03-11 20:24:51.421527
+
+- We can then use the =service= object to query available QPUs
+  #+begin_src python :session bellcirc :results output :exports both
+    print(service.backends())
+    # in Jupyter notebook, you don't need print() ... just use
+    # service.backends() as the last command in your cell.
+  #+end_src
+
+  #+RESULTS:
+  : [<IBMBackend('ibm_brisbane')>, <IBMBackend('ibm_kyiv')>, <IBMBackend('ibm_sherbrooke')>]
+
+- This is a list of objects of the [[https://docs.quantum.ibm.com/api/qiskit-ibm-runtime/qiskit_ibm_runtime.IBMBackend][IBMBackend]] class
+  - We can ask for the least-busy backend using the =.least_busy()= method:
+    #+begin_src python :session bellcirc :results output :exports both
+      # save the least-busy backend as backend
+      backend_qpu = service.least_busy()
+
+      print(f'Least busy QPU: {backend_qpu} ({datetime.now()})')
+    #+end_src
+
+    #+RESULTS:
+    : Least busy QPU: <IBMBackend('ibm_brisbane')> (2025-03-11 20:25:06.639705)
+
+- We can get information about a backend using properties such as ~.name~,
+  ~.version~, and ~.num_qubits~:
+  #+begin_src python :session bellcirc :results output :exports both
+    print(
+        f"Name: {backend_qpu.name}\n"
+        f"Version: {backend_qpu.version}\n"
+        f"No. of qubits: {backend_qpu.num_qubits}\n"
+    )
+  #+end_src
+
+  #+RESULTS:
+  : Name: ibm_brisbane
+  : Version: 2
+  : No. of qubits: 127
+
+- Now that we've picked a backend, we can transpile our circuits for that
+  backend.
+
+*** Transpilation
+
+Now that we have a backend in mind, we can transpile our circuits for the
+desired backend:
+#+begin_src python :session bellcirc :results output :exports both
+  # Specify the target backend for transpilation
+  target_qpu = backend_qpu.target
+
+  # Create a pass manager object to perform the transpilation
+  pm_qpu = generate_preset_pass_manager(target=target_qpu, optimization_level=1)
+
+  # Want to know more about the pass manager? Start printing things about it.
+  # print(f'Class of pm_aer: {type(pm_aer)}')
+  # print(f'pm_aer: {pm_aer}')
+  # print(f'pm_aer attributes: {pm_aer.__dict__}')
+
+  BellCkts_qpu = pm_qpu.run( BellCkts ) 
+
+  print(f'Code block complete at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: Code block complete at 2025-03-11 20:25:21.057943
+
+We can see the transpiled version of our circuits if we print them.
+
+In Jupyter Lab, something like the following may be used to display the
+circuits:
+#+begin_src python :session bellcirc :results output :exports both :eval never
+  for idx, ckt in enumerate(BellCkts):
+      display(BellCkts_qpu[idx].draw(idle_wires=False))
+#+end_src
+
+#+begin_src python :session bellcirc :results output :exports none
+  for idx, ckt in enumerate(BellCkts):
+      fname = os.path.join('html', 'img', f'BellCkt{idx}_qpu.png')
+      BellCkts_qpu[idx].draw(idle_wires=False, filename=fname)
+
+      orgfig( fname[5:] )
+
+  print(f'saved images of circuits at {datetime.now()}.')
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/BellCkt0_qpu.png]]
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/BellCkt1_qpu.png]]
+saved images of circuits at 2025-03-11 20:25:37.675853.
+#+end_example
+
+#+name: fig:BellCkt00_qpu
+#+attr_html: :width 480px
+#+caption: The first Bell circuit is transpiled for the selected backend, ~backend_qpu~.
+[[./img/BellCkt0_qpu.png]]
+
+#+name: fig:BellCkt01_qpu
+#+attr_html: :width 480px
+#+caption: The first Bell circuit is transpiled for the selected backend, ~backend_qpu~.
+[[./img/BellCkt1_qpu.png]]
+
+
+We may wish to compare our transpiled circuit to our original circuit:
+#+begin_src python :session bellcirc :results output :exports both
+  for idx, ckt in enumerate(BellCkts):
+      print('='*70 + f'\nidx = {idx}')
+
+      print('Original circuit design:')
+      print(ckt)
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+======================================================================
+idx = 0
+Original circuit design:
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        └───┘┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ─────┤ X ├─░──╫─┤M├
+             └───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1 
+======================================================================
+idx = 1
+Original circuit design:
+        ┌───┐      ░ ┌─┐   
+   q_0: ┤ H ├──■───░─┤M├───
+        ├───┤┌─┴─┐ ░ └╥┘┌─┐
+   q_1: ┤ X ├┤ X ├─░──╫─┤M├
+        └───┘└───┘ ░  ║ └╥┘
+meas: 2/══════════════╩══╩═
+                      0  1
+#+end_example
+
+Now, we can clearly see that the transpiled circuit looks rather different from
+the original design. The transpiled circuit may have many more qubits than the
+original design; however, extra qubits are suppressed from our drawings by using
+the keyword ~idle_qubits=False~ in the ~draw()~ method for a circuit.
+
+*** Forming PUBs
+
+Now that we have transpiled circuits for the QPU, we must form a list of PUBs:
+#+begin_src python :session bellcirc :results output :exports both
+  PUBs_qpu = [ (ckt, None) for ckt in BellCkts_qpu ]
+
+  print(f'Created a list of PUBs for the QPU at {datetime.now()}')
+  print(f'Your list of PUBs contains {len(PUBs_qpu)} PUBs.')
+#+end_src
+
+#+RESULTS:
+: Created a list of PUBs for the QPU at 2025-03-11 20:26:29.161041
+: Your list of PUBs contains 2 PUBs.
+
+Next, we will run our jobs by submittin the PUBs.
+
+** Running the Circuits
+
+Here, we will use =qiskit_aer.primitives.SamplerV2()= as our simulation
+platform. First, we instantiate a ~SamplerV2~ object. Note: we import
+`qiskit_aer.primitives.SamplerV2~ as ~Sampler~ to distinguish it from the
+~qiskit_ibm_runtime.SamplerV2~ which we will use later.
+
+#+begin_src python :session bellcirc :results output :exports both
+  # Instantiate a sampler
+  from qiskit_ibm_runtime import SamplerV2
+
+  sampler_qpu = SamplerV2( backend_qpu )
+
+  print(f'Created a SamplerV2 for use with a QPU at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+: Created a SamplerV2 for use with a QPU at 2025-03-11 20:26:38.055146
+
+Finally, we use the ~run()~ method of our sampler. We will specify a shot count
+of 4096, since we may wish to compare with results from actual hardware using a
+~qiskit_ibm_runtime.SamplerV2~ object. 
+
+#+begin_src python :session bellcirc :results output :exports both
+  # We specify the same number of shots as in our simulated run
+
+  # use None to launch a new calculation.
+  # use an actual job_id to retrieve an existing calculation.
+  # job_id = None
+  job_id = 'cz890patp60g008grx9g'
+
+  if job_id is None:
+      job_qpu = sampler_qpu.run( PUBs_qpu, shots=4092 ) 
+      print(f'Submitted the QPU job at {datetime.now()}')
+      job_id = job_qpu.job_id()
+      print(f'   Job ID: {job_id}')
+
+  else:
+      job_qpu = service.job( job_id )
+      print(f'Retrieved existing job ({datetime.now()}).')
+      print(f'   Job ID: {job_id}')
+#+end_src
+
+#+RESULTS:
+: Retrieved existing job (2025-03-11 20:26:42.768706).
+:    Job ID: cz890patp60g008grx9g
+
+We can check the status of our job:
+#+begin_src python :session bellcirc :results output :exports both
+  print(f'The status of our job is: {job_qpu.status()}')
+#+end_src
+
+#+RESULTS:
+: The status of our job is: DONE
+
+** Accessing the Results
+
+We can extract results from our job using its ~.result()~ method:
+#+begin_src python :session bellcirc :results output :exports both
+  results_qpu = job_qpu.result()
+
+  print(results_qpu)
+#+end_src
+
+#+RESULTS:
+: PrimitiveResult([SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=4092, num_bits=2>)), metadata={'circuit_metadata': {}}), SamplerPubResult(data=DataBin(meas=BitArray(<shape=(), num_shots=4092, num_bits=2>)), metadata={'circuit_metadata': {}})], metadata={'execution': {'execution_spans': ExecutionSpans([DoubleSliceSpan(<start='2025-03-11 19:34:53', stop='2025-03-11 19:34:56', size=8184>)])}, 'version': 2})
+
+We can plot the results, just as before:
+
+#+begin_src python :session bellcirc :results output :exports both
+  for idx in range(2):
+      print(results_qpu[idx].data.meas.get_counts())
+#+end_src
+
+#+RESULTS:
+: {'00': 1961, '11': 2065, '01': 36, '10': 30}
+: {'10': 2058, '01': 1964, '00': 22, '11': 48}
+
+Indeed, we can print our results, but it is much nicer to plot them using a
+histogram.
+
+Unlike in the simulation, which was noise-free, we now have noise. Bell circuit
+0 should not produce states \(\left| 01 \right \rangle\) nor
+\(\left| 10 \right \rangle\), yet, they are listed in the measurement results,
+indicating that they have a non-zero probability of occurring. Similarly,
+circuit 1 should not produce \(\left| 00 \right \rangle\) nor
+\(\left| 11 \right \rangle\).
+
+For a better comparison between our noise-free simulation and QPU results, we
+plot the counts on the same histogram. We can do this using the
+~plot_histogram()~ method if we provide a list the counts we want to appear on
+the same plot:
+#+begin_src python :eval never
+
+  for idx in range(2):
+      print(f'Bell circuit {idx}')
+      display(plot_histogram([results_sim[idx].data.meas.get_counts()),
+                             results_qpu[idx].data.meas.get_counts())])
+#+end_src
+
+#+begin_src python :session bellcirc :results output :exports none
+  legend_data = ['Noise-free Sim.', 'QPU']
+
+  for idx in range(2):
+      fname = os.path.join('html', 'img',
+                           f'bell_ckt_results{idx:02d}_compare.png')
+
+      print(f'\nBell circuit {idx}:')
+      plot_histogram([results_sim[idx].data.meas.get_counts(),
+                      results_qpu[idx].data.meas.get_counts()],
+                     legend=legend_data,
+                     figsize=(12,6),
+                     filename=fname)
+
+      orgfig(fname[5:])
+
+  print(f'\nCreated figures for transpiled circuits at {datetime.now()}')
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+Bell circuit 0:
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/bell_ckt_results00_compare.png]]
+
+Bell circuit 1:
+
+,#+name: fig:defaultName
+,#+attr_html: :width 480px
+,#+caption: Default caption.
+[[./img/bell_ckt_results01_compare.png]]
+
+Created figures for transpiled circuits at 2025-03-11 20:28:34.812691
+#+end_example
+
+#+name: fig:SampleBellCkt0-comparison
+#+attr_html: :width 480px
+#+caption: QPU results are compared with noise-free simulation results for Bell circuit 0.
+[[./img/bell_ckt_results00_compare.png]]
+
+Bell circuit 1:
+
+#+name: fig:SampleBellCkt1-comparison
+#+attr_html: :width 480px
+#+caption: QPU results are compared with noise-free simulation results for Bell circuit 1.
+[[./img/bell_ckt_results01_compare.png]]
+
