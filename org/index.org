@@ -60,8 +60,6 @@ export ZSH_ENV_VAR="SomeValue"
 
 [[./ClassicalInfoQuantumInfo.html][Classical Information and Quantum Information]]
 
-[[./Operators.html][Operators]]
-
 ** Appendix
 
 [[./AppendixQiskitIBMSimRun.html][Qiskit + IBM Simulations and Calculations]]
