@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-02-27 Thu 13:55 -->
+<!-- 2025-03-12 Wed 10:54 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Operators</title>
@@ -20,6 +20,7 @@
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/bigblow.js"></script>
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/bigblow_theme/js/hideshow.js"></script>
 <script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<style>details { margin: 1em 0; } summary { cursor: pointer; font-weight: bold; }</style>
 <script>
   window.MathJax = {
     tex: {
@@ -62,11 +63,13 @@
 <ul>
 <li><a href="#operators">1. Operators</a>
 <ul>
-<li><a href="#orgcf3356f">1.1. Introduction</a></li>
+<li><a href="#org825d65f">1.1. Introduction</a></li>
 <li><a href="#the-not-operator">1.2. The NOT operator</a></li>
 <li><a href="#finding-the-matrix-representation-in-a-given-basis">1.3. Finding the Matrix Representation in a given Basis</a>
 <ul>
 <li><a href="#matrix-columns">1.3.1. Matrix Columns</a></li>
+<li><a href="#org8d536ae">Exercise</a></li>
+<li><a href="#org133cfd5">Solution</a></li>
 <li><a href="#matrix-elements">1.3.2. Matrix Elements</a></li>
 <li><a href="#a-basic-quantum-circuit">1.3.3. A Basic Quantum Circuit</a></li>
 </ul>
@@ -107,8 +110,8 @@
 </p>
 </div>
 
-<div id="outline-container-orgcf3356f" class="outline-3">
-<h3 id="orgcf3356f"><span class="section-number-3">1.1.</span> Introduction</h3>
+<div id="outline-container-org825d65f" class="outline-3">
+<h3 id="org825d65f"><span class="section-number-3">1.1.</span> Introduction</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>To process information, we need a way to transform quantum states
@@ -144,7 +147,8 @@ The general operator \(\mathbf{O}\) transforms a quantum state
 Explicitly, this is
 </p>
 \begin{equation}
-\mathbf{X}\ket{0}=\ket{1}\qquad\text{and}\qquad\mathbf{X}\ket{1}=\ket{0}\label{eq:NOTaction}
+\label{org05c8db9}
+\mathbf{X}\ket{0}=\ket{1}\qquad\text{and}\qquad\mathbf{X}\ket{1}=\ket{0}
 \end{equation}</li>
 </ul></li>
 
@@ -251,27 +255,29 @@ i
 </ul></li>
 </ul></li>
 </ul>
+</div>
+</div>
 
-\begin{xca}
-Find \(X\), the matrix representation of \(\mathbf{X}\) in the
-computational basis.
-\begin{xca}
-
-To do this, we can build the matrix column by column:
-\begin{equation}
-X=\left[\begin{array}{cc}
-\mathbf{X}\ket{0} & \mathbf{X}\ket{1}\end{array}\right]=\left[\begin{array}{cc}
-\ket{1} & \ket{0}\end{array}\right]=\left[\begin{array}{cc}
-0 & 1\\
-1 & 0
-\end{array}\right]
-\end{equation}
-
-\begin{xca}
+<summary id="outline-container-org8d536ae" class="outline-4">
+<h4 id="org8d536ae">Exercise</h4>
+<div class="outline-text-4" id="text-org8d536ae">
+<p>
 Verify that \(X\) transforms the basis states consistent with Equation
-(ref:eq:NOTaction)\\
-\end{xca}
+\eqref{org05c8db9}.<br />
+</p>
 
+<div class="details" id="orgcad2463">
+<p>
+This is the test of details.
+</p>
+
+</div>
+</div>
+</summary>
+
+<details id="outline-container-org133cfd5" class="outline-4">
+<h4 id="org133cfd5">Solution</h4>
+<div class="outline-text-4" id="text-org133cfd5">
 \begin{align}
 \mathbf{X}\ket{0} & =\left[\begin{array}{cc}
 0 & 1\\
@@ -291,7 +297,7 @@ Verify that \(X\) transforms the basis states consistent with Equation
 \end{bmatrix}=\ket{0}
 \end{align}
 </div>
-</div>
+</details>
 
 <div id="outline-container-matrix-elements" class="outline-4">
 <h4 id="matrix-elements"><span class="section-number-4">1.3.2.</span> Matrix Elements</h4>
@@ -307,7 +313,7 @@ take an inner product of \(\mathbf{M}\ket{\psi}\) with another state,
 matrix element of \(\mathbf{M}\)</li>
 </ul></li>
 </ul>
-<div class="xca" id="org60b1e5d">
+<div class="xca" id="org2adb2a7">
 <p>
 Find the following matrix elements of the \(\mathbf{X}\) operator.
 </p>
@@ -355,7 +361,7 @@ We can do this using all we know about bras and kets:
  & =\braket{1|0}=0
 \end{align}
 
-<div class="xca" id="org41d318d">
+<div class="xca" id="org93b3016">
 <p>
 Calculate the inner products \(\vec{e}_{2}^{T}M\vec{e}_{3}\) and
 \(\vec{e}_{3}^{T}M\vec{e}_{2}\)
@@ -552,13 +558,16 @@ In addition to \(\sigma_{x}\), there are two other Pauli operators,
 \end{equation}
 
 <ul class="org-ul">
-<li>Note: most often, \(\mathbf{Y}\) and \(\mathbf{Z}\) will be written
-as \begin{equation}
-\mathbf{Y}=&sigma;<sub>y</sub>=
-\left[\begin{array}{cc} 0 &amp; -i\\ i &amp; 0 \end{array}\right],
+<li><p>
+Note: most often, \(\mathbf{Y}\) and \(\mathbf{Z}\) will be written
+as
+</p>
+\begin{equation}
+\mathbf{Y}=\sigma_{y}=
+\left[\begin{array}{cc} 0 & -i\\ i & 0 \end{array}\right],
 \qquad\text{and}\qquad
-\mathbf{Z}=&sigma;<sub>z</sub>=
-\left[\begin{array}{cc} 1 &amp; 0\\ 0 &amp; -1 \end{array}\right]
+\mathbf{Z}=\sigma_{z}=
+\left[\begin{array}{cc} 1 & 0\\ 0 & -1 \end{array}\right]
 \label{eq:sigma_y_z_more_common}
 \end{equation}</li>
 
@@ -601,7 +610,7 @@ combination of desirable answers</li>
 </ul></li>
 </ul></li>
 </ul>
-<div class="xca" id="org43b6550">
+<div class="xca" id="org283c14d">
 <p>
 How does \(\mathbf{Z}\) transform the states \(\ket{0}\) and
 \(\ket{1}\)?<br />
@@ -670,7 +679,7 @@ Hadamard transformation, \(\mathbf{H}\):
 states.</li>
 </ul>
 
-<div class="xca" id="org9eac89b">
+<div class="xca" id="orgb928c59">
 <p>
 Consider \(\mathbf{H}\) from Equation
 (<a href="eq:defHadamard">eq:defHadamard</a>).
@@ -833,7 +842,7 @@ equal probability of measuring "0" or "1"</li>
 <li>What happens when we add a second Hadamard operation?</li>
 </ol>
 
-<div class="xca" id="orgdaf2a9a">
+<div class="xca" id="orge50cce8">
 
 </div>
 <p>
@@ -886,7 +895,7 @@ p\left(0\right)=1,\qquad p\left(1\right)=0
 \end{equation}</li>
 </ol>
 
-<div class="xca" id="org04aaa7c">
+<div class="xca" id="orgba78c59">
 <p>
 Consider the circuit of Figure <a href="fig:SingleQbitHsq1">fig:SingleQbitHsq1</a>.
 </p>
@@ -1189,7 +1198,7 @@ state \(\ket{n}\)</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="org39c6667">
+<div class="xca" id="org5fc232b">
 <p>
 Consider the computational molecule of Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a>.
 </p>
@@ -1353,7 +1362,7 @@ state energy \(E_{0}\) or \(E_{1}\) is called the <b>ground state</b>.</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="org0ada19e">
+<div class="xca" id="org17389de">
 <p>
 Calculate the ground state of the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> by hand.
 </p>
@@ -1564,7 +1573,7 @@ simply the expectation value of \(\mathbf{Q}\)</li>
 </ul></li>
 </ul>
 
-<div class="xca" id="org090c3c4">
+<div class="xca" id="org02d008e">
 <p>
 Calculate \(\braket{\mathbf{Z}}\) for the following wave functions:
 </p>
@@ -1680,9 +1689,9 @@ the <b>cell polarization</b></li>
 </div>
 
 <ol class="org-ol">
-<li><a id="orgba3b526"></a>Calculate the Ground State&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="org202638c"></a>Calculate the Ground State&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-6-4-1">
-<div class="xca" id="orgffc692d">
+<div class="xca" id="org180188b">
 <p>
 Calculate the (normalized) ground state, \(\ket{\psi_{0}^{\prime}}\) of
 the molecule from Figure <a href="fig:TwoDotStates">fig:TwoDotStates</a> using Python. Let
@@ -1799,7 +1808,7 @@ plt.savefig(fname)
 
 
 
-<div id="org7ae7946" class="figure">
+<div id="org4fda75a" class="figure">
 <p><img src="./img/DrivenCellPython.png" alt="DrivenCellPython.png" />
 </p>
 <p><span class="figure-number">Figure 1: </span>We compare the hand (analyitic) calculation of the ground state polarization [see Equation (<a href="eq:NormalizedGroundState">eq:NormalizedGroundState</a>)] \(P\) to a numeric calculation of the ground state polarization. The two results agree nicely. <a href="fig:Cell-Cell-Response-Python">fig:Cell-Cell-Response-Python</a></p>
@@ -1832,7 +1841,7 @@ circuit</li>
 </li>
 
 
-<li><a id="org60bd169"></a>Functionalized Calculation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="org83a6b1b"></a>Functionalized Calculation&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-6-4-2">
 <p>
 We will actually do this again, but this time using more concise
@@ -1949,7 +1958,7 @@ plt.savefig(fname)
 </div>
 
 
-<div id="orgd66fff1" class="figure">
+<div id="org208dd1b" class="figure">
 <p><img src="./img/DrivenCellPython_functional.png" alt="DrivenCellPython_functional.png" />
 </p>
 <p><span class="figure-number">Figure 2: </span>Our functionalized code returns the same output as before.</p>
@@ -1957,7 +1966,7 @@ plt.savefig(fname)
 </div>
 </li>
 
-<li><a id="orgc072414"></a>Functionalized Calculation with Visuals&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="org811f697"></a>Functionalized Calculation with Visuals&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-6-4-3">
 <ul class="org-ul">
 <li>Now we'll repeat this exercise again, but we'll make one small&#x2013;but
@@ -2092,13 +2101,13 @@ Very importantly, we have added a visual that helps the reader
 </p>
 
 
-<div id="org76d7c80" class="figure">
+<div id="org7d38acd" class="figure">
 <p><img src="./img/BiasedCellPython_functional_annotated.png" alt="BiasedCellPython_functional_annotated.png" />
 </p>
 <p><span class="figure-number">Figure 3: </span>We've added annotations to the plot that help the reader interpret it. This is a small touch, but it very important.</p>
 </div>
 
-<div class="xca" id="org71f2f64">
+<div class="xca" id="org09ba57d">
 <p>
 Repeat Exercise
 <a href="exer:MATLAB-QCA-GroundState-Isolated">exer:MATLAB-QCA-GroundState-Isolated</a>,
@@ -2118,9 +2127,9 @@ mechanics and quantum information processing.
 </div>
 </li>
 
-<li><a id="org249a5f5"></a>Driven DQD (Driver+Target System)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="orgd5ee03f"></a>Driven DQD (Driver+Target System)&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-6-4-4">
-<div class="xca" id="orgab33751">
+<div class="xca" id="orgdf2adeb">
 <p>
 In Exercises
 <a href="exer:PYTHON-QCA-GroundState-Isolated">exer:PYTHON-QCA-GroundState-Isolated</a>
@@ -2432,7 +2441,7 @@ plt.savefig(fname)
 
 
 
-<div id="org867f73f" class="figure">
+<div id="org68988ee" class="figure">
 <p><img src="./img/DrivenCellPython_functional_annotated.png" alt="DrivenCellPython_functional_annotated.png" />
 </p>
 <p><span class="figure-number">Figure 4: </span>We show the response \(P\) of a two-dot cell to a driving neighbor. The driver cell is shown with a blue mobile electron, and the target cell is shown with a red mobile electron. <a href="driven-dqd-cell-cell-response">driven-dqd-cell-cell-response</a></p>
@@ -2441,9 +2450,9 @@ plt.savefig(fname)
 </li>
 
 
-<li><a id="org5a1cab5"></a>Kink Energy Exercise&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="org97c4d09"></a>Kink Energy Exercise&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-6-4-5">
-<div class="xca" id="org3fc4977">
+<div class="xca" id="org95e1a2f">
 <p>
 Determine the cost of a bit flip, given a fully-polarized driver.
 </p>
@@ -2548,7 +2557,7 @@ c_{1}c_{0}^{\ast} & c_{1}c_{1}^{\ast}
 </ul></li>
 </ul>
 
-<div class="xca" id="orgf012e24">
+<div class="xca" id="org7b1988b">
 <p>
 Write a Python function that converts a ket to a density operator.
 </p>
@@ -2690,7 +2699,7 @@ formalism as
  \end{equation}</li>
 </ul>
 
-<div class="xca" id="orga609607">
+<div class="xca" id="org0395523">
 <p>
 Write a Python functions to do the following:
 </p>
@@ -2882,7 +2891,7 @@ plt.close(<span style="color: #CC9393;">'all'</span>)
 </pre>
 </div>
 
-<pre class="example" id="org69162e8">
+<pre class="example" id="org55f8ed5">
 [[0.+0.j 0.-1.j]
  [0.+1.j 0.+0.j]]
 Bloch vector for ket 0: [0. 0. 1.]
@@ -2950,9 +2959,9 @@ rotation about the \(\hat{y}\) axis in the Bloch sphere</li>
 </div>
 
 <ol class="org-ol">
-<li><a id="org4359498"></a>Exercise - Rotations about X&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="orge57e50a"></a>Exercise - Rotations about X&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-7-1-1">
-<div class="xca" id="org7381cc3">
+<div class="xca" id="org7fa344e">
 <p>
 Perform and rotations of \(\ket{0}\) about the \(\hat{x}\) axis through
 the angles \(\pi/4\), \(\pi/2\), \(3\pi/4\), \(\pi\), \(5\pi/4\), and
@@ -3188,7 +3197,7 @@ plt.close(<span style="color: #CC9393;">'all'</span>)
 <p>
 \(\mathbf{R}_{x}\left(\theta\right)\) or
 \(\mathbf{R}_{z}\left(\theta\right)\).
-<a id="org4bb01b2"></a>
+<a id="orga5992a3"></a>
 </p>
 </div>
 
@@ -3240,9 +3249,9 @@ is a single-qubit operator.
 </div>
 </li>
 
-<li><a id="org27f8973"></a>Exercise: Bloch Sphere, rotations about arbitrary axes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
+<li><a id="org6c2ab4b"></a>Exercise: Bloch Sphere, rotations about arbitrary axes&#xa0;&#xa0;&#xa0;<span class="tag"><span class="ignore">ignore</span></span><br />
 <div class="outline-text-5" id="text-1-7-1-2">
-<div class="xca" id="orgd26efc4">
+<div class="xca" id="org4e7203e">
 <p>
 Find \(\hat{\mathbf{n}}\) to perform rotations about the following axes:
 </p>
@@ -3348,7 +3357,7 @@ about \(\hat{z}\).
 equation from Equation (<a href="eq:TDSE">eq:TDSE</a>)</li>
 </ul>
 
-<div class="xca" id="org7e2c36a">
+<div class="xca" id="org2dd1016">
 <p>
 Find \(\ket{\psi\left(t\right)}\) for a QCA cell prepared in state
 \(\ket{\psi\left(0\right)}=1\) if \(\gamma=50\;\text{meV}\) and
@@ -3411,7 +3420,7 @@ We see that the system will oscillate between the
 computational basis states in what is called a Rabi oscillation.
 </p>
 
-<div class="xca" id="org63cc461">
+<div class="xca" id="orgb97d852">
 <p>
 Make a Python script that calculates and plots a lone cell's
 polarization as a function of time if \(\gamma=50\;\text{meV}\) and
@@ -3511,7 +3520,7 @@ plt.savefig(figname)
 
 
 
-<div id="org7e86e2a" class="figure">
+<div id="org8de62e8" class="figure">
 <p><img src="./img/polarization-Rabi-osc.png" alt="polarization-Rabi-osc.png" />
 </p>
 <p><span class="figure-number">Figure 5: </span>The polarization of an isolated two-dot cell with bias \(\Delta = 0\) and tunneling energy \(\gamma\) oscillates with period \(T_0 = \pi \hbar / \gamma\). <a href="dqd-polarization-rabi-osc">dqd-polarization-rabi-osc</a></p>
@@ -3556,7 +3565,7 @@ Dots in MATLAB</a></li>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Dr. E.P. Blair</p>
-<p class="date">Created: 2025-02-27 Thu 13:55</p>
+<p class="date">Created: 2025-03-12 Wed 10:54</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
