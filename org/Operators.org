@@ -5,6 +5,8 @@
 #+export_file_name: ./html/Operators.html
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-bigblow.setup
 #+PROPERTY: header-args :eval never-export
+#+HTML_HEAD: <style>details { margin: 1em 0; } summary { cursor: pointer; font-weight: bold; }</style>
+
 
 #+title: Operators
 #+author: Dr. E.P. Blair
@@ -62,8 +64,9 @@ print(sys.executable)
   \(\ket{x}\) into its complement, \(\ket{\bar{x}}\)
 
   - Explicitly, this is
+    #+name: eq:NOTaction
     \begin{equation}
-    \mathbf{X}\ket{0}=\ket{1}\qquad\text{and}\qquad\mathbf{X}\ket{1}=\ket{0}\label{eq:NOTaction}
+    \mathbf{X}\ket{0}=\ket{1}\qquad\text{and}\qquad\mathbf{X}\ket{1}=\ket{0}
     \end{equation}
 
 - In the linear algebraic world, a matrix is used to transform vectors,
@@ -152,26 +155,28 @@ print(sys.executable)
       \end{array}\right]\quad\left(\text{third col. of }M\right)
       \end{equation}
 
-\begin{xca}
-Find \(X\), the matrix representation of \(\mathbf{X}\) in the
-computational basis.
-\begin{xca}
+*** Exercise
+:properties:
+:unnumbered: t
+:visibility: folded
+:html_container: summary
+:end:
 
-To do this, we can build the matrix column by column:
-\begin{equation}
-X=\left[\begin{array}{cc}
-\mathbf{X}\ket{0} & \mathbf{X}\ket{1}\end{array}\right]=\left[\begin{array}{cc}
-\ket{1} & \ket{0}\end{array}\right]=\left[\begin{array}{cc}
-0 & 1\\
-1 & 0
-\end{array}\right]
-\end{equation}
-
-\begin{xca}
 Verify that \(X\) transforms the basis states consistent with Equation
-(ref:eq:NOTaction)\\
-\end{xca}
+[[eq:NOTaction]].\\
 
+#+begin_details "Solution"
+This is the test of details.
+#+end_details
+
+*** Solution
+:PROPERTIES:
+:HTML_CONTAINER: details
+:visibility: folded
+:unnumbered: t
+:END:
+
+:solution:
 \begin{align}
 \mathbf{X}\ket{0} & =\left[\begin{array}{cc}
 0 & 1\\
@@ -190,6 +195,7 @@ Verify that \(X\) transforms the basis states consistent with Equation
 0
 \end{bmatrix}=\ket{0}
 \end{align}
+:end:
 
 *** Matrix Elements
 :PROPERTIES:
@@ -413,7 +419,8 @@ into the final state $\ket{1}$ . \label{fig:BasicSingleQubitCircuits}}
   \end{equation}
 
   - Note: most often, \(\mathbf{Y}\) and \(\mathbf{Z}\) will be written
-    as \begin{equation}
+    as
+    \begin{equation}
     \mathbf{Y}=\sigma_{y}=
     \left[\begin{array}{cc} 0 & -i\\ i & 0 \end{array}\right],
     \qquad\text{and}\qquad
