@@ -66,3 +66,26 @@ export ZSH_ENV_VAR="SomeValue"
 
 [[./AppendixExBellCircuits.html][Qiskit + IBM Example: Bell Circuits]]
 
+
+* GitHub                                                           :noexport:
+
+#+begin_src zsh :results output
+  source ~/.zshrc
+
+  cd ..
+  ls docs/img/dbl_potiential_well.png  
+  git add docs/img/dbl_potiential_well.png
+  git commit -m "Adds a double-well image (asymmetric)"
+  git pull
+  git push  
+#+end_src
+
+#+RESULTS:
+: docs/img/dbl_potiential_well.png
+: [main 06ad51a] Adds a double-well image (asymmetric)
+:  1 file changed, 0 insertions(+), 0 deletions(-)
+:  create mode 100644 docs/img/dbl_potiential_well.png
+: Merge made by the 'ort' strategy.
+:  docs/img/driven-N-cell-system.png | Bin 0 -> 69624 bytes
+:  1 file changed, 0 insertions(+), 0 deletions(-)
+:  create mode 100644 docs/img/driven-N-cell-system.png
